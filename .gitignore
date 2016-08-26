@@ -1,0 +1,12 @@
+*~
+*.swp
+*.bak
+
+dist/
+*.exe
+*.zip
+!extras/diff.exe
+
+# Dependencies download and installation
+downloads
+deps
