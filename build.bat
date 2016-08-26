@@ -70,6 +70,19 @@ SET PYTHON3_DIR_x86=C:\Python35
 SET PYTHON3_DIR_amd64=C:\Python35
 SET PYTHON3_DIR=!PYTHON3_DIR_%ARCH%!
 
+:: Racket
+SET RACKET_VER=3m_9zltds
+::SET RACKET_URL_x86=https://mirror.racket-lang.org/releases/6.4/installers/racket-minimal-6.4-i386-win32.exe
+SET RACKET_URL_x86=https://download.racket-lang.org/releases/6.6/installers/racket-minimal-6.6-i386-win32.tgz
+::SET RACKET_URL_amd64=https://mirror.racket-lang.org/releases/6.4/installers/racket-minimal-6.4-x86_64-win32.exe
+SET RACKET_URL_amd64=https://download.racket-lang.org/releases/6.6/installers/racket-minimal-6.6-x86_64-win32.tgz
+SET RACKET_URL=!RACKET_URL_%ARCH%!
+::SET RACKET_DIR_x86=%PROGRAMFILES(X86)%\Racket
+::SET RACKET_DIR_amd64=%PROGRAMFILES%\Racket
+::SET RACKET_DIR=!RACKET_DIR_%ARCH%!
+SET RACKET_DIR=%DEPS%Racket_%RACKET_VER%_%ARCH%
+SET MZSCHEME_VER=%RACKET_VER%
+
 SET GETTEXT_URL_x86=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-32.zip
 SET GETTEXT_URL_amd64=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-64.zip
 SET GETTEXT_URL=!GETTEXT_URL_%ARCH%!
@@ -97,6 +110,7 @@ CALL :GetRemoteFile %LUA_URL% %BASE%downloads\lua_%ARCH%.zip
 CALL :GetRemoteFile %PERL_URL% %BASE%downloads\perl_%ARCH%.zip
 CALL :GetRemoteFile %TCL_URL% %BASE%downloads\tcl_%ARCH%.exe
 CALL :GetRemoteFile %RUBY_URL% %BASE%downloads\ruby-%RUBY_VERSION%.zip
+CALL :GetRemoteFile %RACKET_URL% %BASE%downloads\racket_%ARCH%.tgz
 CALL :GetRemoteFile %GETTEXT_URL% %BASE%downloads\gettext_%ARCH%.zip
 CALL :GetRemoteFile %UPX_URL% %BASE%downloads\upx.zip
 
@@ -115,7 +129,7 @@ IF "!ARG!" == "" (
 )
 GOTO :Install!PACKAGE!
 ECHO ** ERROR: Unnown package !PACKAGE!
-ECHO Package is one of All/GetText/UPX/Lua/Perl/Tcl/Ruby
+ECHO Package is one of All/GetText/UPX/Lua/Perl/Tcl/Ruby/Racket
 EXIT /B 1
 
 :InstallAll
@@ -164,6 +178,15 @@ POPD
 RD /Q /S %DEPS%tmp\ruby_build_%ARCH%
 GOTO :EOF
 
+:InstallRacket
+ECHO # Racket %ARCH% %RACKET_VER%
+7z e -so downloads\racket_%ARCH%.tgz ^
+ | 7z x -y -bd -si -ttar -o%DEPS%\tmp\Racket_%ARCH% > NUL || EXIT /B 1
+IF EXIST "%RACKET_DIR%" RD /Q /S %RACKET_DIR%
+MOVE %DEPS%tmp\Racket_%ARCH%\racket %RACKET_DIR% || EXIT /B 1
+RD %DEPS%tmp\Racket_%ARCH%
+GOTO :EOF
+
 :InstallGetText
 ECHO # GetText %ARCH%
 7z x downloads\gettext_%ARCH%.zip -o%GETTEXT_DIR% -y > NUL || EXIT /B 1
@@ -194,6 +217,7 @@ SET BUILDOPTIONS=CPU=%VIM_CPU% CVARS=/MP CPUNR=pentium4 WINVER=0x500 ^
  DYNAMIC_RUBY=yes RUBY="%RUBY_DIR%" RUBY_VER=%RUBY_VER% RUBY_VER_LONG=%RUBY_VER_LONG% ^
  DYNAMIC_PYTHON=yes PYTHON="%PYTHON_DIR%" PYTHON_VER=%PYTHON_VER% ^
  DYNAMIC_PYTHON3=yes PYTHON3="%PYTHON3_DIR%" PYTHON3_VER=%PYTHON3_VER% ^
+ DYNAMIC_MZSCHEME=yes "MZSCHEME=%RACKET_DIR%" ^
  XPM="%XPM%"
 
 IF EXIST "%VIMSRC_BUILD%" RD /Q /S %VIMSRC_BUILD%
