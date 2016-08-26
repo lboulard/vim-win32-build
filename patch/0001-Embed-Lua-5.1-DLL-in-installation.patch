@@ -1,0 +1,30 @@
+From 2551134c40982061aa23117fcd7952d967ab9d33 Mon Sep 17 00:00:00 2001
+From: Laurent Boulard <laurent.boulard@gmail.com>
+Date: Fri, 26 Aug 2016 16:47:46 +0200
+Subject: [PATCH] Embed Lua 5.1 DLL in installation
+
+---
+ nsis/gvim.nsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index 2ae7d41..891ff82 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -388,6 +388,14 @@ SectionEnd
+ !endif
+ 
+ ##########################################################
++Section "Install lua5.1.dll in VIM"
++	SectionIn 1 3
++
++	SetOutPath $0
++	File ${VIMRT}\lua5.1.dll
++SectionEnd
++
++##########################################################
+ Section -call_install_exe
+ 	SetOutPath $0
+ 	ExecWait "$0\install.exe $1"
+-- 
+
