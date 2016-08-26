@@ -283,7 +283,7 @@ CALL :FindBinary 7z.exe "C:\Program Files\7-Zip"
 IF "%APPVEYOR_REPO_TAG%" == "true" (
 SET VIMVER=%APPVEYOR_REPO_TAG_NAME%
 ) ELSE (
-FOR /F "delims=" %%i in ('git -C %VIMSRC_BUILD% describe --tags --abbrev^=0') DO SET VIMVER=%%i
+FOR /F "delims=" %%i in ('git -C %VIMSRC% describe --tags --abbrev^=0') DO SET VIMVER=%%i
 )
 PATH %UPX_DIR%;%PATH%
 
