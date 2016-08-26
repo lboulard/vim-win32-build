@@ -133,7 +133,7 @@ ECHO Package is one of All/GetText/UPX/Lua/Perl/Tcl/Ruby/Racket
 EXIT /B 1
 
 :InstallAll
-FOR %%z IN (GetText UPX Lua Perl Tcl Ruby) DO CALL :Install%%z
+FOR %%z IN (GetText UPX Lua Perl Tcl Ruby Racket) DO CALL :Install%%z
 GOTO :EOF
 
 :InstallLua
