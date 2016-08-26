@@ -1,0 +1,71 @@
+version: "{build}"
+
+image: Visual Studio 2015
+
+# Build only on tags
+skip_non_tags: true
+
+branches:
+  only:
+    - master
+
+environment:
+  matrix:
+    - ARCH: x64
+    - ARCH: x86
+
+matrix:
+  fast_finish: true
+
+install:
+  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-http-proxy.ps1'))
+
+before_build:
+  - 'git submodule update --init'
+  - 'setenv /%ARCH%'
+  - 'build.bat download prepare'
+
+build_script:
+  - 'build.bat build'
+
+after_build:
+  - 'build.bat package'
+
+artifacts:
+  - path: gvim-*-x86.exe
+    name: gVim_x86_installer
+  - path: gvim-*-x86.zip
+    name: gVim_x86
+  - path: gvim-*-amd64.exe
+    name: gVim_amd64_installer
+  - path: gvim-*-amd64.zip
+    name: gVim_amd64
+
+before_deploy:
+  - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" SET VIMVER=%APPVEYOR_REPO_TAG_NAME:v=%
+  - cmd: IF "%APPVEYOR_REPO_TAG%" == "false" (FOR /F "delims=" %%i in ('git describe --tags') DO SET VIMVER=%%i)
+
+deploy:
+  - provider: GitHub
+    tag: "$(VIMVER)"
+    description: |
+      Custom build of GVim/Vim for Windows.
+
+      Use gvim-$(VIMVER)-x86.exe or gvim-$(VIMVER)-amd64.exe to install GVim/Vim.
+
+      Current packages linked to GVim/Vim
+
+      * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.1.4
+      * [ActivePerl](http://www.activestate.com/activeperl/downloads) 5.24
+      * [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6
+      * [Racket](https://download.racket-lang.org/) 6.6
+      * [Ruby](https://www.ruby-lang.org/en/downloads/) 2.3.1
+      * [Python](https://www.python.org/downloads/) 2.7
+      * [Python3](https://www.python.org/downloads/) 3.5
+    auth_token:
+      secure: iOiS2SxHg7FOCRo5SiixjnP8bqI/lk1CgtiNWZGWlY8KKBIiZB+jbflmFiDfB2ed
+    artifact: /gVim/
+    draft: true
+    force_update: true
+
+# vim : ts=2 ws=2 et

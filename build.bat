@@ -1,16 +1,12 @@
 @ECHO OFF
 SETLOCAL ENABLEEXTENSIONS ENABLEDELAYEDEXPANSION
 
-IF NOT "%APPVEYOR_BUILD_FOLDER%" == "" (
- CD /D %APPVEYOR_BUILD_FOLDER%
- SET BASE=%APPVEYOR_BUILD_FOLDER%
-)
-
 IF "%BASE%" == "" SET BASE=%~dp0
 
 IF NOT "%APPVEYOR_HTTP_PROXY_IP%" == "" (
  SET HTTP_PROXY=http://%APPVEYOR_HTTP_PROXY_IP%:%APPVEYOR_HTTP_PROXY_PORT%
  SET HTTPS_PROXY=%HTTP_PROXY%
+ ECHO # Using HTTP proxy %HTTP_PROXY%
 )
 
 IF "%TARGET_CPU%" == "" (
@@ -284,7 +280,11 @@ CD %VIMSRC_BUILD%src || EXIT /B 1
 
 CALL :FindBinary 7z.exe "C:\Program Files\7-Zip"
 
-FOR /F "delims=" %%i in ('git -C %VIMSRC_BUILD% describe --tags origin/master') DO SET VIMVER=%%i
+IF "%APPVEYOR_REPO_TAG%" == "true" (
+SET VIMVER=%APPVEYOR_REPO_TAG_NAME%
+) ELSE (
+FOR /F "delims=" %%i in ('git -C %VIMSRC_BUILD% describe --tags --abbrev^=0') DO SET VIMVER=%%i
+)
 PATH %UPX_DIR%;%PATH%
 
 C:\msys64\usr\bin\bash -lc ^

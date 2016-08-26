@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/2arjuao3028n44p1?svg=true)](https://ci.appveyor.com/project/lboulard/vim-win32-build)
+
 # GVim/Vim Win32 builder
 
 Generate installers and archives for x86 and AMD64 CPU architecture using
