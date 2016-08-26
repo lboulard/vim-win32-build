@@ -42,12 +42,13 @@ artifacts:
     name: gVim_amd64
 
 before_deploy:
-  - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" SET VIMVER=%APPVEYOR_REPO_TAG_NAME:v=%
-  - cmd: IF "%APPVEYOR_REPO_TAG%" == "false" (FOR /F "delims=" %%i in ('git describe --tags') DO SET VIMVER=%%i)
+  - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" SET VIMTAG=%APPVEYOR_REPO_TAG_NAME%
+  - cmd: IF "%APPVEYOR_REPO_TAG%" == "false" (FOR /F "delims=" %%i in ('git describe --tags') DO SET VIMTAG=%%i)
+  - cmd: SET VIMVER=%VIMTAG:v=%
 
 deploy:
   - provider: GitHub
-    tag: "$(VIMVER)"
+    tag: "$(VIMTAG)"
     description: |
       Custom build of GVim/Vim for Windows.
 
