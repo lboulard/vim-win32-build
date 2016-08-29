@@ -113,7 +113,7 @@ SET OP=%~1
 IF /I "%OP:~0,8%" == "Prepare-" GOTO :CommandPrepare
 IF "%OP%" == "" SET OP=build
 SHIFT
-CALL :Command%OP% || EXIT /B 1
+CALL :Command%OP% || EXIT /B
 IF NOT "%~1" == "" GOTO :NextCommand
 EXIT /B 0
 
@@ -122,20 +122,20 @@ EXIT /B 0
 :CommandFetch
 IF NOT EXIST %BASE%downloads MKDIR %BASE%downloads
 
-CALL :GetRemoteFile %LUA_URL% %BASE%downloads\lua_%ARCH%.zip
-CALL :GetRemoteFile %PERL_URL% %BASE%downloads\perl_%ARCH%.zip
-CALL :GetRemoteFile %TCL_URL% %BASE%downloads\tcl_%ARCH%.exe
-CALL :GetRemoteFile %RUBY_URL% %BASE%downloads\ruby-%RUBY_VERSION%.zip
-CALL :GetRemoteFile %RACKET_URL% %BASE%downloads\racket_%ARCH%.tgz
-CALL :GetRemoteFile %GETTEXT_URL% %BASE%downloads\gettext_%ARCH%.zip
-CALL :GetRemoteFile %UPX_URL% %BASE%downloads\upx.zip
+CALL :GetRemoteFile %LUA_URL% %BASE%downloads\lua_%ARCH%.zip || EXIT /B
+CALL :GetRemoteFile %PERL_URL% %BASE%downloads\perl_%ARCH%.zip || EXIT /B
+CALL :GetRemoteFile %TCL_URL% %BASE%downloads\tcl_%ARCH%.exe || EXIT /B
+CALL :GetRemoteFile %RUBY_URL% %BASE%downloads\ruby-%RUBY_VERSION%.zip || EXIT /B
+CALL :GetRemoteFile %RACKET_URL% %BASE%downloads\racket_%ARCH%.tgz || EXIT /B
+CALL :GetRemoteFile %GETTEXT_URL% %BASE%downloads\gettext_%ARCH%.zip || EXIT /B
+CALL :GetRemoteFile %UPX_URL% %BASE%downloads\upx.zip || EXIT /B
 
 GOTO :EOF
 
 :: -----------------------------------------------------------------------
 :CommandPrepare
 
-CALL :FindBinary 7z.exe "C:\Program Files\7-Zip"
+CALL :FindBinary 7z.exe "C:\Program Files\7-Zip" || EXIT /B
 
 SET ARG=%~1
 IF "!ARG!" == "" (
@@ -149,7 +149,7 @@ ECHO Package is one of All/GetText/UPX/Lua/Perl/Tcl/Ruby/Racket
 EXIT /B 1
 
 :InstallAll
-FOR %%z IN (GetText UPX Lua Perl Tcl Ruby Racket) DO CALL :Install%%z
+FOR %%z IN (GetText UPX Lua Perl Tcl Ruby Racket) DO ( CALL :Install%%z || EXIT /B )
 GOTO :EOF
 
 :InstallLua
@@ -183,15 +183,14 @@ CALL win32\configure.bat --target=%RUBY_ARCH% ^
   --without-ext "socket,fiddle,openssl,curses,pty,readline,dbm,gdbm,fcntl,tk,syslog" ^
   --disable-rubygems ^
   --disable-debug-env ^
-  --prefix=$(RUBY_DIR)
+  --prefix=$(RUBY_DIR) || EXIT /B
 SET CL=/MP
-nmake
-nmake install
-IF ERRORLEVEL 1 EXIT /B 1
-XCOPY /I /Y /S .ext\include %RUBY_DIR%\include\ruby-%RUBY_VER_LONG%
+nmake || EXIT /B
+nmake install || EXIT /B
+XCOPY /I /Y /S .ext\include %RUBY_DIR%\include\ruby-%RUBY_VER_LONG% || EXIT /B
 @ECHO OFF
 POPD
-RD /Q /S %DEPS%tmp\ruby_build_%ARCH%
+RD /Q /S %DEPS%tmp\ruby_build_%ARCH% || EXIT /B
 GOTO :EOF
 
 :InstallRacket
@@ -278,7 +277,7 @@ GOTO :EOF
 
 CD %VIMSRC_BUILD%src || EXIT /B 1
 
-CALL :FindBinary 7z.exe "C:\Program Files\7-Zip"
+CALL :FindBinary 7z.exe "C:\Program Files\7-Zip" || EXIT /B
 
 IF "%APPVEYOR_REPO_TAG%" == "true" (
 SET VIMVER=%APPVEYOR_REPO_TAG_NAME%
