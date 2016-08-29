@@ -322,6 +322,7 @@ COPY /Y %BASE%\extras\diff.exe %VIMSRC_BUILD%\..
 COPY /Y gvim.exe gvim_ole.exe
 COPY /Y vim.exe vimw32.exe
 COPY /Y xxd\xxd.exe xxdw32.exe
+COPY /Y tee\tee.exe teew32.exe
 COPY /Y install.exe installw32.exe
 COPY /Y uninstal.exe uninstalw32.exe
 PUSHD ..\nsis
