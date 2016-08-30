@@ -341,6 +341,6 @@ GOTO :EOF
 :: call :GetRemoteFile <URL> <localfile>
 IF NOT EXIST %2 (
  ECHO # Downloading %2
- curl -fsS -L "%1" -o %2 || EXIT /B 1
+ curl -fsS --retry 3 --retry-delay 5 --connect-timeout 30 -L "%1" -o %2 || EXIT /B 1
 )
 GOTO :EOF
