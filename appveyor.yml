@@ -69,4 +69,7 @@ deploy:
     draft: true
     force_update: true
 
+cache:
+  - downloads -> build.bat
+
 # vim : ts=2 ws=2 et
