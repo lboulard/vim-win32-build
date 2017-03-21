@@ -4,7 +4,7 @@ git submodule --quiet foreach git pull -q origin master || exit
 if [ "$1" != "-f" ]; then
 	log=$(git -C vim log -1 --oneline --since="$(date -d '8 hour ago')" 2>/dev/null) || exit
 	if test -n "$log"; then
-		echo "Last commit too recent: $log"
+		echo "Last commit too recent: $(git -C vim log -1 --format="%ci, %cr"), $log"
 		exit 1
 	fi
 fi
