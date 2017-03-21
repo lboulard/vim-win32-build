@@ -1,6 +1,6 @@
 #!/bin/sh
 git submodule --quiet update --init --recursive || exit
-git submodule --quiet foreach git pull -q origin master || exit
+git submodule --quiet foreach git pull -q --tags origin master || exit
 if [ "$1" != "-f" ]; then
 	log=$(git -C vim log -1 --oneline --since="$(date -d '8 hour ago')" 2>/dev/null) || exit
 	if test -n "$log"; then
