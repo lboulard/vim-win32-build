@@ -5,7 +5,7 @@ set -e
 git submodule --quiet update --init --recursive
 git submodule --quiet foreach git pull -q --tags origin master
 if [ "$1" != "-f" ]; then
-	log=$(git -C vim log -1 --oneline --since="$(date -d '5 hour ago')" 2>/dev/null)
+	log=$(git -C vim log -1 --oneline --since="$(date -d '3 hour ago')" 2>/dev/null)
 	if test -n "$log"; then
 		echo "Last commit too recent: $(git -C vim log -1 --format="%ci, %cr"), $log"
 		exit 1
