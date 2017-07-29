@@ -303,7 +303,7 @@ COPY /Y GvimExt\*.reg ..\runtime\GvimExt\
 COPY /Y %BASE%\extras\diff.exe ..\runtime\
 COPY /Y %GETTEXT_DIR%\bin\libiconv*.dll ..\runtime\
 COPY /Y %GETTEXT_DIR%\bin\libintl-8.dll ..\runtime\
-COPY /Y %LUA_DIR%\lua5.1.dll ..\runtime
+COPY /Y %LUA_DIR%\lua5.1.dll ..\runtime\lua51.dll
 
 :: Library that may be required on platform (pthread for x64 or gcc_s_sjlj on x86)
 @FOR %%f IN (libwinpthread-1.dll libgcc_s_sjlj-1.dll) DO @(

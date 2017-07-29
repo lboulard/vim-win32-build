@@ -19,7 +19,7 @@ index 2ae7d41..891ff82 100644
 +	SectionIn 1 3
 +
 +	SetOutPath $0
-+	File ${VIMRT}\lua5.1.dll
++	File ${VIMRT}\lua51.dll
 +SectionEnd
 +
 +##########################################################
