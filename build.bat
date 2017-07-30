@@ -39,8 +39,8 @@ SET VIMSRC_BUILD=%BASE%dist\%ARCH%\vim\
 SET XPM=%VIMSRC_BUILD%src\xpm\%TARGET_CPU%
 
 SET PERL_VER=524
-SET PERL_URL_x86=http://downloads.activestate.com/ActivePerl/releases/5.24.0.2400/ActivePerl-5.24.0.2400-MSWin32-x86-64int-300560.zip
-SET PERL_URL_amd64=http://downloads.activestate.com/ActivePerl/releases/5.24.0.2400/ActivePerl-5.24.0.2400-MSWin32-x64-300558.zip
+SET PERL_URL_x86=http://downloads.activestate.com/ActivePerl/releases/5.24.1.2402/ActivePerl-5.24.1.2402-MSWin32-x86-64int-401627.exe
+SET PERL_URL_amd64=http://downloads.activestate.com/ActivePerl/releases/5.24.1.2402/ActivePerl-5.24.1.2402-MSWin32-x64-401627.exe
 SET PERL_URL=!PERL_URL_%ARCH%!
 SET PERL_DIR=%DEPS%Perl_%PERL_VER%_%ARCH%
 
@@ -123,7 +123,7 @@ EXIT /B 0
 IF NOT EXIST %BASE%downloads MKDIR %BASE%downloads
 
 CALL :GetRemoteFile %LUA_URL% %BASE%downloads\lua_%ARCH%.zip || EXIT /B
-CALL :GetRemoteFile %PERL_URL% %BASE%downloads\perl_%ARCH%.zip || EXIT /B
+CALL :GetRemoteFile %PERL_URL% %BASE%downloads\perl_%ARCH%.exe || EXIT /B
 CALL :GetRemoteFile %TCL_URL% %BASE%downloads\tcl_%ARCH%.exe || EXIT /B
 CALL :GetRemoteFile %RUBY_URL% %BASE%downloads\ruby-%RUBY_VERSION%.zip || EXIT /B
 CALL :GetRemoteFile %RACKET_URL% %BASE%downloads\racket_%ARCH%.tgz || EXIT /B
@@ -136,6 +136,8 @@ GOTO :EOF
 :CommandPrepare
 
 CALL :FindBinary 7z.exe "C:\Program Files\7-Zip" || EXIT /B
+
+IF NOT EXIST %DEPS%\nil MKDIR %DEPS%
 
 SET ARG=%~1
 IF "!ARG!" == "" (
@@ -159,12 +161,14 @@ GOTO :EOF
 
 :InstallPerl
 ECHO # Perl %ARCH% %PERL_VER%
-7z x downloads\perl_%ARCH%.zip *\perl -o%DEPS%tmp -y > NUL || EXIT /B 1
 IF EXIST "%PERL_DIR%" RD /Q /S %PERL_DIR%
-FOR /D %%i IN (%DEPS%tmp\ActivePerl*) DO (
-  MOVE %%i\perl %PERL_DIR% || EXIT /B 1
-  RD %%i
+IF EXIST "%PERL_DIR%_tmp" RD /Q /S %PERL_DIR%_tmp
+MKDIR %PERL_DIR%_tmp
+START /WAIT downloads\perl_%ARCH%.exe /exenoupdates /extract "%PERL_DIR%_tmp" || EXIT /B 1
+FOR /D %%i IN (%PERL_DIR%_tmp\*) DO (
+  MOVE %%i %PERL_DIR% || EXIT /B 1
 )
+RD "%PERL_DIR%_tmp"
 GOTO :EOF
 
 :InstallTcl
