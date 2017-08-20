@@ -171,7 +171,7 @@ ECHO # Perl %ARCH% %PERL_VER%
 IF EXIST "%PERL_DIR%" RD /Q /S %PERL_DIR%
 IF EXIST "%PERL_DIR%_tmp" RD /Q /S %PERL_DIR%_tmp
 MKDIR %PERL_DIR%_tmp
-START /WAIT downloads\perl_%ARCH%.exe /exenoupdates /extract "%PERL_DIR%_tmp" || EXIT /B 1
+START /WAIT downloads\perl_%ARCH%.exe /extract:%PERL_DIR%_tmp /exenoui /exenoupdates /quiet /norestart || EXIT /B 1
 FOR /D %%i IN (%PERL_DIR%_tmp\*) DO (
   MOVE %%i %PERL_DIR% || EXIT /B 1
 )
