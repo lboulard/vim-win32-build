@@ -104,6 +104,12 @@ SET GETTEXT_URL_amd64=https://github.com/mlocati/gettext-iconv-windows/releases/
 SET GETTEXT_URL=!GETTEXT_URL_%ARCH%!
 SET GETTEXT_DIR=%DEPS%GetText_%ARCH%
 
+SET WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
+SET WINPTY_ARCH_x86=ia32_xp
+SET WINPTY_ARCH_amd64=x64_xp
+SET WINPTY_ARCH=!WINPTY_ARCH_%ARCH%!
+SET WINPTY_DIR=%DEPS%Winpty
+
 SET UPX_URL=http://upx.sourceforge.net/download/upx391w.zip
 SET UPX_DIR=%DEPS%upx
 IF ERRORLEVEL 1 GOTO :EOF
@@ -128,6 +134,7 @@ CALL :GetRemoteFile %TCL_URL% %BASE%downloads\tcl_%ARCH%.exe || EXIT /B
 CALL :GetRemoteFile %RUBY_URL% %BASE%downloads\ruby-%RUBY_VERSION%.zip || EXIT /B
 CALL :GetRemoteFile %RACKET_URL% %BASE%downloads\racket_%ARCH%.tgz || EXIT /B
 CALL :GetRemoteFile %GETTEXT_URL% %BASE%downloads\gettext_%ARCH%.zip || EXIT /B
+CALL :GetRemoteFile %WINPTY_URL% %BASE%downloads\winpty.zip || EXIT /B
 CALL :GetRemoteFile %UPX_URL% %BASE%downloads\upx.zip || EXIT /B
 
 GOTO :EOF
@@ -151,7 +158,7 @@ ECHO Package is one of All/GetText/UPX/Lua/Perl/Tcl/Ruby/Racket
 EXIT /B 1
 
 :InstallAll
-FOR %%z IN (GetText UPX Lua Perl Tcl Ruby Racket) DO ( CALL :Install%%z || EXIT /B )
+FOR %%z IN (GetText Winpty UPX Lua Perl Tcl Ruby Racket) DO ( CALL :Install%%z || EXIT /B )
 GOTO :EOF
 
 :InstallLua
@@ -209,6 +216,10 @@ GOTO :EOF
 :InstallGetText
 ECHO # GetText %ARCH%
 7z x downloads\gettext_%ARCH%.zip -o%GETTEXT_DIR% -y > NUL || EXIT /B 1
+GOTO :EOF
+
+:InstallWinpty
+7z x downloads\winpty.zip -o%WINPTY_DIR% -y > NUL || EXIT /B 1
 GOTO :EOF
 
 :InstallUPX
@@ -304,6 +315,9 @@ COPY /Y GvimExt\gvimext*.dll ..\runtime\GvimExt\
 COPY /Y GvimExt\README.txt ..\runtime\GvimExt\
 COPY /Y GvimExt\*.inf ..\runtime\GvimExt\
 COPY /Y GvimExt\*.reg ..\runtime\GvimExt\
+COPY /Y %WINPTY_DIR%\%WINPTY_ARCH_x86%\bin\winpty.dll ..\runtime\winpty32.dll
+COPY /Y %WINPTY_DIR%\%WINPTY_ARCH_amd64%\bin\winpty.dll ..\runtime\winpty64.dll
+COPY /Y %WINPTY_DIR%\%WINPTY_ARCH%\bin\winpty-agent.exe ..\runtime\
 COPY /Y %BASE%\extras\diff.exe ..\runtime\
 COPY /Y %GETTEXT_DIR%\bin\libiconv*.dll ..\runtime\
 COPY /Y %GETTEXT_DIR%\bin\libintl-8.dll ..\runtime\
@@ -322,6 +336,9 @@ IF EXIST "%BASE%\gvim-%VIMVER:v=%-%ARCH%.zip" DEL /F "%BASE%\gvim-%VIMVER:v=%-%A
 7z a "%BASE%\gvim-%VIMVER:v=%-%ARCH%.zip" %dir%
 
 COPY /Y %BASE%\extras\diff.exe %VIMSRC_BUILD%\..
+COPY /Y %WINPTY_DIR%\%WINPTY_ARCH_x86%\bin\winpty.dll %VIMSRC_BUILD%..\winpty32.dll
+COPY /Y %WINPTY_DIR%\%WINPTY_ARCH_amd64%\bin\winpty.dll %VIMSRC_BUILD%..\winpty64.dll
+COPY /Y %WINPTY_DIR%\%WINPTY_ARCH%\bin\winpty-agent.exe %VIMSRC_BUILD%..
 COPY /Y gvim.exe gvim_ole.exe
 COPY /Y vim.exe vimw32.exe
 COPY /Y xxd\xxd.exe xxdw32.exe
