@@ -52,9 +52,9 @@ SET LUA_DIR=%DEPS%lua_%LUA_VER%_%ARCH%
 
 SET TCL_VER_LONG=8.6
 SET TCL_VER=%TCL_VER_LONG:.=%
-SET TCL_URL_x86=http://downloads.activestate.com/ActiveTcl/releases/8.6.4.1/ActiveTcl8.6.4.1.299124-win32-ix86-threaded.exe
-SET TCL_URL_amd64=http://downloads.activestate.com/ActiveTcl/releases/8.6.4.1/ActiveTcl8.6.4.1.299124-win32-x86_64-threaded.exe
-SET TCL_URL=!TCL_URL_%ARCH%!
+SET TCL_VERSION=8.6.7
+SET TCL_URL=https://prdownloads.sourceforge.net/tcl/tcl867-src.zip
+SET TCL_BUILD_DIR=%DEPS%tmp\tcl_%ARCH%
 SET TCL_DIR=%DEPS%tcl_%TCL_VER%_%ARCH%
 
 SET RUBY_VER=23
@@ -130,7 +130,7 @@ IF NOT EXIST %BASE%downloads MKDIR %BASE%downloads
 
 CALL :GetRemoteFile %LUA_URL% %BASE%downloads\lua_%ARCH%.zip || EXIT /B
 CALL :GetRemoteFile %PERL_URL% %BASE%downloads\perl_%ARCH%.exe || EXIT /B
-CALL :GetRemoteFile %TCL_URL% %BASE%downloads\tcl_%ARCH%.exe || EXIT /B
+CALL :GetRemoteFile %TCL_URL% %BASE%downloads\tcl-%TCL_VERSION%.zip || EXIT /B
 CALL :GetRemoteFile %RUBY_URL% %BASE%downloads\ruby-%RUBY_VERSION%.zip || EXIT /B
 CALL :GetRemoteFile %RACKET_URL% %BASE%downloads\racket_%ARCH%.tgz || EXIT /B
 CALL :GetRemoteFile %GETTEXT_URL% %BASE%downloads\gettext_%ARCH%.zip || EXIT /B
@@ -180,7 +180,15 @@ GOTO :EOF
 
 :InstallTcl
 ECHO # TCL %ARCH% %TCL_VER_LONG%
-START /WAIT downloads\tcl_%ARCH%.exe --directory %TCL_DIR% || EXIT /B 1
+IF EXIST "%TCL_DIR%" RD /Q /S %TCL_DIR%
+7z x downloads\tcl-%TCL_VERSION%.zip -o%TCL_BUILD_DIR% -y > NUL || EXIT /B 1
+PUSHD %TCL_BUILD_DIR%\tcl%TCL_VERSION%\win || EXIT /B 1
+ECHO ON
+nmake -nologo -f makefile.vc release
+nmake -nologo -f makefile.vc install INSTALLDIR=%TCL_DIR%
+@ECHO OFF
+POPD
+RD /Q /S %TCL_BUILD_DIR%
 GOTO :EOF
 
 :InstallRuby
