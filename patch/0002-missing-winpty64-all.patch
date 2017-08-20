@@ -1,0 +1,18 @@
+commit daed2822856c36d7298464b6fa57592a59c83df8
+Author: Laurent Boulard <laurent.boulard@gmail.com>
+Date:   Sun Aug 20 21:33:29 2017 +0200
+
+    Missing winpty64.dll in nsis file
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index b42439272..479230b28 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -199,6 +199,7 @@ Section "Vim executables and runtime files"
+ 
+ 	File ${VIMTOOLS}\diff.exe
+ 	File ${VIMTOOLS}\winpty32.dll
++	File ${VIMTOOLS}\winpty64.dll
+ 	File ${VIMTOOLS}\winpty-agent.exe
+ 
+ 	SetOutPath $0\colors
