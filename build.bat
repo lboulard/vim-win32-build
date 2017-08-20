@@ -137,7 +137,7 @@ GOTO :EOF
 
 CALL :FindBinary 7z.exe "C:\Program Files\7-Zip" || EXIT /B
 
-IF NOT EXIST %DEPS%\nil MKDIR %DEPS%
+IF NOT EXIST %DEPS%\. MKDIR %DEPS%
 
 SET ARG=%~1
 IF "!ARG!" == "" (
