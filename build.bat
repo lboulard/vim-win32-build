@@ -59,7 +59,8 @@ SET TCL_VER_LONG=8.6
 SET TCL_VER=%TCL_VER_LONG:.=%
 SET TCL_VERSION=8.6.7
 SET TCL_URL=https://prdownloads.sourceforge.net/tcl/tcl867-src.zip
-SET TCL_BUILD_DIR=%DEPS%tmp\tcl_%ARCH%
+SET TCL_OUT_DIR=%DEPS_BUILD%%ARCH%
+SET TCL_BUILD_DIR=%TCL_OUT_DIR%\tcl%TCL_VERSION%
 SET TCL_ARCHIVE=%DOWNLOADS%tcl-%TCL_VERSION%.zip
 SET TCL_DIR=%DEPS%tcl_%TCL_VER%_%ARCH%
 
@@ -70,6 +71,8 @@ SET RUBY_URL=http://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.1.zip
 SET RUBY_ARCH_x86=i386-mswin32
 SET RUBY_ARCH_amd64=x64-mswin64
 SET RUBY_ARCH=!RUBY_ARCH_%ARCH%!
+SET RUBY_OUT_DIR=%DEPS_BUILD%%ARCH%
+SET RUBY_BUILD_DIR=%RUBY_OUT_DIR%\ruby-%RUBY_VERSION%
 SET RUBY_ARCHIVE=%DOWNLOADS%ruby-%RUBY_VERSION%.zip
 SET RUBY_DIR=%DEPS%Ruby_%RUBY_VER%_%ARCH%
 
@@ -199,8 +202,8 @@ GOTO :EOF
 :InstallTcl
 ECHO # TCL %ARCH% %TCL_VER_LONG%
 IF EXIST "%TCL_DIR%" RD /Q /S %TCL_DIR%
-7z x %TCL_ARCHIVE% -o%TCL_BUILD_DIR% -y > NUL || EXIT /B 1
-PUSHD %TCL_BUILD_DIR%\tcl%TCL_VERSION%\win || EXIT /B 1
+7z x %TCL_ARCHIVE% -o%TCL_OUT_DIR% -y > NUL || EXIT /B 1
+PUSHD %TCL_BUILD_DIR%\win || EXIT /B 1
 ECHO ON
 nmake -nologo -f makefile.vc release
 nmake -nologo -f makefile.vc install INSTALLDIR=%TCL_DIR%
@@ -211,9 +214,9 @@ GOTO :EOF
 
 :InstallRuby
 ECHO # Ruby %ARCH% %RUBY_VER_LONG%
-7z x %RUBY_ARCHIVE% -o%DEPS%tmp\ruby_build_%ARCH% -y > NUL || EXIT /B 1
+7z x %RUBY_ARCHIVE% -o%RUBY_OUT_DIR% -y > NUL || EXIT /B 1
 
-PUSHD %DEPS%tmp\ruby_build_%ARCH%\ruby-%RUBY_VERSION%
+PUSHD %RUBY_BUILD_DIR%
 ECHO ON
 CALL win32\configure.bat --target=%RUBY_ARCH% ^
   --disable-install-doc ^
@@ -227,7 +230,7 @@ nmake install || EXIT /B
 XCOPY /I /Y /S .ext\include %RUBY_DIR%\include\ruby-%RUBY_VER_LONG% || EXIT /B
 @ECHO OFF
 POPD
-RD /Q /S %DEPS%tmp\ruby_build_%ARCH% || EXIT /B
+RD /Q /S %RUBY_BUILD_DIR% || EXIT /B
 GOTO :EOF
 
 :InstallRacket
