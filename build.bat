@@ -33,15 +33,17 @@ GOTO :config
 
 SET BUILD=%BASE%dist\%ARCH%\
 SET DEPS=%BASE%deps\
+SET DEPS_BUILD=%BASE%builds\
 SET VIMSRC=%BASE%vim\
 SET VIMSRC_BUILD=%BASE%dist\%ARCH%\vim\
 
 SET XPM=%VIMSRC_BUILD%src\xpm\%TARGET_CPU%
 
-SET PERL_VER=524
-SET PERL_URL_x86=http://downloads.activestate.com/ActivePerl/releases/5.24.1.2402/ActivePerl-5.24.1.2402-MSWin32-x86-64int-401627.exe
-SET PERL_URL_amd64=http://downloads.activestate.com/ActivePerl/releases/5.24.1.2402/ActivePerl-5.24.1.2402-MSWin32-x64-401627.exe
-SET PERL_URL=!PERL_URL_%ARCH%!
+SET PERL_VER=526
+SET PERL_VERSION=5.26.0
+SET PERL_URL=http://www.cpan.org/src/5.0/perl-5.26.0.tar.gz
+SET PERL_OUT_DIR=%DEPS_BUILD%%ARCH%
+SET PERL_BUILD_DIR=%PERL_OUT_DIR%\perl-%PERL_VERSION%
 SET PERL_DIR=%DEPS%Perl_%PERL_VER%_%ARCH%
 
 SET LUA_VER=51
@@ -129,7 +131,7 @@ EXIT /B 0
 IF NOT EXIST %BASE%downloads MKDIR %BASE%downloads
 
 CALL :GetRemoteFile %LUA_URL% %BASE%downloads\lua_%ARCH%.zip || EXIT /B
-CALL :GetRemoteFile %PERL_URL% %BASE%downloads\perl_%ARCH%.exe || EXIT /B
+CALL :GetRemoteFile %PERL_URL% %BASE%downloads\perl-%PERL_VERSION%.tgz || EXIT /B
 CALL :GetRemoteFile %TCL_URL% %BASE%downloads\tcl-%TCL_VERSION%.zip || EXIT /B
 CALL :GetRemoteFile %RUBY_URL% %BASE%downloads\ruby-%RUBY_VERSION%.zip || EXIT /B
 CALL :GetRemoteFile %RACKET_URL% %BASE%downloads\racket_%ARCH%.tgz || EXIT /B
@@ -167,15 +169,23 @@ ECHO # Lua %ARCH% %LUA_VER%
 GOTO :EOF
 
 :InstallPerl
-ECHO # Perl %ARCH% %PERL_VER%
-IF EXIST "%PERL_DIR%" RD /Q /S %PERL_DIR%
-IF EXIST "%PERL_DIR%_tmp" RD /Q /S %PERL_DIR%_tmp
-MKDIR %PERL_DIR%_tmp
-START /WAIT downloads\perl_%ARCH%.exe /extract:%PERL_DIR%_tmp /exenoui /exenoupdates /quiet /norestart || EXIT /B 1
-FOR /D %%i IN (%PERL_DIR%_tmp\*) DO (
-  MOVE %%i %PERL_DIR% || EXIT /B 1
+ECHO # Perl %ARCH% %PERL_VERSION%
+IF EXIST "%PERL_DIR%" RD /Q /S "%PERL_DIR%"
+IF EXIST "%PERL_BUILD_DIR%" RD /Q /S "%PERL_BUILD_DIR%"
+IF NOT EXIST "%PERL_OUT_DIR%\." MKDIR "%PERL_OUT_DIR%" || EXIT /B 1
+7z e -so downloads\perl-%PERL_VERSION%.tgz ^
+ | 7z x -y -bd -si -ttar -o%PERL_OUT_DIR% > NUL || EXIT /B 1
+PUSHD %PERL_BUILD_DIR%\win32 || EXIT /B 1
+ECHO ON
+SET ARGS=INST_TOP=%PERL_DIR% CCTYPE=MSVC100FREE
+IF "%ARCH%" == "x86" (
+ SET ARGS=!ARGS! WIN64=undef
 )
-RD "%PERL_DIR%_tmp"
+nmake -nologo -f Makefile !ARGS! || EXIT /B
+nmake -nologo -f Makefile install !ARGS! || EXIT /B
+@ECHO OFF
+POPD
+RD /Q /S %PERL_BUILD_DIR% || EXIT /B
 GOTO :EOF
 
 :InstallTcl
@@ -227,14 +237,15 @@ ECHO # GetText %ARCH%
 GOTO :EOF
 
 :InstallWinpty
+IF EXIST %WINPTY_DIR% GOTO :EOF
+ECHO # Winpty
 7z x downloads\winpty.zip -o%WINPTY_DIR% -y > NUL || EXIT /B 1
 GOTO :EOF
 
 :InstallUPX
-IF NOT EXIST "%UPX_DIR%\upx.exe" (
- ECHO # UPX
- 7z e downloads\upx.zip *\upx.exe -o%UPX_DIR% -y > NUL || EXIT /B 1
-)
+IF EXIST "%UPX_DIR%\upx.exe" GOTO :EOF
+ECHO # UPX
+7z e downloads\upx.zip *\upx.exe -o%UPX_DIR% -y > NUL || EXIT /B 1
 GOTO :EOF
 
 :: -----------------------------------------------------------------------

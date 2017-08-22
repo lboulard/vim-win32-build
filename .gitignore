@@ -10,3 +10,4 @@ dist/
 # Dependencies download and installation
 downloads
 deps
+/builds/
