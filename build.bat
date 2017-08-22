@@ -177,7 +177,7 @@ GOTO :EOF
 
 :InstallLua
 ECHO # Lua %ARCH% %LUA_VER%
-7z x %LUA_ARCHIVE% -o%LUA_DIR% -y > NUL || EXIT /B 1
+CALL :Extract %LUA_ARCHIVE% %LUA_DIR%
 GOTO :EOF
 
 :InstallPerl
@@ -185,7 +185,7 @@ ECHO # Perl %ARCH% %PERL_VERSION%
 IF EXIST "%PERL_DIR%" RD /Q /S "%PERL_DIR%"
 IF EXIST "%PERL_BUILD_DIR%" RD /Q /S "%PERL_BUILD_DIR%"
 IF NOT EXIST "%PERL_OUT_DIR%\." MKDIR "%PERL_OUT_DIR%" || EXIT /B 1
-7z e -so %PERL_ARCHIVE% | 7z x -y -bd -si -ttar -o%PERL_OUT_DIR% > NUL || EXIT /B 1
+CALL :Extract %PERL_ARCHIVE% %PERL_OUT_DIR%
 PUSHD %PERL_BUILD_DIR%\win32 || EXIT /B 1
 ECHO ON
 SET ARGS=INST_TOP=%PERL_DIR% CCTYPE=MSVC100FREE
@@ -202,7 +202,7 @@ GOTO :EOF
 :InstallTcl
 ECHO # TCL %ARCH% %TCL_VER_LONG%
 IF EXIST "%TCL_DIR%" RD /Q /S %TCL_DIR%
-7z x %TCL_ARCHIVE% -o%TCL_OUT_DIR% -y > NUL || EXIT /B 1
+CALL :Extract %TCL_ARCHIVE% %TCL_OUT_DIR%
 PUSHD %TCL_BUILD_DIR%\win || EXIT /B 1
 ECHO ON
 nmake -nologo -f makefile.vc release
@@ -214,7 +214,7 @@ GOTO :EOF
 
 :InstallRuby
 ECHO # Ruby %ARCH% %RUBY_VER_LONG%
-7z x %RUBY_ARCHIVE% -o%RUBY_OUT_DIR% -y > NUL || EXIT /B 1
+CALL :Extract %RUBY_ARCHIVE% %RUBY_OUT_DIR%
 
 PUSHD %RUBY_BUILD_DIR%
 ECHO ON
@@ -235,8 +235,7 @@ GOTO :EOF
 
 :InstallRacket
 ECHO # Racket %ARCH% %RACKET_VER%
-7z e -so %RACKET_ARCHIVE% ^
- | 7z x -y -bd -si -ttar -o%DEPS%\tmp\Racket_%ARCH% > NUL || EXIT /B 1
+CALL :Extract %RACKET_ARCHIVE% %DEPS%tmp\Racket_%ARCH%
 IF EXIST "%RACKET_DIR%" RD /Q /S %RACKET_DIR%
 MOVE %DEPS%tmp\Racket_%ARCH%\racket %RACKET_DIR% || EXIT /B 1
 RD %DEPS%tmp\Racket_%ARCH%
@@ -244,18 +243,19 @@ GOTO :EOF
 
 :InstallGetText
 ECHO # GetText %ARCH%
-7z x %GETTEXT_ARCHIVE% -o%GETTEXT_DIR% -y > NUL || EXIT /B 1
+CALL :Extract %GETTEXT_ARCHIVE% %GETTEXT_DIR%
 GOTO :EOF
 
 :InstallWinpty
 IF EXIST %WINPTY_DIR% GOTO :EOF
 ECHO # Winpty
-7z x %WINPTY_ARCHIVE% -o%WINPTY_DIR% -y > NUL || EXIT /B 1
+CALL :Extract %WINPTY_ARCHIVE% %WINPTY_DIR%
 GOTO :EOF
 
 :InstallUPX
 IF EXIST "%UPX_DIR%\upx.exe" GOTO :EOF
 ECHO # UPX
+REM Custom command to keep only upx.exe from archive
 7z e %UPX_ARCHIVE% *\upx.exe -o%UPX_DIR% -y > NUL || EXIT /B 1
 GOTO :EOF
 
@@ -394,4 +394,19 @@ IF NOT EXIST %2 (
  ECHO # Downloading %2
  curl -fsS --retry 3 --retry-delay 5 --connect-timeout 30 -L "%1" -o %2 || EXIT /B 1
 )
+GOTO :EOF
+
+:: -----------------------------------------------------------------------
+:Extract
+SET EXT=%~x1
+CALL :Extract%EXT% %*
+IF ERRORLEVEL 1 EXIT /B
+GOTO :EOF
+
+:Extract.Zip
+7z x -y %1 %3 -o%2 > NUL || EXIT /B 1
+GOTO :EOF
+
+:Extract.Tgz
+7z e -so %1 | 7z x -y -bd -si -ttar -o%2 > NUL || EXIT /B 1
 GOTO :EOF
