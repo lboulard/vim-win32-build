@@ -31,6 +31,7 @@ GOTO :config
 
 :config
 
+SET DOWNLOADS=%BASE%downloads\
 SET BUILD=%BASE%dist\%ARCH%\
 SET DEPS=%BASE%deps\
 SET DEPS_BUILD=%BASE%builds\
@@ -44,12 +45,14 @@ SET PERL_VERSION=5.26.0
 SET PERL_URL=http://www.cpan.org/src/5.0/perl-5.26.0.tar.gz
 SET PERL_OUT_DIR=%DEPS_BUILD%%ARCH%
 SET PERL_BUILD_DIR=%PERL_OUT_DIR%\perl-%PERL_VERSION%
+SET PERL_ARCHIVE=%DOWNLOADS%perl-%PERL_VERSION%.tgz
 SET PERL_DIR=%DEPS%Perl_%PERL_VER%_%ARCH%
 
 SET LUA_VER=51
 SET LUA_URL_x86=http://downloads.sourceforge.net/luabinaries/lua5_1_4_Win32_dllw4_lib.zip
 SET LUA_URL_amd64=http://downloads.sourceforge.net/luabinaries/lua-5.1.4_Win64_dllw4_lib.zip
 SET LUA_URL=!LUA_URL_%ARCH%!
+SET LUA_ARCHIVE=%DOWNLOADS%lua_%ARCH%.zip
 SET LUA_DIR=%DEPS%lua_%LUA_VER%_%ARCH%
 
 SET TCL_VER_LONG=8.6
@@ -57,6 +60,7 @@ SET TCL_VER=%TCL_VER_LONG:.=%
 SET TCL_VERSION=8.6.7
 SET TCL_URL=https://prdownloads.sourceforge.net/tcl/tcl867-src.zip
 SET TCL_BUILD_DIR=%DEPS%tmp\tcl_%ARCH%
+SET TCL_ARCHIVE=%DOWNLOADS%tcl-%TCL_VERSION%.zip
 SET TCL_DIR=%DEPS%tcl_%TCL_VER%_%ARCH%
 
 SET RUBY_VER=23
@@ -66,6 +70,7 @@ SET RUBY_URL=http://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.1.zip
 SET RUBY_ARCH_x86=i386-mswin32
 SET RUBY_ARCH_amd64=x64-mswin64
 SET RUBY_ARCH=!RUBY_ARCH_%ARCH%!
+SET RUBY_ARCHIVE=%DOWNLOADS%ruby-%RUBY_VERSION%.zip
 SET RUBY_DIR=%DEPS%Ruby_%RUBY_VER%_%ARCH%
 
 SET PYTHON_VER=27
@@ -99,20 +104,24 @@ SET RACKET_URL=!RACKET_URL_%ARCH%!
 ::SET RACKET_DIR_amd64=%PROGRAMFILES%\Racket
 ::SET RACKET_DIR=!RACKET_DIR_%ARCH%!
 SET RACKET_DIR=%DEPS%Racket_%RACKET_VER%_%ARCH%
+SET RACKET_ARCHIVE=%DOWNLOADS%racket_%ARCH%.tgz
 SET MZSCHEME_VER=%RACKET_VER%
 
 SET GETTEXT_URL_x86=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-32.zip
 SET GETTEXT_URL_amd64=https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14/gettext0.19.8.1-iconv1.14-shared-64.zip
 SET GETTEXT_URL=!GETTEXT_URL_%ARCH%!
+SET GETTEXT_ARCHIVE=%DOWNLOADS%gettext_%ARCH%.zip
 SET GETTEXT_DIR=%DEPS%GetText_%ARCH%
 
 SET WINPTY_URL=https://github.com/rprichard/winpty/releases/download/0.4.3/winpty-0.4.3-msvc2015.zip
 SET WINPTY_ARCH_x86=ia32_xp
 SET WINPTY_ARCH_amd64=x64_xp
 SET WINPTY_ARCH=!WINPTY_ARCH_%ARCH%!
+SET WINPTY_ARCHIVE=%DOWNLOADS%winpty.zip
 SET WINPTY_DIR=%DEPS%Winpty
 
 SET UPX_URL=http://upx.sourceforge.net/download/upx391w.zip
+SET UPX_ARCHIVE=%DOWNLOADS%upx.zip
 SET UPX_DIR=%DEPS%upx
 IF ERRORLEVEL 1 GOTO :EOF
 
@@ -130,14 +139,14 @@ EXIT /B 0
 :CommandFetch
 IF NOT EXIST %BASE%downloads MKDIR %BASE%downloads
 
-CALL :GetRemoteFile %LUA_URL% %BASE%downloads\lua_%ARCH%.zip || EXIT /B
-CALL :GetRemoteFile %PERL_URL% %BASE%downloads\perl-%PERL_VERSION%.tgz || EXIT /B
-CALL :GetRemoteFile %TCL_URL% %BASE%downloads\tcl-%TCL_VERSION%.zip || EXIT /B
-CALL :GetRemoteFile %RUBY_URL% %BASE%downloads\ruby-%RUBY_VERSION%.zip || EXIT /B
-CALL :GetRemoteFile %RACKET_URL% %BASE%downloads\racket_%ARCH%.tgz || EXIT /B
-CALL :GetRemoteFile %GETTEXT_URL% %BASE%downloads\gettext_%ARCH%.zip || EXIT /B
-CALL :GetRemoteFile %WINPTY_URL% %BASE%downloads\winpty.zip || EXIT /B
-CALL :GetRemoteFile %UPX_URL% %BASE%downloads\upx.zip || EXIT /B
+CALL :GetRemoteFile %LUA_URL% %LUA_ARCHIVE% || EXIT /B
+CALL :GetRemoteFile %PERL_URL% %PERL_ARCHIVE% || EXIT /B
+CALL :GetRemoteFile %TCL_URL% %TCL_ARCHIVE% || EXIT /B
+CALL :GetRemoteFile %RUBY_URL% %RUBY_ARCHIVE% || EXIT /B
+CALL :GetRemoteFile %RACKET_URL% %RACKET_ARCHIVE% || EXIT /B
+CALL :GetRemoteFile %GETTEXT_URL% %GETTEXT_ARCHIVE% || EXIT /B
+CALL :GetRemoteFile %WINPTY_URL% %WINPTY_ARCHIVE% || EXIT /B
+CALL :GetRemoteFile %UPX_URL% %UPX_ARCHIVE% || EXIT /B
 
 GOTO :EOF
 
@@ -165,7 +174,7 @@ GOTO :EOF
 
 :InstallLua
 ECHO # Lua %ARCH% %LUA_VER%
-7z x downloads\lua_%ARCH%.zip -o%LUA_DIR% -y > NUL || EXIT /B 1
+7z x %LUA_ARCHIVE% -o%LUA_DIR% -y > NUL || EXIT /B 1
 GOTO :EOF
 
 :InstallPerl
@@ -173,8 +182,7 @@ ECHO # Perl %ARCH% %PERL_VERSION%
 IF EXIST "%PERL_DIR%" RD /Q /S "%PERL_DIR%"
 IF EXIST "%PERL_BUILD_DIR%" RD /Q /S "%PERL_BUILD_DIR%"
 IF NOT EXIST "%PERL_OUT_DIR%\." MKDIR "%PERL_OUT_DIR%" || EXIT /B 1
-7z e -so downloads\perl-%PERL_VERSION%.tgz ^
- | 7z x -y -bd -si -ttar -o%PERL_OUT_DIR% > NUL || EXIT /B 1
+7z e -so %PERL_ARCHIVE% | 7z x -y -bd -si -ttar -o%PERL_OUT_DIR% > NUL || EXIT /B 1
 PUSHD %PERL_BUILD_DIR%\win32 || EXIT /B 1
 ECHO ON
 SET ARGS=INST_TOP=%PERL_DIR% CCTYPE=MSVC100FREE
@@ -191,7 +199,7 @@ GOTO :EOF
 :InstallTcl
 ECHO # TCL %ARCH% %TCL_VER_LONG%
 IF EXIST "%TCL_DIR%" RD /Q /S %TCL_DIR%
-7z x downloads\tcl-%TCL_VERSION%.zip -o%TCL_BUILD_DIR% -y > NUL || EXIT /B 1
+7z x %TCL_ARCHIVE% -o%TCL_BUILD_DIR% -y > NUL || EXIT /B 1
 PUSHD %TCL_BUILD_DIR%\tcl%TCL_VERSION%\win || EXIT /B 1
 ECHO ON
 nmake -nologo -f makefile.vc release
@@ -203,7 +211,7 @@ GOTO :EOF
 
 :InstallRuby
 ECHO # Ruby %ARCH% %RUBY_VER_LONG%
-7z x downloads\ruby-%RUBY_VERSION%.zip -o%DEPS%tmp\ruby_build_%ARCH% -y > NUL || EXIT /B 1
+7z x %RUBY_ARCHIVE% -o%DEPS%tmp\ruby_build_%ARCH% -y > NUL || EXIT /B 1
 
 PUSHD %DEPS%tmp\ruby_build_%ARCH%\ruby-%RUBY_VERSION%
 ECHO ON
@@ -224,7 +232,7 @@ GOTO :EOF
 
 :InstallRacket
 ECHO # Racket %ARCH% %RACKET_VER%
-7z e -so downloads\racket_%ARCH%.tgz ^
+7z e -so %RACKET_ARCHIVE% ^
  | 7z x -y -bd -si -ttar -o%DEPS%\tmp\Racket_%ARCH% > NUL || EXIT /B 1
 IF EXIST "%RACKET_DIR%" RD /Q /S %RACKET_DIR%
 MOVE %DEPS%tmp\Racket_%ARCH%\racket %RACKET_DIR% || EXIT /B 1
@@ -233,19 +241,19 @@ GOTO :EOF
 
 :InstallGetText
 ECHO # GetText %ARCH%
-7z x downloads\gettext_%ARCH%.zip -o%GETTEXT_DIR% -y > NUL || EXIT /B 1
+7z x %GETTEXT_ARCHIVE% -o%GETTEXT_DIR% -y > NUL || EXIT /B 1
 GOTO :EOF
 
 :InstallWinpty
 IF EXIST %WINPTY_DIR% GOTO :EOF
 ECHO # Winpty
-7z x downloads\winpty.zip -o%WINPTY_DIR% -y > NUL || EXIT /B 1
+7z x %WINPTY_ARCHIVE% -o%WINPTY_DIR% -y > NUL || EXIT /B 1
 GOTO :EOF
 
 :InstallUPX
 IF EXIST "%UPX_DIR%\upx.exe" GOTO :EOF
 ECHO # UPX
-7z e downloads\upx.zip *\upx.exe -o%UPX_DIR% -y > NUL || EXIT /B 1
+7z e %UPX_ARCHIVE% *\upx.exe -o%UPX_DIR% -y > NUL || EXIT /B 1
 GOTO :EOF
 
 :: -----------------------------------------------------------------------
