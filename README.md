@@ -97,8 +97,8 @@ List and version of GVim/Vim dependencies used for build and packages:
 - [UPX](http://upx.sourceforge.net/) 3.91
 - [GetText](https://github.com/mlocati/gettext-iconv-windows) 0.19.8.1 and iconv 1.14
 - [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.1.4
-- [ActivePerl](http://www.activestate.com/activeperl/downloads) 5.24
-- [ActiveTcl](http://www.activestate.com/activetcl/downloads) 8.6
+- [Perl](http://www.perl.org) 5.26.0
+- [Tcl](http://www.tcl.tk) 8.6.7
 - [Racket](https://download.racket-lang.org/) 6.6
 - [Ruby](https://www.ruby-lang.org/en/downloads/) 2.3.1
 
