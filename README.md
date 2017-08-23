@@ -8,6 +8,9 @@ Windows SDK 7.1 build environment.
 Inspired by <https://github.com/vim/vim-win32-installer> project and home grew
 scripts.
 
+Recent versions now use `ninja.exe` to parallel builds of packages dependencies
+and _Vim_. Build creates both _x86_ and _amd64_ of _Vim_.
+
 ## Requirements
 
 ### Git, Curl and 7-Zip
@@ -66,26 +69,21 @@ language of your operating system.
 ## Usage
 
 Open a DOS prompt and go to project root. Run DOS prompt as normal user, not as
-administrator. If you run as administrator, `build.bat` script may overwrite
-already installed package like ActiveTcl.
+administrator.
 
-You shall first enter SDK 7.1 build environment:
+Make sure that Python 3.5 `python.exe` is accessible from `PATH` variable.
+
+First install dependencies for python scripts:
 
 ```dosbatch
-setenv
+ python.exe -m pip install --user -r requirements.txt
 ```
 
-To enter x86 environment, type `setenv /x86`, to enter x64/AMD64 environment,
-type `setenv /x64`.
-
-It is possible (and recommended) to open two CMD windows, each for an
-environment. `build.bat` support running tasks in parallel from each
-environment.
-
-### Download archive and installer
+### Download archives and installers
 
 ```dosbatch
-build download
+download.bat
+7z x downloads\ninja-win.zip ninja.exe
 ```
 
 It can take a long depending of you Internet connection speed.
@@ -101,21 +99,23 @@ List and version of GVim/Vim dependencies used for build and packages:
 - [Tcl](http://www.tcl.tk) 8.6.7
 - [Racket](https://download.racket-lang.org/) 6.6
 - [Ruby](https://www.ruby-lang.org/en/downloads/) 2.3.1
+- [ninja](https://ninja-build.org) 1.7.2
 
 To prepare all required software for building GVim/Vim at next step, run:
 
 ```dosbatch
-build prepare
+configure.bat
+ninja packages
 ```
 
 It is possible to only prepare a specific package:
- - _UPX_: `build prepare-upx` to unzip UPX for NSI package creation phase.
- - _GetText_: `build prepare-gettext` to extract GetText archive.
- - _Lua_: `build prepare-lua` to extract Lua archive.
- - _Perl_: `build prepare-perl` to extract Perl archive.
- - _Tcl_: `build prepare-tcl` to install Tcl locally.
- - _Racket_: `build prepare-racket` to extract Racket archive
- - _Ruby_: `build prepare-ruby` to extract and compile Ruby.
+ - _UPX_: `ninja upx` to unzip UPX for NSI package creation phase.
+ - _GetText_: `ninja winpty` to extract GetText archive.
+ - _Lua_: `ninja lua_x86 lua_x64` to extract Lua archive.
+ - _Perl_: `ninja perl_x86 perl_x64l` to extract and compile Perl.
+ - _Tcl_: `ninja tcl_x86 tcl_x64` to extract and compile Tcl.
+ - _Racket_: `ninja racket_x86 racket_x64` to extract Racket archive
+ - _Ruby_: `ninja ruby_x86 ruby_x64` to extract and compile Ruby.
 
 Not that Ruby needs to be compiled using VisualStudio before being able to
 compile GVim/Vim. There is not ready to use archive for Ruby + VisualStudio.
@@ -124,10 +124,10 @@ Ruby preparation is the longest of all tasks.
 ### Build GVim/Vim and package installations
 
 ```dosbatch
-build build package
+ninja gvim
 ```
 
-You shall now have files `gvim-7.4.xxx-ARCH.exe` and `gvim-7.1.xxx-ARCH.zip` in
+You shall now have files `gvim-8.0.xxx-ARCH.exe` and `gvim-8.0.xxx-ARCH.zip` in
 root folder.
 
 ## Patches

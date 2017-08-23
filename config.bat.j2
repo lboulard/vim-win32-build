@@ -1,0 +1,51 @@
+REM WARNING: Automatically generated
+
+SET VIM_ARCH_x86=x86
+SET VIM_CPU_x86=i386
+SET PERL_DIR_x86={{perl.install.x86}}
+SET LUA_DIR_x86={{lua.install.x86}}
+SET TCL_DIR_x86={{tcl.install.x86}}
+SET RUBY_DIR_x86={{ruby.install.x86}}
+SET RACKET_DIR_x86={{racket.install.x86}}\racket
+SET GETTEXT_DIR_x86={{gettext.install.x86}}
+SET PYTHON_DIR_x86={{python.install.x86}}
+SET PYTHON3_DIR_x86={{python3.install.x86}}
+
+SET VIM_ARCH_x64=amd64
+SET VIM_CPU_x64=AMD64
+SET PERL_DIR_x64={{perl.install.x64}}
+SET LUA_DIR_x64={{lua.install.x64}}
+SET TCL_DIR_x64={{tcl.install.x64}}
+SET RUBY_DIR_x64={{ruby.install.x64}}
+SET RACKET_DIR_x64={{racket.install.x64}}\racket
+SET GETTEXT_DIR_x64={{gettext.install.x64}}
+SET PYTHON_DIR_x64={{python.install.x64}}
+SET PYTHON3_DIR_x64={{python3.install.x64}}
+
+SET VIM_ARCH=!VIM_ARCH_%ARCH%!
+SET VIM_CPU=!VIM_CPU_%ARCH%!
+SET PERL_DIR=!PERL_DIR_%ARCH%!
+SET PERL_VER={{perl.vim_version}}
+SET LUA_DIR=!LUA_DIR_%ARCH%!
+SET LUA_VER={{lua.vim_version}}
+SET TCL_DIR=!TCL_DIR_%ARCH%!
+SET TCL_VER={{tcl.vim_version[0]}}
+SET TCL_VER_LONG={{tcl.vim_version[1]}}
+SET RUBY_DIR=!RUBY_DIR_%ARCH%!
+SET RUBY_VER={{ruby.vim_version[0]}}
+SET RUBY_VER_LONG={{ruby.vim_version[1]}}
+SET PYTHON_DIR=!PYTHON_DIR_%ARCH%!
+SET PYTHON_VER={{python.vim_version}}
+SET PYTHON3_DIR=!PYTHON3_DIR_%ARCH%!
+SET PYTHON3_VER={{python3.vim_version}}
+SET RACKET_DIR=!RACKET_DIR_%ARCH%!
+
+SET GETTEXT_DIR=!GETTEXT_DIR_%ARCH%!
+
+SET WINPTY_DIR={{winpty.install.all}}
+SET WINPTY_ARCH_x86=ia32_xp
+SET WINPTY_ARCH_x64=x64_xp
+SET WINPTY_ARCH=!WINPTY_ARCH_%ARCH%!
+
+SET UPX_DIR={{upx.install.all}}
+

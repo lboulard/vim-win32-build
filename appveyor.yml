@@ -9,30 +9,23 @@ branches:
   only:
     - master
 
-environment:
-  matrix:
-    - ARCH: x64
-    - ARCH: x86
-
-matrix:
-  fast_finish: true
-
 install:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-http-proxy.ps1'))
+  - cmd: "\"C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1\\Setup\\WindowsSdkVer.exe\" -q -version:v7.1"
 
 before_build:
-  - 'git submodule update --init'
-  - 'PATH C:\Python35-x64;%PATH%'
-  - 'python.exe -m pip install -r requirements.txt'
-  - 'python.exe download.py packages.txt'
-  - 'setenv /%ARCH%'
-  - 'build.bat prepare'
+  - PATH C:\Python35-x64;%PATH%
+  - python.exe -m pip install -r requirements.txt
+  - download.bat
+  - 7z x downloads\ninja-win.zip ninja.exe
+  - ninja.exe --version
+  - git submodule update --init
+  - configure.bat
 
 build_script:
-  - 'build.bat build'
+  - ninja.exe
 
-after_build:
-  - 'build.bat package'
+test: off
 
 artifacts:
   - path: gvim-*-x86.exe
@@ -69,10 +62,10 @@ deploy:
     auth_token:
       secure: iOiS2SxHg7FOCRo5SiixjnP8bqI/lk1CgtiNWZGWlY8KKBIiZB+jbflmFiDfB2ed
     artifact: /gVim/
-    draft: true
+    draft: false
     force_update: true
 
 cache:
-  - downloads -> build.bat
+  - downloads -> packages.txt
 
 # vim : ts=2 ws=2 et

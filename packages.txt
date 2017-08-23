@@ -3,8 +3,7 @@ Version: 391w
 Binary: all upx_bin.zip http://upx.sourceforge.net/download/upx391w.zip
 Checksum:
  upx_bin.zip sha256 d7d4817f46d2616c209c46fb8bce44e4bec93ab5adef5e4dfc93ee879527be1b
-Install: deps\upx
-Install-Extract: upx\upx.exe upx.exe
+Install: all upx${Version}
 
 Package: gettext
 Version: 0.19.8.1
@@ -17,7 +16,7 @@ Checksum:
  gettext_amd64.zip sha256  8f0ccf3dbec6401bfa5b59c3f62189c5418a819ea058c4c49fc624e10a3b7886
 Install:
  x86 GetText_x86
- x64 GetText_amd64
+ x64 GetText_x64
 
 Package: winpty
 Version: 0.4.3
@@ -27,7 +26,7 @@ Binary:
 Checksum:
  winpty_bin.zip sha256 35a48ece2ff4acdcbc8299d4920de53eb86b1fb41e64d2fe5ae7898931bcee89
 Install:
- winpty-${Version}
+ all winpty-${Version}
 
 Package: racket
 Version: 6.6
@@ -41,18 +40,19 @@ Checksum:
  racket_amd64.tgz sha256 5b8458aa7fa96e7d7afe360bf43f24f332acc8ea4d2f536b3bd5dc0f59cb7c98
 Install:
  x86 racket_${Version}_x86
- x64 racket_${Version}_amd64
+ x64 racket_${Version}_x64
 
 Package: perl
 Version: 5.26.0
 Source:
  any perl_src.tgz http://www.cpan.org/src/5.0/perl-5.26.0.tar.gz
+Source-Dir: perl-${Version}
 Checksum:
  perl_src.tgz sha256 ebe7c66906d4fb55449380ab1b7e004eeef52c38d3443fa301f8e17a1a4cb67f
 Vim-Version: 526
 Install:
  x86 perl_${Version}_x86
- x64 perl_${Version}_amd64
+ x64 perl_${Version}_x64
 
 Package: lua
 Version: 5.1.4
@@ -66,29 +66,31 @@ Checksum:
  lua_amd64.zip sha256 d1f311bc889ffd4758f807f1e1986624363e401e20a30105c3e6d4a32010f072
 Install:
  x86 lua_${Version}_x86
- x64 lua_${Version}_amd64
+ x64 lua_${Version}_x64
 
 Package: tcl
 Version: 8.6.7
 Vim-Version: 86 8.6
 Source:
  any tcl_src.zip https://prdownloads.sourceforge.net/tcl/tcl867-src.zip
+Source-Dir: tcl${Version}
 Checksum:
  tcl_src.zip sha256 df44fea4d5b1756f0a33be6cf0e30756a168b0d14f4c918708f6a7164e2bf83c
 Install:
  x86 tcl_${Version}_x86
- x64 tcl_${Version}_amd64
+ x64 tcl_${Version}_x64
 
 Package: ruby
 Version: 2.3.1
 Vim-Version: 23 2.3.0
 Source:
  any ruby_src.zip http://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.1.zip
+Source-Dir: ruby-${Version}
 Checksum:
  ruby_src.zip sha256 4c8ae431b33f78d64cabb31911e0890e9a3ac380b4f22b11738f9baeeda51763
 Install:
  x86 ruby_${Version}_x86
- x64 ruby_${Version}_amd64
+ x64 ruby_${Version}_x64
 
 Package: python
 Version: 2.7
@@ -105,3 +107,11 @@ Install:
  x86 C:\Python35
  x64 C:\Python35-x64
  x64 C:\Python35
+
+Package: ninja
+Version: 1.7.2
+Binary:
+  all ninja-win.zip
+  https://github.com/ninja-build/ninja/releases/download/v1.7.2/ninja-win.zip
+Checksum:
+ ninja-win.zip sha256 95b36a597d33c1fe672829cfe47b5ab34b3a1a4c6bf628e5d150b6075df4ef50

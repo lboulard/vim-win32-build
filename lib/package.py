@@ -107,7 +107,7 @@ class Package:
     def __getattr__(self, name):
         if self.defined(name):
             return self._values[name]
-        name = name.lower()
+        name = name.lower().replace('-', '_')
         if self.defined(name):
             return self._values[name]
         raise AttributeError(name)
@@ -117,21 +117,22 @@ class Package:
                 self.defined(Package.VERSION)
 
     def defined(self, name):
+        name = name.lower().replace('-', '_')
         return name in self._values.keys()
 
     def get(self, name):
-        return self._values.get(name.lower())
+        return self._values.get(name.lower().replace('-', '_'))
 
     def expand(self, s):
         tmpl = Template(s)
         class IDict(dict):
             def __missing__(self, key):
-                v = self[key.lower()]
+                v = self[key.lower().replace('-', '_')]
                 return v
         return tmpl.safe_substitute(IDict(self._values))
 
     def set(self, name, value):
-        name = name.lower()
+        name = name.lower().replace('-', '_')
         if self.defined(name):
             raise PackageException('{} already defined'.format(name))
         self._values[name] = value
@@ -172,6 +173,15 @@ class Package:
             return [(algo, h) for path, algo, h in zip(it, it, it)
                     if path == filename]
         return []
+
+    def install_paths(self):
+        installs = list()
+        if self.defined(Package.INSTALL):
+            it = iter(self._values[Package.INSTALL].split())
+            for arch_name, path in zip(it, it):
+                arch = Arch.find(arch_name)
+                installs.append((arch, self.expand(path)))
+        return installs
 
     def _title_key(self, key):
         s = []

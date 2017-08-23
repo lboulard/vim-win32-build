@@ -1,0 +1,97 @@
+ninja_required_version = 1.5
+
+include config.ninja
+
+rule extract
+  command = python.exe extract.py "$in" "$out"
+rule extract_to_parent
+  command = python.exe extract.py --parent "$in" "$out"
+
+rule build_perl_x86
+  command = cmd.exe /D /E:ON /V:ON /C "scripts\run.bat x86 scripts\build_perl.bat "x86" "$in" "$out""
+rule build_perl_x64
+  command = cmd.exe /D /E:ON /V:ON /C "scripts\run.bat x64 scripts\build_perl.bat "x64" "$in" "$out""
+
+rule build_tcl_x86
+  command = cmd.exe /D /E:ON /V:ON /C "scripts\run.bat x86 scripts\build_tcl.bat "$in" "$out""
+rule build_tcl_x64
+  command = cmd.exe /D /E:ON /V:ON /C "scripts\run.bat x64 scripts\build_tcl.bat "$in" "$out""
+
+rule build_ruby_x86
+  command = cmd.exe /D /E:ON /V:ON /C "scripts\run.bat x86 scripts\build_ruby.bat "x86" "$in" "$out" "${ruby_ver_long}" "${ruby_version}""
+rule build_ruby_x64
+  command = cmd.exe /D /E:ON /V:ON /C "scripts\run.bat x64 scripts\build_ruby.bat "x64" "$in" "$out" "${ruby_ver_long}" "${ruby_version}""
+
+rule build_vim_x86
+  command = cmd.exe /D /E:ON /V:ON /C "scripts\run.bat x86 scripts\build_vim.bat "x86" "${vim_version}" vim dist\x86"
+rule build_vim_x64
+  command = cmd.exe /D /E:ON /V:ON /C "scripts\run.bat x64 scripts\build_vim.bat "x64" "${vim_version}" vim dist\x64"
+
+build ${upx_bin}:         extract_to_parent downloads\upx_bin.zip
+build ${winpty_bin}:      extract downloads\winpty_bin.zip
+build ${gettext_bin_x86}: extract downloads\gettext_x86.zip
+build ${gettext_bin_x64}: extract downloads\gettext_amd64.zip
+build ${racket_bin_x86}:  extract downloads\racket_x86.tgz
+build ${racket_bin_x64}:  extract downloads\racket_amd64.tgz
+build ${lua_bin_x86}:     extract downloads\lua_x86.zip
+build ${lua_bin_x64}:     extract downloads\lua_amd64.zip
+
+build ${perl_build_x86}: extract_to_parent downloads\perl_src.tgz
+build ${perl_build_x64}: extract_to_parent downloads\perl_src.tgz
+build ${tcl_build_x86}:  extract_to_parent downloads\tcl_src.zip
+build ${tcl_build_x64}:  extract_to_parent downloads\tcl_src.zip
+build ${ruby_build_x86}: extract_to_parent downloads\ruby_src.zip
+build ${ruby_build_x64}: extract_to_parent downloads\ruby_src.zip
+
+build ${perl_bin_x86}: build_perl_x86 ${perl_build_x86}
+build ${perl_bin_x64}: build_perl_x64 ${perl_build_x64}
+build ${tcl_bin_x86}:  build_tcl_x86  ${tcl_build_x86}
+build ${tcl_bin_x64}:  build_tcl_x64  ${tcl_build_x64}
+build ${ruby_bin_x86}: build_ruby_x86 ${ruby_build_x86}
+build ${ruby_bin_x64}: build_ruby_x64 ${ruby_build_x64}
+
+build perl_build_x86: phony ${perl_build_x86}
+build perl_build_x64: phony ${perl_build_x64}
+build tcl_build_x86:  phony ${tcl_build_x86}
+build tcl_build_x64:  phony ${tcl_build_x64}
+build ruby_build_x86: phony ${ruby_build_x86}
+build ruby_build_x64: phony ${ruby_build_x64}
+
+build upx:     phony ${upx_bin}
+build winpty:  phony ${winpty_bin}
+
+build gettext_x86: phony ${gettext_bin_x86}
+build racket_x86:  phony ${racket_bin_x86}
+build lua_x86:     phony ${lua_bin_x86}
+build perl_x86:    phony ${perl_bin_x86}
+build tcl_x86:     phony ${tcl_bin_x86}
+build ruby_x86:    phony ${ruby_bin_x86}
+
+build gettext_x64: phony ${gettext_bin_x64}
+build racket_x64:  phony ${racket_bin_x64}
+build lua_x64:     phony ${lua_bin_x64}
+build perl_x64:    phony ${perl_bin_x64}
+build tcl_x64:     phony ${tcl_bin_x64}
+build ruby_x64:    phony ${ruby_bin_x64}
+
+build extract_bin_x86: phony upx winpty gettext_x86 racket_x86 lua_x86
+build extract_bin_x64: phony upx winpty gettext_x64 racket_x64 lua_x64
+build extract_bin: phony extract_bin_x86 extract_bin_x64
+
+build extract_build_x86: phony perl_build_x86 tcl_build_x86 ruby_build_x86
+build extract_build_x64: phony perl_build_x64 tcl_build_x64 ruby_build_x64
+build extract_build: phony extract_build_x86 extract_build_x64
+
+build extract: phony extract_bin extract_build
+
+build packages_x86: phony upx winpty gettext_x86 racket_x86 lua_x86 perl_x86 tcl_x86 ruby_x86
+build packages_x64: phony upx winpty gettext_x64 racket_x64 lua_x64 perl_x64 tcl_x64 ruby_x64
+build packages: phony packages_x86 packages_x64
+
+build gvim-${vim_version}-x86.zip gvim-${vim_version}-x86.exe: build_vim_x86 | packages_x86
+build gvim-${vim_version}-amd64.zip gvim-${vim_version}-amd64.exe: build_vim_x64 | packages_x64
+build gvim_x86: phony gvim-${vim_version}-x86.zip gvim-${vim_version}-x86.exe
+build gvim_x64: phony gvim-${vim_version}-amd64.zip gvim-${vim_version}-amd64.exe
+build gvim: phony gvim_x86 gvim_x64
+
+default gvim

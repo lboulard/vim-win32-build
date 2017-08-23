@@ -1,0 +1,13 @@
+Package: python
+Version: 2.7
+Vim-Version: 27
+Install:
+ x86 C:\Python27
+ x64 C:\Python27
+
+Package: python3
+Version: 3.5
+Vim-Version: 35
+Install:
+ x86 C:\Python35
+ x64 C:\Python35
