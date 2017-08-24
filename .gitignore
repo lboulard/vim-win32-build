@@ -11,3 +11,4 @@ dist/
 downloads
 deps
 /builds/
+*.pyc
