@@ -1,0 +1,107 @@
+Package: upx
+Version: 391w
+Binary: all upx_bin.zip http://upx.sourceforge.net/download/upx391w.zip
+Checksum:
+ upx_bin.zip sha256 d7d4817f46d2616c209c46fb8bce44e4bec93ab5adef5e4dfc93ee879527be1b
+Install: deps\upx
+Install-Extract: upx\upx.exe upx.exe
+
+Package: gettext
+Version: 0.19.8.1
+Download: https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14
+Binary:
+ x86 gettext_x86.zip   ${Download}/gettext0.19.8.1-iconv1.14-shared-32.zip
+ x64 gettext_amd64.zip ${Download}/gettext0.19.8.1-iconv1.14-shared-64.zip
+Checksum:
+ gettext_x86.zip   sha256  1a791b426c18ea3cd5e60d787004782bb31ef73c77d40709c97425abfd0776c9
+ gettext_amd64.zip sha256  8f0ccf3dbec6401bfa5b59c3f62189c5418a819ea058c4c49fc624e10a3b7886
+Install:
+ x86 GetText_x86
+ x64 GetText_amd64
+
+Package: winpty
+Version: 0.4.3
+Download: https://github.com/rprichard/winpty/releases/download
+Binary:
+ all winpty_bin.zip ${Download}/0.4.3/winpty-0.4.3-msvc2015.zip
+Checksum:
+ winpty_bin.zip sha256 35a48ece2ff4acdcbc8299d4920de53eb86b1fb41e64d2fe5ae7898931bcee89
+Install:
+ winpty-${Version}
+
+Package: racket
+Version: 6.6
+Vim-Version: 3m9zltds
+Download: https://download.racket-lang.org/releases
+Binary:
+ x86 racket_x86.tgz   ${Download}/6.6/installers/racket-minimal-6.6-i386-win32.tgz
+ x64 racket_amd64.tgz ${Download}/6.6/installers/racket-minimal-6.6-x86_64-win32.tgz
+Checksum:
+ racket_x86.tgz   sha256 f508381b926a933957eb7ed4c0f1643164a9bbc8b9840cecaa1f1216d84e4db3
+ racket_amd64.tgz sha256 5b8458aa7fa96e7d7afe360bf43f24f332acc8ea4d2f536b3bd5dc0f59cb7c98
+Install:
+ x86 racket_${Version}_x86
+ x64 racket_${Version}_amd64
+
+Package: perl
+Version: 5.26.0
+Source:
+ any perl_src.tgz http://www.cpan.org/src/5.0/perl-5.26.0.tar.gz
+Checksum:
+ perl_src.tgz sha256 ebe7c66906d4fb55449380ab1b7e004eeef52c38d3443fa301f8e17a1a4cb67f
+Vim-Version: 526
+Install:
+ x86 perl_${Version}_x86
+ x64 perl_${Version}_amd64
+
+Package: lua
+Version: 5.1.4
+Vim-Version: 51
+Download: http://downloads.sourceforge.net/luabinaries
+Binary:
+ x86 lua_x86.zip   ${Download}/lua5_1_4_Win32_dllw4_lib.zip
+ x64 lua_amd64.zip ${Download}/lua-5.1.4_Win64_dllw4_lib.zip
+Checksum:
+ lua_x86.zip   sha256 d42c419ba0db704a64ac630e700e76f61f497e33d8ce3bdc63986c080b02a25e
+ lua_amd64.zip sha256 d1f311bc889ffd4758f807f1e1986624363e401e20a30105c3e6d4a32010f072
+Install:
+ x86 lua_${Version}_x86
+ x64 lua_${Version}_amd64
+
+Package: tcl
+Version: 8.6.7
+Vim-Version: 86 8.6
+Source:
+ any tcl_src.zip https://prdownloads.sourceforge.net/tcl/tcl867-src.zip
+Checksum:
+ tcl_src.zip sha256 df44fea4d5b1756f0a33be6cf0e30756a168b0d14f4c918708f6a7164e2bf83c
+Install:
+ x86 tcl_${Version}_x86
+ x64 tcl_${Version}_amd64
+
+Package: ruby
+Version: 2.3.1
+Vim-Version: 23 2.3.0
+Source:
+ any ruby_src.zip http://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.1.zip
+Checksum:
+ ruby_src.zip sha256 4c8ae431b33f78d64cabb31911e0890e9a3ac380b4f22b11738f9baeeda51763
+Install:
+ x86 ruby_${Version}_x86
+ x64 ruby_${Version}_amd64
+
+Package: python
+Version: 2.7
+Vim-Version: 27
+Install:
+ x86 C:\Python27
+ x64 C:\Python27-x64
+ x64 C:\Python27
+
+Package: python3
+Version: 3.5
+Vim-Version: 35
+Install:
+ x86 C:\Python35
+ x64 C:\Python35-x64
+ x64 C:\Python35
