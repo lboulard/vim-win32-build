@@ -3,9 +3,9 @@ ninja_required_version = 1.5
 include config.ninja
 
 rule extract
-  command = python.exe extract.py "$in" "$out"
+  command = python.exe scripts\extract.py "$in" "$out"
 rule extract_to_parent
-  command = python.exe extract.py --parent "$in" "$out"
+  command = python.exe scripts\extract.py --parent "$in" "$out"
 
 rule build_perl_x86
   command = cmd.exe /D /E:ON /V:ON /C "scripts\run.bat x86 scripts\build_perl.bat "x86" "$in" "$out""

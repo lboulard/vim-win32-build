@@ -1,1 +1,1 @@
-python.exe download.py packages.txt
+python.exe scripts\download.py packages.txt
