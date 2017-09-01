@@ -97,8 +97,10 @@ def make_config(packages, vim_version):
     configs[vim.name] = ConfigPackage(vim)
     return configs
 
-def render(pathname, templatepath, config):
-    env = Environment(loader=FileSystemLoader(searchpath="./"))
+def render(pathname, templatepath, config, searchpath):
+    if searchpath[-1] != '/':
+        searchpath += '/'
+    env = Environment(loader=FileSystemLoader(searchpath=searchpath))
     template = env.get_template(templatepath)
     print('generating config file \"{}\"'.format(pathname))
     with open(pathname, 'w+') as f:
@@ -110,6 +112,9 @@ def main():
                         nargs='+', help='list of packages to read')
     parser.add_argument('-o', '--ninja', type=str, dest='ninja',
                         default='', help='Generate ninja file')
+    parser.add_argument('-t', '--template-dir', type=str,
+                        dest='template_dir', default='./',
+                        help='Generate ninja file')
     parser.add_argument('-b', '--batch', type=str, dest='batch',
                         default='', help='Generate dosbatch file')
     parser.add_argument('--vim', type=str, dest='vim_version', default='',
@@ -120,9 +125,11 @@ def main():
         packages += Package.read(f)
     config = make_config(packages, vim_version=args.vim_version[1:])
     if args.batch:
-        render(args.batch, args.batch + '.j2', config)
+        render(args.batch, args.batch + '.j2', config,
+               searchpath=args.template_dir)
     if args.ninja:
-        render(args.ninja, args.ninja + '.j2', config)
+        render(args.ninja, args.ninja + '.j2', config,
+               searchpath=args.template_dir)
 
 
 if __name__ == '__main__':
