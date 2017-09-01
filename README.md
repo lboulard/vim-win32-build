@@ -76,7 +76,7 @@ Make sure that Python 3.5 `python.exe` is accessible from `PATH` variable.
 First install dependencies for python scripts:
 
 ```dosbatch
- python.exe -m pip install --user -r requirements.txt
+ python.exe -m pip install --user -r scripts\requirements.txt
 ```
 
 ### Download archives and installers

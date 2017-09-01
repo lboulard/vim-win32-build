@@ -15,7 +15,7 @@ install:
 
 before_build:
   - PATH C:\Python35-x64;%PATH%
-  - python.exe -m pip install -r requirements.txt
+  - python.exe -m pip install -r scripts\requirements.txt
   - download.bat
   - 7z x downloads\ninja-win.zip ninja.exe
   - ninja.exe --version
