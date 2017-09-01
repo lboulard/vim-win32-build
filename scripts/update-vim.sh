@@ -1,6 +1,7 @@
 #!/bin/sh
 
 set -e
+cd $(dirname $(readlink -f "$0" || echo "$0"))/..
 
 git submodule --quiet update --init --recursive
 git submodule --quiet foreach git pull -q --tags origin master
