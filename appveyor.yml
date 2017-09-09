@@ -66,6 +66,6 @@ deploy:
     force_update: true
 
 cache:
-  - downloads -> packages.txt
+  - downloads
 
 # vim : ts=2 ws=2 et
