@@ -81,13 +81,13 @@ Install:
  x64 tcl_${Version}_x64
 
 Package: ruby
-Version: 2.3.1
-Vim-Version: 23 2.3.0
+Version: 2.4.1
+Vim-Version: 24 2.4.0
 Source:
- any ruby_src.zip http://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.1.zip
+ any ruby_src.tgz https://cache.ruby-lang.org/pub/ruby/2.4/ruby-2.4.1.tar.gz
 Source-Dir: ruby-${Version}
 Checksum:
- ruby_src.zip sha256 4c8ae431b33f78d64cabb31911e0890e9a3ac380b4f22b11738f9baeeda51763
+ ruby_src.tgz sha256 a330e10d5cb5e53b3a0078326c5731888bb55e32c4abfeb27d9e7f8e5d000250
 Install:
  x86 ruby_${Version}_x86
  x64 ruby_${Version}_x64

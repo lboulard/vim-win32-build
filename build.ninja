@@ -40,8 +40,8 @@ build ${perl_build_x86}: extract_to_parent downloads\perl_src.tgz
 build ${perl_build_x64}: extract_to_parent downloads\perl_src.tgz
 build ${tcl_build_x86}:  extract_to_parent downloads\tcl_src.zip
 build ${tcl_build_x64}:  extract_to_parent downloads\tcl_src.zip
-build ${ruby_build_x86}: extract_to_parent downloads\ruby_src.zip
-build ${ruby_build_x64}: extract_to_parent downloads\ruby_src.zip
+build ${ruby_build_x86}: extract_to_parent downloads\ruby_src.tgz
+build ${ruby_build_x64}: extract_to_parent downloads\ruby_src.tgz
 
 build ${perl_bin_x86}: build_perl_x86 ${perl_build_x86}
 build ${perl_bin_x64}: build_perl_x64 ${perl_build_x64}
