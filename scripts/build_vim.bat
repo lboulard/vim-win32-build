@@ -15,7 +15,7 @@ SET XPM_x86=%VIMSRC_BUILD%src\xpm\x86
 SET XPM_x64=%VIMSRC_BUILD%src\xpm\x64
 SET XPM=!XPM_%ARCH%!
 
-SET BUILDOPTIONS=CPU=%VIM_CPU% CVARS=/MP CPUNR=pentium4 WINVER=0x500 ^
+SET BUILDOPTIONS=CPU=%VIM_CPU% CVARS=/MP CPUNR=pentium4 WINVER=0x501 ^
  DEBUG=no FEATURES=HUGE MBYTE=yes CSCOPE=yes ICONV=yes GETTEXT=yes ^
  DYNAMIC_PERL=yes PERL="%PERL_DIR%" PERL_VER=%PERL_VER% ^
  DYNAMIC_LUA=yes LUA="%LUA_DIR%" LUA_VER=%LUA_VER% ^
@@ -55,9 +55,9 @@ nmake -f Make_mvc.mak ^
 POPD
 
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
-START /B /WAIT CMD /C "SetEnv /x64 && CD GvimExt && nmake clean all" || EXIT /B 1
+START /B /WAIT CMD /C ""%VS140COMNTOOLS%\..\..\vc\vcvarsall.bat" x64 && CD GvimExt && nmake clean all" || EXIT /B 1
 MOVE GvimExt\gvimext.dll GvimExt\gvimext64.dll
-START /B /WAIT CMD /C "SetEnv /x86 && CD GvimExt && nmake clean all"  || EXIT /B 1
+START /B /WAIT CMD /C ""%VS140COMNTOOLS%\..\..\vc\vcvarsall.bat" x86 && CD GvimExt && nmake clean all"  || EXIT /B 1
 
 @ECHO OFF
 POPD

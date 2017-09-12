@@ -3,13 +3,13 @@
 # GVim/Vim Win32 builder
 
 Generate installers and archives for x86 and AMD64 CPU architecture using
-Windows SDK 7.1 build environment.
+Visual C++ 2015 build tools.
 
 Inspired by <https://github.com/vim/vim-win32-installer> project and home grew
 scripts.
 
-Recent versions now use `ninja.exe` to parallel builds of packages dependencies
-and _Vim_. Build creates both _x86_ and _amd64_ of _Vim_.
+Recent versions use `ninja.exe` to parallel builds of packages dependencies and
+_Vim_. Build creates both platform version _x86_ and _amd64_ of _Vim_.
 
 ## Requirements
 
@@ -33,38 +33,11 @@ to be installed in `C:\Python35`.
 
 ### Microsoft Software
 
-- [Windows SDK 7.1: Microsoft Windows SDK for Windows 7 and .NET Framework 4 (ISO)]
-  (https://www.microsoft.com/en-us/download/details.aspx?id=8442)
-- [Microsoft Visual C++ 2010 Service Pack 1 Compiler Update for the Windows SDK 7.1]
-  (https://www.microsoft.com/en-us/download/details.aspx?id=4422)
+Visual C++ 2015 compiler can be downloaded free of charge on this page:
+<http://landinghub.visualstudio.com/visual-cpp-build-tools>. This is the direct
+download link:
 
-You shall install SDK 7.1 before any VisualStudio 2010+ version.  If you want
-to install VisualStudio 2010 on same computer as Windows SDK 7.1, installs in
-order: Windows SDK 7.1, VisualStudio 2010, VisualStudio 2010 SP1, Windows SDK
-7.1 Compiler update. If you do not respect this order, installation of Windows
-SDK 7.1 will fail or installed compiler will not match installed VisualStudio
-or SDK version.
-
-If you plan to install VisualStudio 2012 and later, Windows SDK 7.1 should be
-installed first too as recommended by Microsoft. Late installation of Windows
-SDK 7.1 seems to work but no guaranty are made.
-
-#### Installation on Windows 10
-
-It is possible to install SDK 7.1 on Windows 10 by removing first VisualStudio
-2010 Redistributable Package (x86 and x64). Then run installation from Windows
-SDK 7.1 ISO by starting `Setup\SDKSetup.exe` executable. Do not forget to also
-install Visual C++ 2010 Compiler SP1 Update for Windows SDK 7.1.
-
-Then, you can reinstall VisualStudio 2010 runtime from those URL:
-
-- [Microsoft Visual C++ 2010 SP1 Redistributable Package (x86)]
-  (https://www.microsoft.com/en-US/download/details.aspx?id=8328)
-- [Microsoft Visual C++ 2010 SP1 Redistributable Package (x64)]
- (https://www.microsoft.com/en-US/download/details.aspx?id=13523)
-
-You shall download VisualStudio Redistributable Package matching installation
-language of your operating system.
+- [Visual C++ 2015 Build Tools](http://go.microsoft.com/fwlink/?LinkId=691126&fixForIE=.exe)
 
 ## Usage
 
@@ -76,7 +49,7 @@ Make sure that Python 3.5 `python.exe` is accessible from `PATH` variable.
 First install dependencies for python scripts:
 
 ```dosbatch
- python.exe -m pip install --user -r scripts\requirements.txt
+python.exe -m pip install --user -r scripts\requirements.txt
 ```
 
 ### Download archives and installers
