@@ -35,14 +35,12 @@ class ConfigPackage:
 
     @property
     def install(self):
-        pkg = self.package
-        if pkg.defined(Package.INSTALL):
+        install_paths = self.package.install_paths()
+        if install_paths:
             installs = types.SimpleNamespace()
             packages_dir = self.config.packages
-            it = iter(pkg.get(Package.INSTALL).split())
-            for arch, path in zip(it, it):
-                arch = str(Arch.find(arch))
-                path = pkg.expand(path)
+            for arch, path in install_paths:
+                arch = str(arch)
                 if not os.path.isabs(path):
                     path = os.path.abspath(os.path.join(packages_dir, path))
                     if not hasattr(installs, arch):

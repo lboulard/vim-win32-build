@@ -1,22 +1,45 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+"""Package parsing."""
+
 import string
 from .rfc822 import RFC822
 
 
 class PackageException(Exception):
-    pass
+    """Failure in package definition."""
+
+    def __init__(self, name, field, reason):
+        """Create a PackageException with `name` as package name,
+`field` as name of incorrect field, `reason` for details of failure.
+"""
+        super().__init__(name, field, reason)
+        self.package = name
+        self.field = field
+        self.reason = reason
+
+    def __str__(self):
+        return 'PackageException: package {}, field {}, {}'.format(self.package,
+                                                                   self.field,
+                                                                   self.reason)
 
 
 class UnknownArchitecture(Exception):
+    """An undefined architecture as been encounter while parsing package
+definitions."""
     def __init__(self, arch):
+        """Create a `UnknownArchitecture` object for `arch` string."""
         super().__init__("Unknown architecture {}".format(arch))
 
 
-class _Architecture:
+class Architecture:
+    """Define an `Architecture` object."""
 
     def __init__(self, name, alias=None):
+        """Create an architecture named `name`.
+A list of alias can be given in `alias` parameter.
+"""
         self.name = name
         self.alias = alias or []
 
@@ -36,7 +59,7 @@ class _Architecture:
 
 
 # Package with binaries for all architectures
-class _AllArchitecture(_Architecture):
+class _AllArchitecture(Architecture):
 
     def __init__(self, excludes=None):
         super().__init__('all', ['All', 'ALL'])
@@ -50,49 +73,84 @@ class _AllArchitecture(_Architecture):
 
 
 class Architectures:
+    """Registers and manage Architectures."""
 
     def __init__(self):
+        """Create a new `Architectures` object.
+By default `any` and `all` are created to respectively match source package and
+all binary package.
+"""
         self._known = []
-        self.any = self.register(_Architecture('any', ['ANY', 'Any'])) # Any source package
+        self.any = self.register(Architecture('any', ['ANY', 'Any'])) # Any source package
         self.all = self.register(_AllArchitecture(excludes=[self.any]))
 
     def register(self, arch):
-        assert isinstance(arch, _Architecture)
+        """Register a new architecture in global pool."""
+        assert isinstance(arch, Architecture)
         self._known.append(arch)
         return arch
 
     def find(self, name):
+        """Return `Architecture` object named `name`."""
         for arch in self._known:
             if arch.same(name):
                 return arch
         raise UnknownArchitecture(name)
 
     def match(self, target):
+        """Return list of architectures matching `target`.
+`target` is a compatible `Architecture` object."""
         return [arch for arch in self._known if target.match(arch.name)]
 
 
 Arch = Architectures()
-Arch.register(_Architecture('x86', ['X86', '386', 'i386']))
-Arch.register(_Architecture('x64', ['X64', 'amd64', 'AMD64']))
+Arch.register(Architecture('x86', ['X86', '386', 'i386']))
+Arch.register(Architecture('x64', ['X64', 'amd64', 'AMD64']))
 
 
 class Resource:
+    """Package resource."""
 
     def __init__(self, arch, archive, url):
+        """Resource defined by `arch`, an `Architecture` object,
+`archive`, name of local archive to store downloaded file,
+`url`, URL to resource that need to be downloaded.
+"""
         self.archive = archive
         self.url = url
         self.arch = arch
         self.checksums = None
 
     def get(self):
+        """Returns tuple `(arch, archive, url)`.
+`arch` is an Arch object, `archive` is the name of local archive on file system,
+`url` is the URL from where to fetch archive."""
         return self.arch, self.archive, self.url
 
 
 class Template(string.Template):
-    pass
+    """Adapt `string.Template` to support `id` with `-` in name."""
+    idpattern = r'[_a-z][_a-z0-9-]*'
 
+
+def _title_key(key):
+    title = []
+    while True:
+        for char in '-_+':
+            key, sep, rem = key.partition(char)
+            if sep:
+                break
+        title.append(key.capitalize())
+        key = rem
+        if sep:
+            title.append(sep)
+        else:
+            break
+    return ''.join(title)
 
 class Package:
+    """Describe a package."""
+
     NAME = 'name'
     VERSION = 'version'
     SOURCE = 'source'
@@ -102,46 +160,56 @@ class Package:
     CHECKSUM = 'checksum'
 
     def __init__(self):
+        """Create a new package."""
         self._values = dict()
 
     def __getattr__(self, name):
         if self.defined(name):
             return self._values[name]
-        name = name.lower().replace('-', '_')
-        if self.defined(name):
-            return self._values[name]
         raise AttributeError(name)
 
     def valid(self):
+        """A package is valid when at least a name and version is defined."""
         return self.defined(Package.NAME) and \
                 self.defined(Package.VERSION)
 
     def defined(self, name):
+        """Check if field is defined."""
         name = name.lower().replace('-', '_')
         return name in self._values.keys()
 
     def get(self, name):
+        """Returns field content or None if not defined."""
         return self._values.get(name.lower().replace('-', '_'))
 
-    def expand(self, s):
-        tmpl = Template(s)
+    def expand(self, var):
+        """Substitute `$var` or `${var}` in string `s`.
+`var` is taken from defined header in package."""
+        tmpl = Template(var)
         class IDict(dict):
+            """Dictionary when 'a-b' and 'a_b' are equivalent."""
             def __missing__(self, key):
-                v = self[key.lower().replace('-', '_')]
-                return v
+                key = self[key.lower().replace('-', '_')]
+                return key
         return tmpl.safe_substitute(IDict(self._values))
 
     def set(self, name, value):
+        """Set attribute `name` to `value`.
+Raise `PackageException` if `name` was already defined.
+"""
         name = name.lower().replace('-', '_')
         if self.defined(name):
-            raise PackageException('{} already defined'.format(name))
+            raise PackageException(self.name, _title_key(name), 'already defined')
         self._values[name] = value
 
-    def as_arch_list(self, name, arch=None):
+    def __as_arch_list(self, name, arch=None):
         entries = list()
         if self.defined(name):
-            v = iter(self._values[name].split())
-            for target, archive, url in zip(v, v, v):
+            for line in self._values[name].splitlines():
+                try:
+                    target, archive, url = line.split(maxsplit=2)
+                except ValueError as ex:
+                    raise PackageException(self.name, _title_key(name), str(ex))
                 if arch is None or arch.match(target):
                     entries.append((Arch.find(target), archive, self.expand(url)))
         return entries
@@ -154,7 +222,7 @@ class Package:
         resources = list()
         if not (name == Package.SOURCE or name == Package.BINARY):
             return resources
-        resources = self.as_arch_list(name, arch)
+        resources = self.__as_arch_list(name, arch)
         resources = [Resource(*args) for args in resources]
         # Find corresponding checksums for each archive
         for resource in resources:
@@ -168,35 +236,24 @@ class Package:
                 self.resources_for_arch(Package.BINARY, Arch.all)
 
     def checksum_for_archive(self, filename):
+        """Return a list of tuple `(algo, checksum)` matching `filename`."""
         if self.defined(Package.CHECKSUM):
-            it = iter(self.checksum.split())
-            return [(algo, h) for path, algo, h in zip(it, it, it)
+            tokens = iter(self.checksum.split())
+            return [(algo, h) for path, algo, h in zip(tokens, tokens, tokens)
                     if path == filename]
         return []
 
     def install_paths(self):
+        """Returns list of installation paths per architecture.
+This is a list of tuple `(arch, path)`. `path` is expanded.
+"""
         installs = list()
         if self.defined(Package.INSTALL):
-            it = iter(self._values[Package.INSTALL].split())
-            for arch_name, path in zip(it, it):
+            tokens = iter(self._values[Package.INSTALL].split())
+            for arch_name, path in zip(tokens, tokens):
                 arch = Arch.find(arch_name)
                 installs.append((arch, self.expand(path)))
         return installs
-
-    def _title_key(self, key):
-        s = []
-        while True:
-            for c in '-_+':
-                key, sep, rem = key.partition(c)
-                if sep:
-                    break
-            s.append(key.capitalize())
-            key = rem
-            if sep:
-                s.append(sep)
-            else:
-                break
-        return ''.join(s)
 
     def __str__(self):
         name = self._values.get(Package.NAME, '?')
@@ -204,21 +261,23 @@ class Package:
         return 'Package({}, {})'.format(name, version)
 
     def __repr__(self):
-        return '[Package: {}]'.format(['{}: {}'.format(self._title_key(k), v)
+        return '[Package: {}]'.format(['{}: {}'.format(_title_key(k), v)
                                        for k, v in self._values.items()])
 
     @staticmethod
-    def read(f):
+    def read(io):
+        """Returns all parsed and valid packages."""
         pkgs = []
-        for msg in RFC822(f).messages():
+        for msg in RFC822(io).messages():
             pkg = Package()
+            name = ''
             for key, value in msg:
                 k = key.lower()
                 if k == 'package':
                     pkg.set(Package.NAME, value)
+                    name = value
                 elif k == Package.NAME:
-                    raise PackageException('{} is not allowed in keys'
-                                           .format(key))
+                    raise PackageException(name, key, 'not allowed in keys')
                 else:
                     pkg.set(k, value)
             if pkg.valid():
