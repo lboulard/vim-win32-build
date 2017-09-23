@@ -15,11 +15,12 @@ except ImportError:
 from lib.package import Arch, Package, PackageException
 
 class ConfigDir:
-    def __init__(self, builds, packages):
+    def __init__(self, builds, packages, downloads):
         self.builds = builds
         self.packages = packages
+        self.downloads = downloads
 
-Config = ConfigDir('builds', 'pkgs')
+Config = ConfigDir('builds', 'pkgs', 'downloads')
 
 class ConfigException(Exception):
     pass
@@ -32,6 +33,14 @@ class ConfigPackage:
     @property
     def version(self):
         return self.package.version
+
+    @property
+    def archive(self):
+        archives = types.SimpleNamespace()
+        for resource in self.package.resources():
+            archive = os.path.join(self.config.downloads, resource.archive)
+            setattr(archives, str(resource.arch), os.path.normpath(archive))
+        return archives
 
     @property
     def install(self):

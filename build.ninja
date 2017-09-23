@@ -27,22 +27,22 @@ rule build_vim_x86
 rule build_vim_x64
   command = cmd.exe /D /E:ON /V:ON /C "scripts\run.bat x64 scripts\build_vim.bat "x64" "${vim_version}" vim dist\x64"
 
-build ${upx_bin}:         extract_to_parent downloads\upx_bin.zip
-build ${nsis_bin}:        extract_to_parent downloads\nsis_bin.zip
-build ${winpty_bin}:      extract downloads\winpty_bin.zip
-build ${gettext_bin_x86}: extract downloads\gettext_x86.zip
-build ${gettext_bin_x64}: extract downloads\gettext_amd64.zip
-build ${racket_bin_x86}:  extract downloads\racket_x86.tgz
-build ${racket_bin_x64}:  extract downloads\racket_amd64.tgz
-build ${lua_bin_x86}:     extract downloads\lua_x86.zip
-build ${lua_bin_x64}:     extract downloads\lua_amd64.zip
+build ${upx_bin}:         extract_to_parent ${upx_archive}
+build ${nsis_bin}:        extract_to_parent ${nsis_archive}
+build ${winpty_bin}:      extract ${winpty_archive}
+build ${gettext_bin_x86}: extract ${gettext_archive_x86}
+build ${gettext_bin_x64}: extract ${gettext_archive_x64}
+build ${racket_bin_x86}:  extract ${racket_archive_x86}
+build ${racket_bin_x64}:  extract ${racket_archive_x64}
+build ${lua_bin_x86}:     extract ${lua_archive_x86}
+build ${lua_bin_x64}:     extract ${lua_archive_x64}
 
-build ${perl_build_x86}: extract_to_parent downloads\perl_src.tgz
-build ${perl_build_x64}: extract_to_parent downloads\perl_src.tgz
-build ${tcl_build_x86}:  extract_to_parent downloads\tcl_src.zip
-build ${tcl_build_x64}:  extract_to_parent downloads\tcl_src.zip
-build ${ruby_build_x86}: extract_to_parent downloads\ruby_src.tgz
-build ${ruby_build_x64}: extract_to_parent downloads\ruby_src.tgz
+build ${perl_build_x86}: extract_to_parent ${perl_archive}
+build ${perl_build_x64}: extract_to_parent ${perl_archive}
+build ${tcl_build_x86}:  extract_to_parent ${tcl_archive}
+build ${tcl_build_x64}:  extract_to_parent ${tcl_archive}
+build ${ruby_build_x86}: extract_to_parent ${ruby_archive}
+build ${ruby_build_x64}: extract_to_parent ${ruby_archive}
 
 build ${perl_bin_x86}: build_perl_x86 ${perl_build_x86}
 build ${perl_bin_x64}: build_perl_x64 ${perl_build_x64}
