@@ -5,6 +5,14 @@ Checksum:
  upx_bin.zip sha256 d7d4817f46d2616c209c46fb8bce44e4bec93ab5adef5e4dfc93ee879527be1b
 Install: all upx${Version}
 
+Package: nsis
+Version: 3.02.1
+Binary:
+ all nsis_bin.zip https://prdownloads.sourceforge.net/nsis/nsis-${Version}.zip
+Checksum:
+ nsis_bin.zip sha256 deef3e3d90ab1a9e0ef294fff85eead25edbcb429344ad42fc9bc42b5c3b1fb5
+Install: all nsis-${Version}
+
 Package: gettext
 Version: 0.19.8.1
 Download: https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14

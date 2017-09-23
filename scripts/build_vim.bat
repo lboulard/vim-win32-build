@@ -115,7 +115,7 @@ COPY /Y tee\tee.exe teew32.exe
 COPY /Y install.exe installw32.exe
 COPY /Y uninstal.exe uninstalw32.exe
 PUSHD ..\nsis
-"C:\Program Files (x86)\NSIS\makensis" /DVIMRT=..\runtime gvim.nsi "/XOutFile %ROOT%\gvim-%VIMVER:v=%-%VIM_ARCH%.exe"
+"%NSIS_DIR%\makensis.exe" /DVIMRT=..\runtime gvim.nsi "/XOutFile %ROOT%\gvim-%VIMVER:v=%-%VIM_ARCH%.exe"
 POPD
 @ECHO OFF
 GOTO :EOF
