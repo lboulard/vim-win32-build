@@ -56,7 +56,6 @@ python.exe -m pip install --user -r scripts\requirements.txt
 
 ```dosbatch
 download.bat
-7z x downloads\ninja-win.zip ninja.exe
 ```
 
 It can take a long depending of you Internet connection speed.
@@ -77,6 +76,7 @@ List and version of GVim/Vim dependencies used for build and packages:
 To prepare all required software for building GVim/Vim at next step, run:
 
 ```dosbatch
+7z x downloads\ninja-win.zip ninja.exe
 configure.bat
 ninja packages
 ```
