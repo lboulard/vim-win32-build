@@ -72,6 +72,7 @@ List and version of GVim/Vim dependencies used for build and packages:
 - [Racket](https://download.racket-lang.org/) 6.6
 - [Ruby](https://www.ruby-lang.org/en/downloads/) 2.4.1
 - [ninja](https://ninja-build.org) 1.8.2
+- [NSIS](http://nsis.sourceforge.net) 3.02.1
 
 To prepare all required software for building GVim/Vim at next step, run:
 
