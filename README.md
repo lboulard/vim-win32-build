@@ -25,6 +25,18 @@ native one.
 Install 7-Zip version matching operating system architecture. On x86 system,
 installs 32bit version. On x64/AMD64 system, installs 64bit version.
 
+### MSYS2 install
+
+- MSYS2: <http://www.msys2.org/>
+
+In order to generate file `uganda.nsis.txt`, a suite of Unix tools is required.
+MSYS2 is expected to be installed at `C:\msys64`. Basic installation is enough,
+only _bash_, _GNU make_, _uniq.exe_ and _sed.exe_ are used while generating
+`uganda.nsis.txt`
+
+> This is heavy requirement for such a light task.
+> TODO: embed _sed.exe_ and do text transformation in dosbatch script.
+
 ### Computer installation of Python 2.7 and 3.5
 
 It is not possible to fetch and extract Python software just for building Vim.
