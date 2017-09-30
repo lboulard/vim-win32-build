@@ -40,11 +40,11 @@ PATH %PERL_DIR%\bin;%RUBY_DIR%\bin;%PATH%
 ECHO ON
 
 :: Build GVim
-nmake -f Make_mvc.mak ^
+nmake -nologo -f Make_mvc.mak ^
  IME=yes GIME=yes GUI=yes OLE=yes DIRECTX=yes %BUILDOPTIONS% gvim.exe || EXIT /B 1
 
 :: Build Vim
-nmake -f Make_mvc.mak ^
+nmake -nologo -f Make_mvc.mak ^
  IME=no  GIME=no  GUI=no  OLE=no  DIRECTX=no  %BUILDOPTIONS% || EXIT /B 1
 @ECHO OFF
 
@@ -55,9 +55,9 @@ nmake -f Make_mvc.mak ^
 POPD
 
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
-START /B /WAIT CMD /C ""%VS140COMNTOOLS%\..\..\vc\vcvarsall.bat" x64 && CD GvimExt && nmake clean all" || EXIT /B 1
+START /B /WAIT CMD /C ""%VS140COMNTOOLS%\..\..\vc\vcvarsall.bat" x64 && CD GvimExt && nmake -nologo clean all" || EXIT /B 1
 MOVE GvimExt\gvimext.dll GvimExt\gvimext64.dll
-START /B /WAIT CMD /C ""%VS140COMNTOOLS%\..\..\vc\vcvarsall.bat" x86 && CD GvimExt && nmake clean all"  || EXIT /B 1
+START /B /WAIT CMD /C ""%VS140COMNTOOLS%\..\..\vc\vcvarsall.bat" x86 && CD GvimExt && nmake -nologo clean all"  || EXIT /B 1
 
 @ECHO OFF
 POPD
