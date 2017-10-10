@@ -18,8 +18,10 @@ CALL win32\configure.bat --target=%RUBY_ARCH% ^
   --disable-rubygems ^
   --disable-debug-env ^
   --prefix=$(RUBY_DIR) || EXIT /B
-nmake -nologo -l || EXIT /B
-nmake -nologo install-nodoc || EXIT /B
+:: nmake -nologo -l || EXIT /B
+:: nmake -nologo install-nodoc || EXIT /B
+nmake -nologo .config.h.time || EXIT /B
+XCOPY /I /Y /S include %RUBY_DIR%\include\ruby-%RUBY_VER_LONG% || EXIT /B
 XCOPY /I /Y /S .ext\include %RUBY_DIR%\include\ruby-%RUBY_VER_LONG% || EXIT /B
 @ECHO OFF
 POPD
