@@ -58,9 +58,19 @@ nmake -f Make_mvc.mak ^
 POPD
 
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
+IF NOT EXIST GvimExt64\. MKDIR GvimExt64
+IF NOT EXIST GvimExt32\. MKDIR GvimExt32
 START /B /WAIT CMD /C ""%VS140COMNTOOLS%\..\..\vc\vcvarsall.bat" x64 && CD GvimExt && nmake -nologo clean all" || EXIT /B 1
-MOVE GvimExt\gvimext.dll GvimExt\gvimext64.dll
+COPY /Y GvimExt\gvimext.dll  GvimExt\gvimext64.dll
+MOVE /Y GvimExt\gvimext.dll  GvimExt64\gvimext.dll
+COPY /Y GvimExt\README.txt   GvimExt64\
+COPY /Y GvimExt\*.inf        GvimExt64\
+COPY /Y GvimExt\*.reg        GvimExt64\
 START /B /WAIT CMD /C ""%VS140COMNTOOLS%\..\..\vc\vcvarsall.bat" x86 && CD GvimExt && nmake -nologo clean all"  || EXIT /B 1
+COPY /Y GvimExt\gvimext.dll GvimExt32\gvimext.dll
+COPY /Y GvimExt\README.txt  GvimExt32\
+COPY /Y GvimExt\*.inf       GvimExt32\
+COPY /Y GvimExt\*.reg       GvimExt32\
 
 @ECHO OFF
 POPD
@@ -82,11 +92,16 @@ COPY /Y ..\vimtutor.bat ..\runtime\
 COPY /Y *.exe ..\runtime\
 COPY /Y xxd\*.exe ..\runtime\
 COPY /Y tee\*.exe ..\runtime\
-MKDIR ..\runtime\GvimExt
-COPY /Y GvimExt\gvimext*.dll ..\runtime\GvimExt\
-COPY /Y GvimExt\README.txt ..\runtime\GvimExt\
-COPY /Y GvimExt\*.inf ..\runtime\GvimExt\
-COPY /Y GvimExt\*.reg ..\runtime\GvimExt\
+
+MKDIR ..\runtime\GvimExt64
+MKDIR ..\runtime\GvimExt32
+COPY /Y GvimExt64\*.* ..\runtime\GvimExt64
+COPY /Y GvimExt32\*.* ..\runtime\GvimExt32
+COPY /Y %GETTEXT_DIR_x64%\bin\libiconv-2.dll      ..\runtime\GvimExt64 || EXIT /B 1
+COPY /Y %GETTEXT_DIR_x64%\bin\libintl-8.dll       ..\runtime\GvimExt64 || EXIT /B 1
+COPY /Y %GETTEXT_DIR_x86%\bin\libiconv-2.dll      ..\runtime\GvimExt32 || EXIT /B 1
+COPY /Y %GETTEXT_DIR_x86%\bin\libintl-8.dll       ..\runtime\GvimExt32 || EXIT /B 1
+COPY /Y %GETTEXT_DIR_x86%\bin\libgcc_s_sjlj-1.dll ..\runtime\GvimExt32 || EXIT /B 1
 
 COPY /Y %GETTEXT_DIR%\bin\libiconv-2.dll ..\runtime\ || EXIT /B 1
 COPY /Y %GETTEXT_DIR%\bin\libintl-8.dll  ..\runtime\ || EXIT /B 1
