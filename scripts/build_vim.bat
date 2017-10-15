@@ -87,18 +87,18 @@ COPY /Y GvimExt\gvimext*.dll ..\runtime\GvimExt\
 COPY /Y GvimExt\README.txt ..\runtime\GvimExt\
 COPY /Y GvimExt\*.inf ..\runtime\GvimExt\
 COPY /Y GvimExt\*.reg ..\runtime\GvimExt\
+
+COPY /Y %GETTEXT_DIR%\bin\libiconv-2.dll ..\runtime\ || EXIT /B 1
+COPY /Y %GETTEXT_DIR%\bin\libintl-8.dll  ..\runtime\ || EXIT /B 1
+IF %VIM_ARCH% == x86 (
+  COPY /Y %GETTEXT_DIR_x86%\bin\libgcc_s_sjlj-1.dll ..\runtime\ || EXIT /B 1
+)
+
+COPY /Y %LUA_DIR%\lua5.1.dll ..\runtime\lua51.dll || EXIT /B 1Z
 COPY /Y %WINPTY_DIR%\%WINPTY_ARCH_x86%\bin\winpty.dll ..\runtime\winpty32.dll || EXIT /B 1
 COPY /Y %WINPTY_DIR%\%WINPTY_ARCH_x64%\bin\winpty.dll ..\runtime\winpty64.dll || EXIT /B 1
 COPY /Y %WINPTY_DIR%\%WINPTY_ARCH%\bin\winpty-agent.exe ..\runtime\ || EXIT /B 1
 COPY /Y %ROOT%\extras\diff.exe ..\runtime\ || EXIT /B 1
-COPY /Y %GETTEXT_DIR%\bin\libiconv*.dll ..\runtime\ || EXIT /B 1
-COPY /Y %GETTEXT_DIR%\bin\libintl-8.dll ..\runtime\ || EXIT /B 1
-COPY /Y %LUA_DIR%\lua5.1.dll ..\runtime\lua51.dll || EXIT /B 1
-
-:: Library that may be required on platform (pthread for x64 or gcc_s_sjlj on x86)
-@FOR %%f IN (libwinpthread-1.dll libgcc_s_sjlj-1.dll) DO @(
-  @IF EXIST "%GETTEXT_DIR%\bin\%%f" COPY /Y "%GETTEXT_DIR%\bin\%%f" ..\runtime\
-)
 
 SET dir=%BUILD%\vim-%VIMVER:v=%-%ARCH%
 IF EXIST "%dir%" RD /Q /S "%dir%"
@@ -108,6 +108,13 @@ IF EXIST "%ROOT%\gvim-%VIMVER:v=%-%VIM_ARCH%.zip" DEL /F "%ROOT%\gvim-%VIMVER:v=
 7z a "%ROOT%\gvim-%VIMVER:v=%-%VIM_ARCH%.zip" %dir%
 
 COPY /Y %ROOT%\extras\diff.exe %VIMSRC_BUILD%\..
+MKDIR %VIMSRC_BUILD%..\gettext64
+MKDIR %VIMSRC_BUILD%..\gettext32
+COPY /Y %GETTEXT_DIR_x86%\bin\libiconv-2.dll      %VIMSRC_BUILD%..\gettext32\ || EXIT /B 1
+COPY /Y %GETTEXT_DIR_x86%\bin\libintl-8.dll       %VIMSRC_BUILD%..\gettext32\ || EXIT /B 1
+COPY /Y %GETTEXT_DIR_x86%\bin\libgcc_s_sjlj-1.dll %VIMSRC_BUILD%..\gettext32\ || EXIT /B 1
+COPY /Y %GETTEXT_DIR_x64%\bin\libiconv-2.dll      %VIMSRC_BUILD%..\gettext64\ || EXIT /B 1
+COPY /Y %GETTEXT_DIR_x64%\bin\libintl-8.dll       %VIMSRC_BUILD%..\gettext64\ || EXIT /B 1
 COPY /Y %WINPTY_DIR%\%WINPTY_ARCH_x86%\bin\winpty.dll %VIMSRC_BUILD%..\winpty32.dll
 COPY /Y %WINPTY_DIR%\%WINPTY_ARCH_x64%\bin\winpty.dll %VIMSRC_BUILD%..\winpty64.dll
 COPY /Y %WINPTY_DIR%\%WINPTY_ARCH%\bin\winpty-agent.exe %VIMSRC_BUILD%..
@@ -118,7 +125,8 @@ COPY /Y tee\tee.exe teew32.exe
 COPY /Y install.exe installw32.exe
 COPY /Y uninstal.exe uninstalw32.exe
 PUSHD ..\nsis
-"%NSIS_DIR%\makensis.exe" /DVIMRT=..\runtime gvim.nsi "/XOutFile %ROOT%\gvim-%VIMVER:v=%-%VIM_ARCH%.exe"
+"%NSIS_DIR%\makensis.exe" /DVIMRT=..\runtime /DGETTEXT=%VIMSRC_BUILD%.. gvim.nsi ^
+  "/XOutFile %ROOT%\gvim-%VIMVER:v=%-%VIM_ARCH%.exe"
 POPD
 @ECHO OFF
 GOTO :EOF
