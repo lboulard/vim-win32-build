@@ -104,7 +104,7 @@ SET dir=%BUILD%\vim-%VIMVER:v=%-%ARCH%
 IF EXIST "%dir%" RD /Q /S "%dir%"
 MKDIR %dir%
 XCOPY ..\runtime %dir% /Y /E /V /I /H /R /Q
-IF EXIST "%ROOT%\gvim-%VIMVER:v=%-%ARCH%.zip" DEL /F "%ROOT%\gvim-%VIMVER:v=%-%ARCH%.zip"
+IF EXIST "%ROOT%\gvim-%VIMVER:v=%-%VIM_ARCH%.zip" DEL /F "%ROOT%\gvim-%VIMVER:v=%-%VIM_ARCH%.zip"
 7z a "%ROOT%\gvim-%VIMVER:v=%-%VIM_ARCH%.zip" %dir%
 
 COPY /Y %ROOT%\extras\diff.exe %VIMSRC_BUILD%\..
