@@ -1,0 +1,36 @@
+From bbd41256285e3f4986ebe2f5265288fce28ecd9c Mon Sep 17 00:00:00 2001
+From: Laurent Boulard <laurent.boulard@gmail.com>
+Date: Sun, 15 Oct 2017 11:19:15 +0200
+Subject: [PATCH] amd64 distribution shall use GetText amd64 libraries
+
+---
+ nsis/gvim.nsi | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
+index dd2d43b8c..a170fdd46 100644
+--- a/nsis/gvim.nsi
++++ b/nsis/gvim.nsi
+@@ -445,10 +445,15 @@ SectionEnd
+ 		File ${VIMRT}\keymap\README.txt
+ 		File ${VIMRT}\keymap\*.vim
+ 		SetOutPath $0
+-		File ${GETTEXT}\gettext32\libintl-8.dll
+-		File ${GETTEXT}\gettext32\libiconv-2.dll
+-		#File /nonfatal ${VIMRT}\libwinpthread-1.dll
+-		File /nonfatal ${GETTEXT}\gettext32\libgcc_s_sjlj-1.dll
++		${If} ${RunningX64}
++			File ${GETTEXT}\gettext64\libintl-8.dll
++			File ${GETTEXT}\gettext64\libiconv-2.dll
++		${Else}
++			File ${GETTEXT}\gettext32\libintl-8.dll
++			File ${GETTEXT}\gettext32\libiconv-2.dll
++			#File /nonfatal ${VIMRT}\libwinpthread-1.dll
++			File /nonfatal ${GETTEXT}\gettext32\libgcc_s_sjlj-1.dll
++		${EndIf}
+ 	SectionEnd
+ !endif
+ 
+-- 
+2.14.2.windows.3
+
