@@ -40,6 +40,7 @@ before_deploy:
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "true" SET VIMTAG=%APPVEYOR_REPO_TAG_NAME%
   - cmd: IF "%APPVEYOR_REPO_TAG%" == "false" (FOR /F "delims=" %%i in ('git -C vim describe --tags --abbrev^=0') DO SET VIMTAG=%%i)
   - cmd: SET VIMVER=%VIMTAG:v=%
+  - cmd: FOR /F "delims=" %%i in ('python.exe scripts\gitlog.py') DO SET GITLOG=%%i
 
 deploy:
   - provider: GitHub
@@ -48,6 +49,8 @@ deploy:
       Custom build of GVim/Vim for Windows.
 
       Use gvim-$(VIMVER)-x86.exe or gvim-$(VIMVER)-amd64.exe to install GVim/Vim.
+
+      $(GITLOG)
 
       Current packages linked to GVim/Vim
 
