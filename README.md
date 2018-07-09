@@ -37,11 +37,11 @@ only _bash_, _GNU make_, _uniq.exe_ and _sed.exe_ are used while generating
 > This is heavy requirement for such a light task.
 > TODO: embed _sed.exe_ and do text transformation in dosbatch script.
 
-### Computer installation of Python 2.7 and 3.5
+### Computer installation of Python 2.7 and 3.6
 
 It is not possible to fetch and extract Python software just for building Vim.
-Python 2.7 is expected to be installed in `C:\Python27`. Python 3.5 is expected
-to be installed in `C:\Python35`.
+Python 2.7 is expected to be installed in `C:\Python27`. Python 3.6 is expected
+to be installed in `C:\Program Files\Python36`.
 
 ### Microsoft Software
 
@@ -56,7 +56,7 @@ download link:
 Open a DOS prompt and go to project root. Run DOS prompt as normal user, not as
 administrator.
 
-Make sure that Python 3.5 `python.exe` is accessible from `PATH` variable.
+Make sure that Python 3.6 `python.exe` is accessible from `PATH` variable.
 
 First install dependencies for python scripts:
 
