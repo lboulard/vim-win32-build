@@ -165,6 +165,46 @@ Install:
     eq_(paths, [(Arch.find('x86'), 'mypackage_2.3.4_x86'),
         (Arch.find('x64'), 'mypackage_2.3.4_x64')])
 
+def test_read_python35_package():
+    """Check parsing Python 3.5 package definitions"""
+    t = """
+Package: python3
+Version: 3.5
+Vim-Version: 35
+Install:
+ x86 C:\Python35
+ x64 C:\Python35
+"""
+    f = StringIO(t)
+    pkgs = Package.read(f)
+    eq_(len(pkgs), 1)
+    eq_(pkgs[0].name, 'python3')
+    eq_(pkgs[0].version, '3.5')
+    eq_(pkgs[0].vim_version, '35')
+    paths = pkgs[0].install_paths()
+    eq_(paths, [(Arch.find('x86'), 'C:\Python35'),
+        (Arch.find('x64'), 'C:\Python35')])
+
+def test_read_python36_package():
+    """Check parsing Python 3.6 package definitions"""
+    t = """
+Package: python3
+Version: 3.6
+Vim-Version: 36
+Install:
+ x86 C:\Program Files\Python36
+ x64 C:\Program Files\Python36
+"""
+    f = StringIO(t)
+    pkgs = Package.read(f)
+    eq_(len(pkgs), 1)
+    eq_(pkgs[0].name, 'python3')
+    eq_(pkgs[0].version, '3.6')
+    eq_(pkgs[0].vim_version, '36')
+    paths = pkgs[0].install_paths()
+    eq_(paths, [(Arch.find('x86'), 'C:\Program Files\Python36'),
+        (Arch.find('x64'), 'C:\Program Files\Python36')])
+
 def test_name_field_is_forbidden():
     """'Name' field is forbidden in package definition"""
     t = """

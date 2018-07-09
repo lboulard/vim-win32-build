@@ -249,10 +249,11 @@ This is a list of tuple `(arch, path)`. `path` is expanded.
 """
         installs = list()
         if self.defined(Package.INSTALL):
-            tokens = iter(self._values[Package.INSTALL].split())
-            for arch_name, path in zip(tokens, tokens):
-                arch = Arch.find(arch_name)
-                installs.append((arch, self.expand(path)))
+            for line in self._values[Package.INSTALL].splitlines():
+                tokens = iter(line.split(maxsplit=1))
+                for arch_name, path in zip(tokens, tokens):
+                    arch = Arch.find(arch_name)
+                    installs.append((arch, self.expand(path)))
         return installs
 
     def __str__(self):
