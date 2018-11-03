@@ -10,7 +10,6 @@ IF "%ARCH%" == "x86" (
  SET ARGS=!ARGS! WIN64=undef
 )
 SET ARGS=!ARGS! -e "MAKE=nmake -nologo"
-nmake -nologo -f Makefile %ARGS% || EXIT /B 1
-nmake -nologo -f Makefile %ARGS% install || EXIT /B 1
+nmake -nologo -f Makefile %ARGS% all installbare || EXIT /B 1
 @ECHO OFF
 @POPD
