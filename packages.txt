@@ -51,13 +51,13 @@ Install:
  x64 racket_${Version}_x64
 
 Package: perl
-Version: 5.26.0
+Version: 5.28.1
 Source:
- any perl_src.tgz http://www.cpan.org/src/5.0/perl-5.26.0.tar.gz
+ any perl_src.tgz http://www.cpan.org/src/5.0/perl-${Version}.tar.gz
 Source-Dir: perl-${Version}
 Checksum:
- perl_src.tgz sha256 ebe7c66906d4fb55449380ab1b7e004eeef52c38d3443fa301f8e17a1a4cb67f
-Vim-Version: 526
+ perl_src.tgz sha256 3ebf85fe65df2ee165b22596540b7d5d42f84d4b72d84834f74e2e0b8956c347
+Vim-Version: 528
 Install:
  x86 perl_${Version}_x86
  x64 perl_${Version}_x64

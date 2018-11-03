@@ -57,7 +57,7 @@ deploy:
       Current packages linked to GVim/Vim
 
       * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.1.4
-      * [Perl](http://perl.org) 5.26.0
+      * [Perl](http://perl.org) 5.28.1
       * [Tcl](http://www.tcl.tk) 8.6.7
       * [Racket](https://download.racket-lang.org/) 6.6
       * [Ruby](https://www.ruby-lang.org/en/downloads/) 2.4.1
