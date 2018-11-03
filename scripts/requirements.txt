@@ -1,4 +1,0 @@
-requests
-tqdm
-colorama
-jinja2

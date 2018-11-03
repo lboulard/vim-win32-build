@@ -13,16 +13,18 @@ install:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-http-proxy.ps1'))
 
 before_build:
-  - PATH C:\Python35-x64;%PATH%
-  - python.exe -m pip install --cache-dir downloads\pip --disable-pip-version-check -r scripts\requirements.txt
-  - download.bat
+  - PATH C:\Python37-x64;%PATH%
+  - python.exe -m pip install pipenv
+  - pipenv --version
+  - pipenv install
+  - pipenv run download.bat
   - 7z x downloads\ninja-win.zip ninja.exe
   - ninja.exe --version
   - git submodule update --init
-  - configure.bat
+  - pipenv run configure.bat
 
 build_script:
-  - ninja.exe
+  - pipenv run ninja.exe
 
 test: off
 
