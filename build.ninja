@@ -29,6 +29,7 @@ rule build_vim_x64
 
 build ${upx_bin}:         extract_to_parent ${upx_archive}
 build ${nsis_bin}:        extract_to_parent ${nsis_archive}
+build ${dmake_bin}:       extract_to_parent ${dmake_archive}
 build ${winpty_bin}:      extract ${winpty_archive}
 build ${gettext_bin_x86}: extract ${gettext_archive_x86}
 build ${gettext_bin_x64}: extract ${gettext_archive_x64}
@@ -44,8 +45,8 @@ build ${tcl_build_x64}:  extract_to_parent ${tcl_archive}
 build ${ruby_build_x86}: extract_to_parent ${ruby_archive}
 build ${ruby_build_x64}: extract_to_parent ${ruby_archive}
 
-build ${perl_bin_x86}: build_perl_x86 ${perl_build_x86}
-build ${perl_bin_x64}: build_perl_x64 ${perl_build_x64}
+build ${perl_bin_x86}: build_perl_x86 ${perl_build_x86} | ${dmake_bin}
+build ${perl_bin_x64}: build_perl_x64 ${perl_build_x64} | ${dmake_bin}
 build ${tcl_bin_x86}:  build_tcl_x86  ${tcl_build_x86}
 build ${tcl_bin_x64}:  build_tcl_x64  ${tcl_build_x64}
 build ${ruby_bin_x86}: build_ruby_x86 ${ruby_build_x86}
@@ -61,6 +62,7 @@ build ruby_build_x64: phony ${ruby_build_x64}
 build upx:     phony ${upx_bin}
 build nsis:    phony ${nsis_bin}
 build winpty:  phony ${winpty_bin}
+build dmake:   phony ${dmake_bin}
 
 build gettext_x86: phony ${gettext_bin_x86}
 build racket_x86:  phony ${racket_bin_x86}

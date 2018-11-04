@@ -13,6 +13,14 @@ Checksum:
  nsis_bin.zip sha256 deef3e3d90ab1a9e0ef294fff85eead25edbcb429344ad42fc9bc42b5c3b1fb5
 Install: all nsis-${Version}
 
+Package: dmake
+Version: 4.12.2.2
+Binary:
+ all dmake_bin.zip https://cpan.metacpan.org/authors/id/S/SH/SHAY/dmake-${Version}.zip
+Checksum:
+ dmake_bin.zip sha256 c9dbffda19df70585cd4b83652085426f4dea874fd7480f2c4cb95d0b82f64c4
+Install: all dmake
+
 Package: gettext
 Version: 0.19.8.1
 Download: https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14

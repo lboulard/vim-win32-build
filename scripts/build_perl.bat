@@ -1,4 +1,6 @@
 @SETLOCAL
+@CALL config.bat
+@PATH %DMAKE_DIR%;%PATH%
 @SET ARCH=%~1
 @SET PERL_BUILD_DIR="%~f2"
 @SET PERL_DIR="%~f3"
@@ -10,7 +12,6 @@ SET ARGS=INST_TOP=%PERL_DIR% CCTYPE=MSVC141
 IF "%ARCH%" == "x86" (
  SET ARGS=!ARGS! WIN64=undef
 )
-SET ARGS=!ARGS! -e "MAKE=nmake -nologo"
-nmake -nologo -f Makefile %ARGS% all installbare || EXIT /B 1
+dmake -P%NUMBER_OF_PROCESSORS% -f makefile.mk %ARGS% all installbare || EXIT /B 1
 @ECHO OFF
 @POPD
