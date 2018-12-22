@@ -37,13 +37,15 @@ only _bash_, _GNU make_, _uniq.exe_ and _sed.exe_ are used while generating
 > This is heavy requirement for such a light task.
 > TODO: embed _sed.exe_ and do text transformation in dosbatch script.
 
-### Computer installation of Python 2.7 and 3.6
+### Computer installation of Python 2.7 and 3.7
 
 It is not possible to fetch and extract Python software just for building Vim.
-Python 2.7 is expected to be installed in `C:\Python27`. Python 3.6 is expected
-to be installed in `C:\Program Files\Python36`.
+Python 2.7 is expected to be installed in `C:\Python27`. Python 3.7 is expected
+to be installed in `C:\Program Files\Python37`.
 
 ### Microsoft Software
+
+#### Visual Studio 2015 (until tag v8.1.0611)
 
 Visual C++ 2015 compiler can be downloaded free of charge on this page:
 <http://landinghub.visualstudio.com/visual-cpp-build-tools>. This is the direct
@@ -51,26 +53,33 @@ download link:
 
 - [Visual C++ 2015 Build Tools](http://go.microsoft.com/fwlink/?LinkId=691126&fixForIE=.exe)
 
+#### Visual Studio 2017
+
+Install Visual Studio 2017 Community edition. You need to create a (free)
+account at Microsoft.
+
 ## Usage
 
 Open a DOS prompt and go to project root. Run DOS prompt as normal user, not as
 administrator.
 
-Make sure that Python 3.6 `python.exe` is accessible from `PATH` variable.
+Make sure that Python 3.7 `python.exe` is accessible from `PATH` variable.
 
-First install dependencies for python scripts:
+First install `pipenv` to further get runtime dependencies. Then install
+dependencies and create a python virtual environment for next commands:
 
 ```dosbatch
-python.exe -m pip install --user -r scripts\requirements.txt
+python.exe -m pip install --user pipenv
+python.exe -m pipenv install
 ```
 
 ### Download archives and installers
 
 ```dosbatch
-download.bat
+python -m pipenv run download.bat
 ```
 
-It can take a long depending of you Internet connection speed.
+It can take a long depending of network connection speed.
 
 ### Prepare GVim/Vim dependencies
 
@@ -79,26 +88,28 @@ List and version of GVim/Vim dependencies used for build and packages:
 - [UPX](http://upx.sourceforge.net/) 3.91
 - [GetText](https://github.com/mlocati/gettext-iconv-windows) 0.19.8.1 and iconv 1.14
 - [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.1.4
-- [Perl](http://www.perl.org) 5.26.0
+- [WinPTY](https://github.com/rprichard/winpty) 0.4.3
+- [dmake](https://cpan.metacpan.org/authors/id/S/SH/SHAY/) 4.12.2.2
+- [Perl](http://www.perl.org) 5.28.1
 - [Tcl](http://www.tcl.tk) 8.6.7
 - [Racket](https://download.racket-lang.org/) 6.6
 - [Ruby](https://www.ruby-lang.org/en/downloads/) 2.4.1
 - [ninja](https://ninja-build.org) 1.8.2
-- [NSIS](http://nsis.sourceforge.net) 3.02.1
+- [NSIS](http://nsis.sourceforge.net) 3.04
 
 To prepare all required software for building GVim/Vim at next step, run:
 
 ```dosbatch
 7z x downloads\ninja-win.zip ninja.exe
-configure.bat
-ninja packages
+python -m pipenv run configure.bat
+python -m pipenv run ninja packages
 ```
 
 It is possible to only prepare a specific package:
  - _UPX_: `ninja upx` to unzip UPX for NSI package creation phase.
  - _GetText_: `ninja winpty` to extract GetText archive.
  - _Lua_: `ninja lua_x86 lua_x64` to extract Lua archive.
- - _Perl_: `ninja perl_x86 perl_x64l` to extract and compile Perl.
+ - _Perl_: `ninja perl_x86 perl_x64` to extract and compile Perl.
  - _Tcl_: `ninja tcl_x86 tcl_x64` to extract and compile Tcl.
  - _Racket_: `ninja racket_x86 racket_x64` to extract Racket archive
  - _Ruby_: `ninja ruby_x86 ruby_x64` to extract and compile Ruby.
@@ -110,10 +121,10 @@ Ruby preparation is the longest of all tasks.
 ### Build GVim/Vim and package installations
 
 ```dosbatch
-ninja gvim
+python -m pipenv run ninja gvim
 ```
 
-You shall now have files `gvim-8.0.xxx-ARCH.exe` and `gvim-8.0.xxx-ARCH.zip` in
+You shall now have files `gvim-8.1.xxx-ARCH.exe` and `gvim-8.1.xxx-ARCH.zip` in
 root folder.
 
 ## Patches
