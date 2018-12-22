@@ -6,11 +6,11 @@ Checksum:
 Install: all upx${Version}
 
 Package: nsis
-Version: 3.02.1
+Version: 3.04
 Binary:
  all nsis_bin.zip https://prdownloads.sourceforge.net/nsis/nsis-${Version}.zip
 Checksum:
- nsis_bin.zip sha256 deef3e3d90ab1a9e0ef294fff85eead25edbcb429344ad42fc9bc42b5c3b1fb5
+ nsis_bin.zip sha256 22f3349fea453a45551745635c13e5efb7849ecbdce709daa2b2fa8e2ac55fc4
 Install: all nsis-${Version}
 
 Package: dmake
