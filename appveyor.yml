@@ -70,6 +70,6 @@ deploy:
     force_update: true
 
 cache:
-  - downloads
+  - downloads -> appveyor.yml, packages.txt
 
 # vim : ts=2 ws=2 et
