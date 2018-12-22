@@ -62,7 +62,7 @@ deploy:
       * [Racket](https://download.racket-lang.org/) 6.6
       * [Ruby](https://www.ruby-lang.org/en/downloads/) 2.4.1
       * [Python](https://www.python.org/downloads/) 2.7
-      * [Python3](https://www.python.org/downloads/) 3.6
+      * [Python3](https://www.python.org/downloads/) 3.7
     auth_token:
       secure: iOiS2SxHg7FOCRo5SiixjnP8bqI/lk1CgtiNWZGWlY8KKBIiZB+jbflmFiDfB2ed
     artifact: /gVim/
