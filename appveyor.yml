@@ -13,7 +13,7 @@ install:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-http-proxy.ps1'))
 
 before_build:
-  - PATH C:\Python37-x64;%PATH%
+  - PATH C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%
   - python.exe -m pip install pipenv
   - pipenv --version
   - pipenv install
