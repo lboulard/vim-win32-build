@@ -88,8 +88,8 @@ build extract_build: phony extract_build_x86 extract_build_x64
 
 build extract: phony extract_bin extract_build
 
-build packages_x86: phony upx nsis winpty gettext_x86 racket_x86 lua_x86 perl_x86 tcl_x86 ruby_x86
-build packages_x64: phony upx nsis winpty gettext_x64 racket_x64 lua_x64 perl_x64 tcl_x64 ruby_x64
+build packages_x86: phony upx nsis winpty gettext_x86 gettext_x64 racket_x86 lua_x86 perl_x86 tcl_x86 ruby_x86
+build packages_x64: phony upx nsis winpty gettext_x86 gettext_x64 racket_x64 lua_x64 perl_x64 tcl_x64 ruby_x64
 build packages: phony packages_x86 packages_x64
 
 build gvim-${vim_version}-x86.zip gvim-${vim_version}-x86.exe: build_vim_x86 | packages_x86
