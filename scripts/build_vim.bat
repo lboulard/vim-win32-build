@@ -140,6 +140,7 @@ COPY /Y tee\tee.exe teew32.exe
 COPY /Y install.exe installw32.exe
 COPY /Y uninstal.exe uninstalw32.exe
 PUSHD ..\nsis
+7z x icons.zip -y
 IF %ARCH% == x64 SET "NSIS_ARGS=/DWIN64"
 "%NSIS_DIR%\makensis.exe" /DVIMRT=..\runtime /DGETTEXT=%VIMSRC_BUILD%.. ^
   %NSIS_ARGS% gvim.nsi ^
