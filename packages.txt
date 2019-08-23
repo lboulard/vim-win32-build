@@ -97,13 +97,13 @@ Install:
  x64 tcl_${Version}_x64
 
 Package: ruby
-Version: 2.5.5
-Vim-Version: 25 2.5.0
+Version: 2.6.3
+Vim-Version: 26 2.6.0
 Source:
- any ruby_src.tgz https://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.5.tar.gz
+ any ruby_src.tgz https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.3.tar.gz
 Source-Dir: ruby-${Version}
 Checksum:
- ruby_src.tgz sha256 28a945fdf340e6ba04fc890b98648342e3cccfd6d223a48f3810572f11b2514c
+ ruby_src.tgz sha256 577fd3795f22b8d91c1d4e6733637b0394d4082db659fccf224c774a2b1c82fb
 Install:
  x86 ruby_${Version}_x86
  x64 ruby_${Version}_x64

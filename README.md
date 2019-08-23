@@ -93,7 +93,7 @@ List and version of GVim/Vim dependencies used for build and packages:
 - [Perl](http://www.perl.org) 5.28.1
 - [Tcl](http://www.tcl.tk) 8.6.7
 - [Racket](https://download.racket-lang.org/) 6.6
-- [Ruby](https://www.ruby-lang.org/en/downloads/) 2.5.5
+- [Ruby](https://www.ruby-lang.org/en/downloads/) 2.6.3
 - [ninja](https://ninja-build.org) 1.8.2
 - [NSIS](http://nsis.sourceforge.net) 3.04
 
