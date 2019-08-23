@@ -59,7 +59,7 @@ deploy:
       * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.1.4
       * [Perl](http://perl.org) 5.28.1
       * [Tcl](http://www.tcl.tk) 8.6.7
-      * [Racket](https://download.racket-lang.org/) 6.6
+      * [Racket](https://download.racket-lang.org/) 7.4
       * [Ruby](https://www.ruby-lang.org/en/downloads/) 2.6.3
       * [Python](https://www.python.org/downloads/) 2.7
       * [Python3](https://www.python.org/downloads/) 3.7
