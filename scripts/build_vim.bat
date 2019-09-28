@@ -138,7 +138,7 @@ COPY /Y vim.exe vimw32.exe
 COPY /Y xxd\xxd.exe xxdw32.exe
 COPY /Y tee\tee.exe teew32.exe
 COPY /Y install.exe installw32.exe
-COPY /Y uninstal.exe uninstalw32.exe
+COPY /Y uninstall.exe uninstallw32.exe
 PUSHD ..\nsis
 7z x icons.zip -y
 IF %ARCH% == x64 SET "NSIS_ARGS=/DWIN64"
