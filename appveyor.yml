@@ -14,6 +14,8 @@ install:
 
 before_build:
   - PATH C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%
+  - SET
+  - DIR C:\
   - python.exe -m pip install pipenv
   - pipenv --version
   - pipenv install
