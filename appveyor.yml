@@ -22,6 +22,8 @@ before_build:
   - ninja.exe --version
   - git submodule update --init
   - pipenv run configure.bat
+  - type config.bat
+  - type config.ninja
 
 build_script:
   - pipenv run ninja.exe
