@@ -48,7 +48,7 @@ before_deploy:
   - cmd: SET VIMVER=%VIMTAG:v=%
   - cmd: FOR /F "delims=" %%i in ('python.exe scripts\gitlog.py') DO SET GITLOG=%%i
   - ps: $ErrorActionPreference = "Stop"
-  - ps: Set-AppveyorBuildVariable 'HashTable' (Get-ChildItem "gvim*" -File | ForEach-Object -Process { $t=(Get-FileHash $_.Name -Algorithm SHA256); "| {1} | {0} |`n" -f $t.Hash,(Get-Item $t.Path).Name } | Out-String)
+  - ps: Set-AppveyorBuildVariable 'HashTable' (Get-ChildItem "gvim*" -File | ForEach-Object -Process { $t=(Get-FileHash $_.Name -Algorithm SHA256); "| {1} | {0} |" -f $t.Hash,(Get-Item $t.Path).Name } | Out-String)
   - ps: Add-AppveyorMessage "$env:HashTable"
   - ps: Write-Host $env:HashTable
 
@@ -74,8 +74,8 @@ deploy:
 
       Hash Table
 
-      | name | SHA256 |
-      | ---- | ------ |
+      |    name   | SHA256 |
+      | --------- | ------ |
       $(HashTable)
     auth_token:
       secure: iOiS2SxHg7FOCRo5SiixjnP8bqI/lk1CgtiNWZGWlY8KKBIiZB+jbflmFiDfB2ed
