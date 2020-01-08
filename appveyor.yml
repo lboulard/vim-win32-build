@@ -22,7 +22,7 @@ before_build:
   - pipenv run download.bat
   - 7z x downloads\ninja-win.zip ninja.exe
   - ninja.exe --version
-  - git submodule update --init
+  - git submodule update --init --depth 100
   - pipenv run configure.bat
   - type config.bat
   - type config.ninja
