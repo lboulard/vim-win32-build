@@ -16,7 +16,8 @@ before_build:
   - PATH C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%
   - SET
   - DIR C:\
-  - curl --retry 5 -m 10 -I https://mirror.racket-lang.org/installers/7.4/racket-minimal-7.4-i386-win32.tgz
+  - tracert mirror.racket-lang.org
+  - curl -m 60 -I https://mirror.racket-lang.org/installers/7.4/racket-minimal-7.4-i386-win32.tgz
   - python.exe -m pip install pipenv
   - pipenv --version
   - pipenv install
