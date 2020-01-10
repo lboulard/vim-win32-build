@@ -47,7 +47,7 @@ Install:
 Package: racket
 Version: 7.4
 Vim-Version: 3m_bn55vk
-Download: https://mirror.racket-lang.org/installers
+Download: https://www.cs.utah.edu/plt/installers
 Binary:
  x86 racket_x86.tgz   ${Download}/${Version}/racket-minimal-${Version}-i386-win32.tgz
  x64 racket_amd64.tgz ${Download}/${Version}/racket-minimal-${Version}-x86_64-win32.tgz
