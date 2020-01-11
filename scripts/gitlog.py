@@ -41,6 +41,18 @@ def previoustag(ref="HEAD^"):
     return r.decode().strip()
 
 
+def previouschange(ref=""):
+    prefix = ref.split("-", 1)[0]
+    while True:
+        tag = previoustag((ref or "HEAD") + "^")
+        if not ref:
+            return tag
+        s = tag.split("-", 1)[0]
+        if s != prefix:
+            return tag
+        ref = tag
+
+
 def getvimcommit(ref="HEAD"):
     # git ls-tree -d HEAD vim
     # Output format: <mode> SP <type> SP <object> TAB <file>
@@ -130,7 +142,7 @@ def main():
         tag = findcurrenttag() or "HEAD"
     if tag:
         if not fromtag:
-            fromtag = previoustag(tag + "^")
+            fromtag = previouschange(tag)
         if not fromtag:
             fromtag = root()
             descr = ""
