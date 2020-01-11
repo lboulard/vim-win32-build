@@ -4,43 +4,48 @@ import sys
 import re
 from subprocess import Popen, PIPE, DEVNULL
 
-PATCHRE = re.compile(r'patch ([\.a-z0-9_-]+)[ ]*:[ ]*(.*)', flags=re.IGNORECASE)
+PATCHRE = re.compile(r"patch ([\.a-z0-9_-]+)[ ]*:[ ]*(.*)", flags=re.IGNORECASE)
+
 
 def root():
     cmd = ["git", "hash-object", "-t", "tree", "/dev/null"]
-    r = b''
+    r = b""
     with Popen(cmd, stdout=PIPE, stderr=sys.stderr) as proc:
         r += proc.stdout.read()
     return r.decode().strip()
 
+
 def gettag(ref="HEAD"):
     cmd = ["git", "describe", "--exact-match", "--tags", ref]
-    r = b''
+    r = b""
     with Popen(cmd, stdout=PIPE, stderr=DEVNULL) as proc:
         r += proc.stdout.read()
     return r.decode().strip()
+
 
 def getvimtag(ref):
     # git -C vim describe --tags --exact-match ref
     cmd = ["git", "-C", "vim", "describe", "--exact-match", "--tags", ref]
-    r = b''
+    r = b""
     with Popen(cmd, stdout=PIPE, stderr=DEVNULL) as proc:
         r += proc.stdout.read()
     return r.decode().strip()
 
+
 def previoustag(ref="HEAD^"):
     # git describe --tag --abbrev=0 HEAD^
-    cmd=['git', 'describe', '--tags', '--abbrev=0', ref]
-    r = b''
+    cmd = ["git", "describe", "--tags", "--abbrev=0", ref]
+    r = b""
     with Popen(cmd, stdout=PIPE, stderr=sys.stderr) as proc:
         r += proc.stdout.read()
     return r.decode().strip()
 
+
 def vimcommit(ref="HEAD"):
     # git ls-tree -d HEAD vim
     # Output format: <mode> SP <type> SP <object> TAB <file>
-    cmd=['git', 'ls-tree', '-d', ref, 'vim']
-    r = b''
+    cmd = ["git", "ls-tree", "-d", ref, "vim"]
+    r = b""
     with Popen(cmd, stdout=PIPE, stderr=sys.stderr) as proc:
         r += proc.stdout.read()
     line = r.decode().strip()
@@ -48,28 +53,31 @@ def vimcommit(ref="HEAD"):
     _, _, commit = s.split()
     return commit
 
+
 def vimrevlist(rev1, rev2):
     # git -C rev-list rev1..rev2
-    cmd=['git', '-C', 'vim', 'rev-list', rev1 + '..' + rev2]
-    r = b''
+    cmd = ["git", "-C", "vim", "rev-list", rev1 + ".." + rev2]
+    r = b""
     with Popen(cmd, stdout=PIPE, stderr=sys.stderr) as proc:
         r += proc.stdout.read()
     return r.decode().splitlines()
 
-def getvimlog(ref='HEAD'):
+
+def getvimlog(ref="HEAD"):
     # git -C vim show -s --format=%s ref
-    cmd=['git', '-C', 'vim', 'show', '-s', '--format=%s', ref]
-    r = b''
+    cmd = ["git", "-C", "vim", "show", "-s", "--format=%s", ref]
+    r = b""
     with Popen(cmd, stdout=PIPE, stderr=sys.stderr) as proc:
         r += proc.stdout.read()
     return r.decode().strip()
 
+
 # Create a list of tuple (commit, tag, description)
-def gitlog(rev1, rev2='HEAD'):
+def gitlog(rev1, rev2="HEAD"):
     rev1, rev2 = vimcommit(rev1), vimcommit(rev2)
     # git -C vim log --format=%s rev1..rev2
-    cmd=['git', '-C', 'vim', 'log', '--format=%s', rev1 + '..' + rev2]
-    r = b''
+    cmd = ["git", "-C", "vim", "log", "--format=%s", rev1 + ".." + rev2]
+    r = b""
     with Popen(cmd, stdout=PIPE, stderr=sys.stderr) as proc:
         r += proc.stdout.read()
     s = r.decode()
@@ -81,26 +89,33 @@ def gitlog(rev1, rev2='HEAD'):
         r.append((commit, tag, msg))
     return r
 
+
 # Tranform a line like:
 #   "patch X.Y.ZZZ: ...."
 # into
 #   "* [X.Y.ZZZ](https://github.com/vim/vim/releases/tag/vX.Y.ZZZ): ...\n"
-def transform(msg, commit='', tag=''):
-    TAGURL='https://github.com/vim/vim/releases/tag/'
-    COMMITURL='https://github.com/vim/vim/commit/'
+def transform(msg, commit="", tag=""):
+    TAGURL = "https://github.com/vim/vim/releases/tag/"
+    COMMITURL = "https://github.com/vim/vim/commit/"
     m = PATCHRE.fullmatch(msg)
     if m:
-        return "* [{0}]({url}{tag}): {msg}".format(tag.lstrip('v'), tag=tag, msg=m.group(2), url=TAGURL)
+        return "* [{0}]({url}{tag}): {msg}".format(
+            tag.lstrip("v"), tag=tag, msg=m.group(2), url=TAGURL
+        )
     else:
-        return "* [commit]({url}{commit}): {msg}".format(commit=commit, msg=msg, url=COMMITURL)
+        return "* [commit]({url}{commit}): {msg}".format(
+            commit=commit, msg=msg, url=COMMITURL
+        )
+
 
 def findcurrenttag():
-    ref, n ="HEAD", 0
+    ref, n = "HEAD", 0
     tag = gettag()
     while not tag and n < 50:
         n = n + 1
         tag = gettag(ref + "~" + str(n))
     return tag
+
 
 def main():
     fromtag = None
@@ -111,22 +126,23 @@ def main():
             fromtag = sys.argv[2]
             fromtag = gettag(fromtag) or fromtag
     else:
-        tag = findcurrenttag() or 'HEAD'
+        tag = findcurrenttag() or "HEAD"
     if tag:
         if not fromtag:
             fromtag = previoustag(tag + "^")
         if not fromtag:
             fromtag = root()
-            descr = ''
+            descr = ""
         else:
             vimtag = getvimtag(fromtag) or vimcommit(fromtag)
-            descr = 'Changes since ' + vimtag + ':\\n\\n'
+            descr = "Changes since " + vimtag + ":\\n\\n"
         logs = gitlog(fromtag, tag)
         j = [transform(msg, commit, tag) for commit, tag, msg in logs]
         if j:
-            print(descr + '\\n'.join(j))
+            print(descr + "\\n".join(j))
     else:
-        print('\\n')
+        print("\\n")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
