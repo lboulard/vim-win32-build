@@ -116,8 +116,8 @@ def transform(msg, commit="", tag=""):
             tag.lstrip("v"), tag=tag, msg=m.group(2), url=TAGURL
         )
     else:
-        return "* [commit]({url}{commit}): {msg}".format(
-            commit=commit, msg=msg, url=COMMITURL
+        return "* [{0}]({url}{commit}): {msg}".format(
+            commit[:7], commit=commit, msg=msg, url=COMMITURL
         )
 
 
@@ -155,7 +155,7 @@ def main():
             else:
                 vimcommit = getvimcommit(fromtag)
                 descr = "Changes since [{0}]({url}{commit}):\\n\\n".format(
-                    vimcommit[:9], commit=vimcommit, url=COMMITURL
+                    vimcommit[:7], commit=vimcommit, url=COMMITURL
                 )
         logs = gitlog(fromtag, tag)
         j = [transform(msg, commit, tag) for commit, tag, msg in logs]
