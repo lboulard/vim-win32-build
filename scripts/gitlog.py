@@ -41,7 +41,7 @@ def previoustag(ref="HEAD^"):
     return r.decode().strip()
 
 
-def vimcommit(ref="HEAD"):
+def getvimcommit(ref="HEAD"):
     # git ls-tree -d HEAD vim
     # Output format: <mode> SP <type> SP <object> TAB <file>
     cmd = ["git", "ls-tree", "-d", ref, "vim"]
@@ -74,7 +74,7 @@ def getvimlog(ref="HEAD"):
 
 # Create a list of tuple (commit, tag, description)
 def gitlog(rev1, rev2="HEAD"):
-    rev1, rev2 = vimcommit(rev1), vimcommit(rev2)
+    rev1, rev2 = getvimcommit(rev1), getvimcommit(rev2)
     # git -C vim log --format=%s rev1..rev2
     cmd = ["git", "-C", "vim", "log", "--format=%s", rev1 + ".." + rev2]
     r = b""
@@ -90,13 +90,14 @@ def gitlog(rev1, rev2="HEAD"):
     return r
 
 
+TAGURL = "https://github.com/vim/vim/releases/tag/"
+COMMITURL = "https://github.com/vim/vim/commit/"
+
 # Tranform a line like:
 #   "patch X.Y.ZZZ: ...."
 # into
 #   "* [X.Y.ZZZ](https://github.com/vim/vim/releases/tag/vX.Y.ZZZ): ...\n"
 def transform(msg, commit="", tag=""):
-    TAGURL = "https://github.com/vim/vim/releases/tag/"
-    COMMITURL = "https://github.com/vim/vim/commit/"
     m = PATCHRE.fullmatch(msg)
     if m:
         return "* [{0}]({url}{tag}): {msg}".format(
@@ -134,8 +135,16 @@ def main():
             fromtag = root()
             descr = ""
         else:
-            vimtag = getvimtag(fromtag) or vimcommit(fromtag)
-            descr = "Changes since " + vimtag + ":\\n\\n"
+            vimtag = getvimtag(fromtag)
+            if vimtag:
+                descr = "Changes since [{0}]({url}{tag}):\\n\\n".format(
+                    vimtag.lstrip("v"), tag=vimtag, url=TAGURL
+                )
+            else:
+                vimcommit = getvimcommit(fromtag)
+                descr = "Changes since [{0}]({url}{commit}):\\n\\n".format(
+                    vimcommit[:9], commit=vimcommit, url=COMMITURL
+                )
         logs = gitlog(fromtag, tag)
         j = [transform(msg, commit, tag) for commit, tag, msg in logs]
         if j:
