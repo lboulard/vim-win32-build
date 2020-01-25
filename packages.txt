@@ -1,9 +1,11 @@
 Package: upx
-Version: 391w
-Binary: all upx_bin.zip http://upx.sourceforge.net/download/upx391w.zip
+Version: 3.96
+Download: https://github.com/upx/upx/releases/download
+Binary:
+ all upx-win64.zip ${Download}/v${Version}/upx-${Version}-win64.zip
 Checksum:
- upx_bin.zip sha256 d7d4817f46d2616c209c46fb8bce44e4bec93ab5adef5e4dfc93ee879527be1b
-Install: all upx${Version}
+ upx-win64.zip sha256 a2655c66a547e2274474e54d7a373f1c28e96ded162c51b34651873691022184
+Install: all upx-${Version}-win64
 
 Package: nsis
 Version: 3.04
