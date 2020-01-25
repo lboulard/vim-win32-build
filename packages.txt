@@ -111,8 +111,8 @@ Install:
  x64 ruby_${Version}_x64
 
 Package: ninja
-Version: 1.8.2
+Version: 1.9.0
 Binary:
   all ninja-win.zip https://github.com/ninja-build/ninja/releases/download/v${Version}/ninja-win.zip
 Checksum:
- ninja-win.zip sha256 c80313e6c26c0b9e0c241504718e2d8bbc2798b73429933adf03fdc6d84f0e70
+ ninja-win.zip sha256 2d70010633ddaacc3af4ffbd21e22fae90d158674a09e132e06424ba3ab036e9
