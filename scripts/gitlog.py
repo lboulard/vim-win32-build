@@ -16,7 +16,7 @@ def root():
 
 
 def gettag(ref="HEAD"):
-    cmd = ["git", "describe", "--exact-match", "--tags", ref]
+    cmd = ["git", "-C", "vim", "describe", "--exact-match", "--tags", ref]
     r = b""
     with Popen(cmd, stdout=PIPE, stderr=DEVNULL) as proc:
         r += proc.stdout.read()
