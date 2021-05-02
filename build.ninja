@@ -6,6 +6,9 @@ rule extract
   command = python.exe scripts\extract.py "$in" "$out"
 rule extract_to_parent
   command = python.exe scripts\extract.py --parent "$in" "$out"
+# If we use COPY ar XCOPY, target file has same date as source
+rule copy_file
+  command = cmd.exe /D /C "TYPE "$in" >"$out""
 
 rule build_perl_x86
   command = cmd.exe /D /E:ON /V:ON /C "scripts\run.bat x86 scripts\build_perl.bat "x86" "$in" "$out""
@@ -38,6 +41,13 @@ build ${racket_bin_x64}:  extract ${racket_archive_x64}
 build ${lua_bin_x86}:     extract ${lua_archive_x86}
 build ${lua_bin_x64}:     extract ${lua_archive_x64}
 
+# Build equired this NSIS Plugin
+build ${nsis_shellexec_bin}: extract ${nsis_shellexec_archive}
+build ${nsis_shellexec_bin}\unicode\ShellExecAsUser.dll: phony ${nsis_shellexec_bin}
+build ${nsis_bin}\Plugins\x86-unicode\ShellExecAsUser.dll: copy_file ${nsis_shellexec_bin}\unicode\ShellExecAsUser.dll | ${nsis_bin}
+build nsis_plugins: phony $
+  ${nsis_bin}\Plugins\x86-unicode\ShellExecAsUser.dll
+
 build ${perl_build_x86}: extract_to_parent ${perl_archive}
 build ${perl_build_x64}: extract_to_parent ${perl_archive}
 build ${tcl_build_x86}:  extract_to_parent ${tcl_archive}
@@ -60,7 +70,7 @@ build ruby_build_x86: phony ${ruby_build_x86}
 build ruby_build_x64: phony ${ruby_build_x64}
 
 build upx:     phony ${upx_bin}
-build nsis:    phony ${nsis_bin}
+build nsis:    phony ${nsis_bin} nsis_plugins
 build winpty:  phony ${winpty_bin}
 build dmake:   phony ${dmake_bin}
 

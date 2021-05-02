@@ -15,6 +15,14 @@ Checksum:
  nsis_bin.zip sha256 22f3349fea453a45551745635c13e5efb7849ecbdce709daa2b2fa8e2ac55fc4
 Install: all nsis-${Version}
 
+Package: nsis_shellexec
+Version: 1
+Binary:
+ all nsis_shellexec.zip https://nsis.sourceforge.io/mediawiki/images/1/1d/ShellExecAsUserUnicodeUpdate.zip
+Checksum:
+ nsis_shellexec.zip sha256 79bdd3e54a9ba9c30af85557b475d2322286f8726687f2e23afa772aac6049ab
+Install: all nsis_shellexec
+
 Package: dmake
 Version: 4.12.2.2
 Binary:
