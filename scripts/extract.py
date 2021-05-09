@@ -51,7 +51,7 @@ def guess_format(archive):
         ext, comp = '.tar', 'xz'
     elif ext in ('.gz', '.bz2', '.xz'):
         comp = ext[1:]
-        base, ext = os.path.split(base)
+        base, ext = os.path.splitext(base)
     if ext == '.tar':
         return 'tar', comp
     raise Exception('Unknow archive format')
