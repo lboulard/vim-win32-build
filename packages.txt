@@ -32,14 +32,14 @@ Checksum:
 Install: all dmake
 
 Package: gettext
-Version: 0.19.8.1
-Download: https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.19.8.1-v1.14
+Version: 0.21
+Download: https://github.com/mlocati/gettext-iconv-windows/releases/download/v0.21-v1.16
 Binary:
- x86 gettext_x86.zip   ${Download}/gettext0.19.8.1-iconv1.14-shared-32.zip
- x64 gettext_amd64.zip ${Download}/gettext0.19.8.1-iconv1.14-shared-64.zip
+ x86 gettext_x86.zip   ${Download}/gettext0.21-iconv1.16-shared-32.zip
+ x64 gettext_amd64.zip ${Download}/gettext0.21-iconv1.16-shared-64.zip
 Checksum:
- gettext_x86.zip   sha256  1a791b426c18ea3cd5e60d787004782bb31ef73c77d40709c97425abfd0776c9
- gettext_amd64.zip sha256  8f0ccf3dbec6401bfa5b59c3f62189c5418a819ea058c4c49fc624e10a3b7886
+ gettext_x86.zip   sha256 8db13475bd8a4fa64ace5de96954f4b19907c92379f7d1c718324d8786a221fa
+ gettext_amd64.zip sha256 b500cb5b3f3fdeb388d55cebce2f2b0302edb1bf3f7a7b5d1bf1526c73b031bb
 Install:
  x86 GetText_x86
  x64 GetText_x64
@@ -55,27 +55,27 @@ Install:
  all winpty-${Version}
 
 Package: racket
-Version: 7.4
-Vim-Version: 3m_bn55vk
+Version: 7.8
+Vim-Version: 3m_bpiwao
 Download: https://www.cs.utah.edu/plt/installers
 Binary:
  x86 racket_x86.tgz   ${Download}/${Version}/racket-minimal-${Version}-i386-win32.tgz
  x64 racket_amd64.tgz ${Download}/${Version}/racket-minimal-${Version}-x86_64-win32.tgz
 Checksum:
- racket_x86.tgz   sha1 b7ab3e08c4fd844ed3f0ad611781a3e83671319f
- racket_amd64.tgz sha1 260ec34b9ebdbc95fda7d1495b0814ccda244a91
+ racket_x86.tgz   sha256 1c22b9de77abe677c445928f52aa0b4de99dad9c7791195bf3be0699b3ce1aaf
+ racket_amd64.tgz sha256 86a59ee3ab7eb5f247854fa0934c404787e4c2a4e71cf27dc6cf70c0d8c7117a
 Install:
  x86 racket_${Version}_x86
  x64 racket_${Version}_x64
 
 Package: perl
-Version: 5.28.1
+Version: 5.32.1
 Source:
- any perl_src.tgz http://www.cpan.org/src/5.0/perl-${Version}.tar.gz
+ any perl_src.tar.xz http://www.cpan.org/src/5.0/perl-${Version}.tar.xz
 Source-Dir: perl-${Version}
 Checksum:
- perl_src.tgz sha256 3ebf85fe65df2ee165b22596540b7d5d42f84d4b72d84834f74e2e0b8956c347
-Vim-Version: 528
+ perl_src.tar.xz sha256 57cc47c735c8300a8ce2fa0643507b44c4ae59012bfdad0121313db639e02309
+Vim-Version: 532
 Install:
  x86 perl_${Version}_x86
  x64 perl_${Version}_x64
@@ -95,32 +95,32 @@ Install:
  x64 lua_${Version}_x64
 
 Package: tcl
-Version: 8.6.7
+Version: 8.6.11
 Vim-Version: 86 8.6
 Source:
- any tcl_src.zip https://prdownloads.sourceforge.net/tcl/tcl867-src.zip
+ any tcl_src.tar.gz https://prdownloads.sourceforge.net/tcl/tcl${Version}-src.tar.gz
 Source-Dir: tcl${Version}
 Checksum:
- tcl_src.zip sha256 df44fea4d5b1756f0a33be6cf0e30756a168b0d14f4c918708f6a7164e2bf83c
+ tcl_src.tar.gz sha256 8c0486668586672c5693d7d95817cb05a18c5ecca2f40e2836b9578064088258
 Install:
  x86 tcl_${Version}_x86
  x64 tcl_${Version}_x64
 
 Package: ruby
-Version: 2.6.3
-Vim-Version: 26 2.6.0
+Version: 2.7.3
+Vim-Version: 27 2.7.0
 Source:
- any ruby_src.tgz https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.3.tar.gz
+ any ruby_src.tgz https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.3.tar.gz
 Source-Dir: ruby-${Version}
 Checksum:
- ruby_src.tgz sha256 577fd3795f22b8d91c1d4e6733637b0394d4082db659fccf224c774a2b1c82fb
+ ruby_src.tgz sha256 8925a95e31d8f2c81749025a52a544ea1d05dad18794e6828709268b92e55338
 Install:
  x86 ruby_${Version}_x86
  x64 ruby_${Version}_x64
 
 Package: ninja
-Version: 1.9.0
+Version: 1.10.2
 Binary:
   all ninja-win.zip https://github.com/ninja-build/ninja/releases/download/v${Version}/ninja-win.zip
 Checksum:
- ninja-win.zip sha256 2d70010633ddaacc3af4ffbd21e22fae90d158674a09e132e06424ba3ab036e9
+ ninja-win.zip sha256 bbde850d247d2737c5764c927d1071cbb1f1957dcabda4a130fa8547c12c695f

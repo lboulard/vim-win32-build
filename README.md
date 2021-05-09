@@ -37,11 +37,11 @@ only _bash_, _GNU make_, _uniq.exe_ and _sed.exe_ are used while generating
 > This is heavy requirement for such a light task.
 > TODO: embed _sed.exe_ and do text transformation in dosbatch script.
 
-### Computer installation of Python 2.7 and 3.7
+### Computer installation of Python 2.7 and 3.8
 
 It is not possible to fetch and extract Python software just for building Vim.
 Python 2.7 is expected to be installed in `C:\Python27`. Python 3.7 is expected
-to be installed in `C:\Program Files\Python37`.
+to be installed in `C:\Program Files\Python38`.
 
 ### Microsoft Software
 
@@ -63,20 +63,18 @@ account at Microsoft.
 Open a DOS prompt and go to project root. Run DOS prompt as normal user, not as
 administrator.
 
-Make sure that Python 3.7 `python.exe` is accessible from `PATH` variable.
-
 First install `pipenv` to further get runtime dependencies. Then install
 dependencies and create a python virtual environment for next commands:
 
 ```dosbatch
-python.exe -m pip install --user pipenv
-python.exe -m pipenv install
+py -3 -m pip install --user pipenv
+py -3 -m pipenv install
 ```
 
 ### Download archives and installers
 
 ```dosbatch
-python -m pipenv run download.bat
+py -3 -m pipenv run download.bat
 ```
 
 It can take a long depending of network connection speed.
@@ -86,23 +84,25 @@ It can take a long depending of network connection speed.
 List and version of GVim/Vim dependencies used for build and packages:
 
 - [UPX](http://upx.sourceforge.net/) 3.91
-- [GetText](https://github.com/mlocati/gettext-iconv-windows) 0.19.8.1 and iconv 1.14
+- [GetText](https://github.com/mlocati/gettext-iconv-windows) 0.21 and iconv 1.16
 - [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.1.4
 - [WinPTY](https://github.com/rprichard/winpty) 0.4.3
 - [dmake](https://cpan.metacpan.org/authors/id/S/SH/SHAY/) 4.12.2.2
-- [Perl](http://www.perl.org) 5.28.1
-- [Tcl](http://www.tcl.tk) 8.6.7
-- [Racket](https://download.racket-lang.org/) 7.4
-- [Ruby](https://www.ruby-lang.org/en/downloads/) 2.6.3
-- [ninja](https://ninja-build.org) 1.8.2
+- [Perl](http://www.perl.org) 5.32.1
+- [Tcl](http://www.tcl.tk) 8.6.11
+- [Racket](https://download.racket-lang.org/) 7.8
+- [Ruby](https://www.ruby-lang.org/en/downloads/) 2.7.3
+- [ninja](https://ninja-build.org) 1.10.2
 - [NSIS](http://nsis.sourceforge.net) 3.04
+
+> Racket 7.9 does not compile due to a missing include header in distribution.
 
 To prepare all required software for building GVim/Vim at next step, run:
 
 ```dosbatch
 7z x downloads\ninja-win.zip ninja.exe
-python -m pipenv run configure.bat
-python -m pipenv run ninja packages
+py -3 -m pipenv run configure.bat
+py -3 -m pipenv run ninja packages
 ```
 
 It is possible to only prepare a specific package:
@@ -121,7 +121,7 @@ Ruby preparation is the longest of all tasks.
 ### Build GVim/Vim and package installations
 
 ```dosbatch
-python -m pipenv run ninja gvim
+py -3 -m pipenv run ninja gvim
 ```
 
 You shall now have files `gvim-8.2.xxx-ARCH.exe` and `gvim-8.2.xxx-ARCH.zip` in
