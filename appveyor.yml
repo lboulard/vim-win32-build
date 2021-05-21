@@ -78,7 +78,7 @@ deploy:
       $(HashTable)
       ```
     auth_token:
-      secure: iOiS2SxHg7FOCRo5SiixjnP8bqI/lk1CgtiNWZGWlY8KKBIiZB+jbflmFiDfB2ed
+      secure: 5mL/zCUjolWG7x9ind3+LG3umDNuUsOu99DY3xZNxR52l3i7lc+RUXv+xkr8HDBk
     artifact: /gVim/
     draft: false
     force_update: true
