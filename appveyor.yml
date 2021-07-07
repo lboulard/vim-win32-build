@@ -1,6 +1,6 @@
 version: "{build}"
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 # Build only on tags
 skip_non_tags: true
@@ -13,7 +13,7 @@ install:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-http-proxy.ps1'))
 
 before_build:
-  - PATH C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%
+  - PATH C:\Python38-x64;C:\Python38-x64\Scripts;%PATH%
   - SET
   - DIR C:\
   - pip install -r requirements.txt

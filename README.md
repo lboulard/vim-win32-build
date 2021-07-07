@@ -40,7 +40,7 @@ only _bash_, _GNU make_, _uniq.exe_ and _sed.exe_ are used while generating
 ### Computer installation of Python 2.7 and 3.8
 
 It is not possible to fetch and extract Python software just for building Vim.
-Python 2.7 is expected to be installed in `C:\Python27`. Python 3.7 is expected
+Python 2.7 is expected to be installed in `C:\Python27`. Python 3.8 is expected
 to be installed in `C:\Program Files\Python38`.
 
 ### Microsoft Software
@@ -53,9 +53,14 @@ download link:
 
 - [Visual C++ 2015 Build Tools](http://go.microsoft.com/fwlink/?LinkId=691126&fixForIE=.exe)
 
-#### Visual Studio 2017
+#### Visual Studio 2017 (until tag v8.2.3114)
 
 Install Visual Studio 2017 Community edition. You need to create a (free)
+account at Microsoft.
+
+#### Visual Studio 2019
+
+Install Visual Studio 2019 Community edition. You need to create a (free)
 account at Microsoft.
 
 ## Usage
