@@ -15,3 +15,4 @@ dist/
 /.ninja*
 /config.bat
 /config.ninja
+/.venv
