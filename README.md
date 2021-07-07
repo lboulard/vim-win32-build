@@ -63,18 +63,19 @@ account at Microsoft.
 Open a DOS prompt and go to project root. Run DOS prompt as normal user, not as
 administrator.
 
-First install `pipenv` to further get runtime dependencies. Then install
-dependencies and create a python virtual environment for next commands:
+First create a virtualenv in `.venv` folder to further get runtime
+dependencies. Then install dependencies:
 
 ```dosbatch
-py -3 -m pip install --user pipenv
-py -3 -m pipenv install
+py -3 -m venv .venv
+.venv\Scripts\activate.bat
+pip install -r requirements.txt
 ```
 
 ### Download archives and installers
 
 ```dosbatch
-py -3 -m pipenv run download.bat
+download.bat
 ```
 
 It can take a long depending of network connection speed.
@@ -101,8 +102,8 @@ To prepare all required software for building GVim/Vim at next step, run:
 
 ```dosbatch
 7z x downloads\ninja-win.zip ninja.exe
-py -3 -m pipenv run configure.bat
-py -3 -m pipenv run ninja packages
+configure.bat
+ninja packages
 ```
 
 It is possible to only prepare a specific package:
@@ -121,7 +122,7 @@ Ruby preparation is the longest of all tasks.
 ### Build GVim/Vim and package installations
 
 ```dosbatch
-py -3 -m pipenv run ninja gvim
+ninja gvim
 ```
 
 You shall now have files `gvim-8.2.xxx-ARCH.exe` and `gvim-8.2.xxx-ARCH.zip` in
