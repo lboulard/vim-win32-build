@@ -3,7 +3,7 @@
 # GVim/Vim Win32 builder
 
 Generate installers and archives for x86 and AMD64 CPU architecture using
-Visual C++ 2015 build tools.
+Visual C++ 2019 build tools.
 
 Inspired by <https://github.com/vim/vim-win32-installer> project and home grew
 scripts.
