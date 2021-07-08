@@ -60,17 +60,21 @@ POPD
 :: Build both 64- and 32-bit versions of gvimext.dll for the installer
 IF NOT EXIST GvimExt64\. MKDIR GvimExt64
 IF NOT EXIST GvimExt32\. MKDIR GvimExt32
-START /B /WAIT CMD /C ""%VS140COMNTOOLS%\..\..\vc\vcvarsall.bat" x64 && CD GvimExt && nmake -nologo clean all" || EXIT /B 1
+START /B /WAIT CMD /C ""%VSDevCmd%" -no_logo -arch=x64 && CD GvimExt && nmake -nologo clean all"
+IF ERRORLEVEL 1 EXIT /B !ERRORLEVEL!
 COPY /Y GvimExt\gvimext.dll  GvimExt\gvimext64.dll
 MOVE /Y GvimExt\gvimext.dll  GvimExt64\gvimext.dll
 COPY /Y GvimExt\README.txt   GvimExt64\
 COPY /Y GvimExt\*.inf        GvimExt64\
 COPY /Y GvimExt\*.reg        GvimExt64\
-START /B /WAIT CMD /C ""%VS140COMNTOOLS%\..\..\vc\vcvarsall.bat" x86 && CD GvimExt && nmake -nologo clean all"  || EXIT /B 1
+IF ERRORLEVEL 1 EXIT /B !ERRORLEVEL!
+START /B /WAIT CMD /C ""%VSDevCmd%" -no_logo -arch=x86 && CD GvimExt && nmake -nologo clean all"
+IF ERRORLEVEL 1 EXIT /B !ERRORLEVEL!
 COPY /Y GvimExt\gvimext.dll GvimExt32\gvimext.dll
 COPY /Y GvimExt\README.txt  GvimExt32\
 COPY /Y GvimExt\*.inf       GvimExt32\
 COPY /Y GvimExt\*.reg       GvimExt32\
+IF ERRORLEVEL 1 EXIT /B !ERRORLEVEL!
 
 @ECHO OFF
 POPD
