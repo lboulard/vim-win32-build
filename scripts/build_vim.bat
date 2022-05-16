@@ -53,7 +53,7 @@ nmake -nologo -f Make_mvc.mak ^
 
 PUSHD po
 nmake -f Make_mvc.mak ^
- GETTEXT_PATH=%GETTEXT_DIR%\bin VIMRUNTIME=%VIMSRC_BUILD%\runtime ^
+ GETTEXT_PATH=%GETTEXT_DIR_x64%\bin VIMRUNTIME=%VIMSRC_BUILD%\runtime ^
  install-all > NUL || EXIT /B 1
 POPD
 
