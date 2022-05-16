@@ -37,11 +37,11 @@ only _bash_, _GNU make_, _uniq.exe_ and _sed.exe_ are used while generating
 > This is heavy requirement for such a light task.
 > TODO: embed _sed.exe_ and do text transformation in dosbatch script.
 
-### Computer installation of Python 2.7 and 3.8
+### Computer installation of Python 2.7 and 3.10
 
 It is not possible to fetch and extract Python software just for building Vim.
-Python 2.7 is expected to be installed in `C:\Python27`. Python 3.8 is expected
-to be installed in `C:\Program Files\Python38`.
+Python 2.7 is expected to be installed in `C:\Python27`. Python 3.10 is
+expected to be installed in `C:\Program Files\Python310`.
 
 ### Microsoft Software
 
