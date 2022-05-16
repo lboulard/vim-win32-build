@@ -107,13 +107,13 @@ Install:
  x64 tcl_${Version}_x64
 
 Package: ruby
-Version: 2.7.3
+Version: 2.7.6
 Vim-Version: 27 2.7.0
 Source:
- any ruby_src.tgz https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.3.tar.gz
+ any ruby_src.tgz https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.6.tar.gz
 Source-Dir: ruby-${Version}
 Checksum:
- ruby_src.tgz sha256 8925a95e31d8f2c81749025a52a544ea1d05dad18794e6828709268b92e55338
+ ruby_src.tgz sha256 e7203b0cc09442ed2c08936d483f8ac140ec1c72e37bb5c401646b7866cb5d10
 Install:
  x86 ruby_${Version}_x86
  x64 ruby_${Version}_x64
