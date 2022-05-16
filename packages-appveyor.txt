@@ -6,8 +6,8 @@ Install:
  x64 C:\Python27-x64
 
 Package: python3
-Version: 3.8
-Vim-Version: 38
+Version: 3.10
+Vim-Version: 310
 Install:
- x86 C:\Python38
- x64 C:\Python38-x64
+ x86 C:\Python310
+ x64 C:\Python310-x64
