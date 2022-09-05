@@ -112,13 +112,19 @@ COMMITURL = "https://github.com/vim/vim/commit/"
 def transform(msg, commit="", tag=""):
     m = PATCHRE.fullmatch(msg)
     if m:
+        version, url = tag.lstrip("v"), TAGURL
+        if not tag:
+            # patch without a git tag on it
+            version, tag, url = m.group(1), commit, COMMITURL
         return "* [{0}]({url}{tag}): {msg}".format(
-            tag.lstrip("v"), tag=tag, msg=m.group(2), url=TAGURL
+            version, tag=tag, msg=m.group(2), url=url
         )
-    else:
+    elif commit:
         return "* [{0}]({url}{commit}): {msg}".format(
             commit[:7], commit=commit, msg=msg, url=COMMITURL
         )
+    else:
+        return "* {msg}".format(msg=msg)
 
 
 def findcurrenttag():
