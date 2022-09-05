@@ -4,7 +4,7 @@ import sys
 import re
 from subprocess import Popen, PIPE, DEVNULL
 
-PATCHRE = re.compile(r"patch ([\.a-z0-9_-]+)[ ]*:[ ]*(.*)", flags=re.IGNORECASE)
+PATCHRE = re.compile(r"^patch ([\.a-z0-9_-]+)\s*:\s*(.*)", flags=re.IGNORECASE)
 
 
 def root():
