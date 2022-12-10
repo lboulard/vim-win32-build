@@ -12,7 +12,7 @@
 	@EXIT /B 1
 )
 @ECHO Using VsDevCmd.bat at "%VSDevCmd%"
-@CALL "%VSDevCmd%" -no_logo -startdir=none -arch=%SDK_ARCH% -winsdk=10.0.17763.0
+@CALL "%VSDevCmd%" -no_logo -startdir=none -arch=%SDK_ARCH% -winsdk=10.0.18362.0
 @IF ERRORLEVEL 1 EXIT /B !ERRORLEVEL!
 CALL %1 %2 %3 %4 %5 %6 %7
 @EXIT /B !ERRORLEVEL!
