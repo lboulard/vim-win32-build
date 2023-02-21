@@ -26,6 +26,7 @@ SET BUILDOPTIONS=CPU=%VIM_CPU% CVARS=/MP CPUNR=sse2 WINVER=0x601 ^
  RUBY_MSVCRT_NAME=msvcrt ^
  DYNAMIC_PYTHON=yes PYTHON="%PYTHON_DIR%" PYTHON_VER=%PYTHON_VER% ^
  DYNAMIC_PYTHON3=yes PYTHON3="%PYTHON3_DIR%" PYTHON3_VER=%PYTHON3_VER% ^
+ DYNAMIC_SODIUM=yes SODIUM="%LIBSODIUM_DIR%" ^
  XPM="%XPM%"
 
 IF EXIST "%VIMSRC_BUILD%" RD /Q /S %VIMSRC_BUILD%
@@ -116,6 +117,7 @@ COPY /Y %LUA_DIR%\lua5.1.dll ..\runtime\lua51.dll || EXIT /B 1Z
 IF %ARCH% == x86 COPY /Y %WINPTY_DIR%\%WINPTY_ARCH_x86%\bin\winpty.dll ..\runtime\winpty32.dll || EXIT /B 1
 IF %ARCH% == x64 COPY /Y %WINPTY_DIR%\%WINPTY_ARCH_x64%\bin\winpty.dll ..\runtime\winpty64.dll || EXIT /B 1
 COPY /Y %WINPTY_DIR%\%WINPTY_ARCH%\bin\winpty-agent.exe ..\runtime\ || EXIT /B 1
+COPY /Y %LIBSODIUM_DIR%\%LIBSODIUM_ARCH%\libsodium.dll ..\runtime\ || EXIT /B 1
 COPY /Y %ROOT%\extras\diff.exe ..\runtime\ || EXIT /B 1
 
 SET dir=%BUILD%\vim-%VIMVER:v=%-%ARCH%

@@ -54,6 +54,16 @@ Checksum:
 Install:
  all winpty-${Version}
 
+Package: libsodium
+Version: 1.0.18
+Download: https://download.libsodium.org/libsodium/releases/
+Binary:
+  all libsodium.zip ${Download}/libsodium-1.0.18-stable-msvc.zip
+Checksum:
+ libsodium.zip sha256 f00cdd1f501d1ea942048b83716327421e5547965d5a74096c7aa377ac210cae
+Install:
+ all libsodium-${Version}
+
 Package: perl
 Version: 5.32.1
 Source:

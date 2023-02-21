@@ -68,6 +68,7 @@ deploy:
       * [Ruby](https://www.ruby-lang.org/en/downloads/) 2.7.3
       * [Python](https://www.python.org/downloads/) 2.7
       * [Python3](https://www.python.org/downloads/) 3.10
+      * [Libsodium](https://doc.libsodium.org) 1.0.18
 
       SHA256 sums
 

@@ -93,6 +93,7 @@ List and version of GVim/Vim dependencies used for build and packages:
 - [GetText](https://github.com/mlocati/gettext-iconv-windows) 0.21 and iconv 1.16
 - [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.1.4
 - [WinPTY](https://github.com/rprichard/winpty) 0.4.3
+- [Libsodium](https://doc.libsodium.org) 1.0.18
 - [dmake](https://cpan.metacpan.org/authors/id/S/SH/SHAY/) 4.12.2.2
 - [Perl](http://www.perl.org) 5.32.1
 - [Tcl](http://www.tcl.tk) 8.6.11
@@ -113,6 +114,7 @@ ninja packages
 It is possible to only prepare a specific package:
  - _UPX_: `ninja upx` to unzip UPX for NSI package creation phase.
  - _GetText_: `ninja winpty` to extract GetText archive.
+ - _Libsodium_: `ninja sodium` to extract Libsodium archive.
  - _Lua_: `ninja lua_x86 lua_x64` to extract Lua archive.
  - _Perl_: `ninja perl_x86 perl_x64` to extract and compile Perl.
  - _Tcl_: `ninja tcl_x86 tcl_x64` to extract and compile Tcl.
