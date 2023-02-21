@@ -36,8 +36,6 @@ build ${dmake_bin}:       extract_to_parent ${dmake_archive}
 build ${winpty_bin}:      extract ${winpty_archive}
 build ${gettext_bin_x86}: extract ${gettext_archive_x86}
 build ${gettext_bin_x64}: extract ${gettext_archive_x64}
-build ${racket_bin_x86}:  extract ${racket_archive_x86}
-build ${racket_bin_x64}:  extract ${racket_archive_x64}
 build ${lua_bin_x86}:     extract ${lua_archive_x86}
 build ${lua_bin_x64}:     extract ${lua_archive_x64}
 
@@ -75,21 +73,19 @@ build winpty:  phony ${winpty_bin}
 build dmake:   phony ${dmake_bin}
 
 build gettext_x86: phony ${gettext_bin_x86}
-build racket_x86:  phony ${racket_bin_x86}
 build lua_x86:     phony ${lua_bin_x86}
 build perl_x86:    phony ${perl_bin_x86}
 build tcl_x86:     phony ${tcl_bin_x86}
 build ruby_x86:    phony ${ruby_bin_x86}
 
 build gettext_x64: phony ${gettext_bin_x64}
-build racket_x64:  phony ${racket_bin_x64}
 build lua_x64:     phony ${lua_bin_x64}
 build perl_x64:    phony ${perl_bin_x64}
 build tcl_x64:     phony ${tcl_bin_x64}
 build ruby_x64:    phony ${ruby_bin_x64}
 
-build extract_bin_x86: phony upx nsis winpty gettext_x86 racket_x86 lua_x86
-build extract_bin_x64: phony upx nsis winpty gettext_x64 racket_x64 lua_x64
+build extract_bin_x86: phony upx nsis winpty gettext_x86 lua_x86
+build extract_bin_x64: phony upx nsis winpty gettext_x64 lua_x64
 build extract_bin: phony extract_bin_x86 extract_bin_x64
 
 build extract_build_x86: phony perl_build_x86 tcl_build_x86 ruby_build_x86
@@ -98,8 +94,8 @@ build extract_build: phony extract_build_x86 extract_build_x64
 
 build extract: phony extract_bin extract_build
 
-build packages_x86: phony upx nsis winpty gettext_x86 gettext_x64 racket_x86 lua_x86 perl_x86 tcl_x86 ruby_x86
-build packages_x64: phony upx nsis winpty gettext_x86 gettext_x64 racket_x64 lua_x64 perl_x64 tcl_x64 ruby_x64
+build packages_x86: phony upx nsis winpty gettext_x86 gettext_x64 lua_x86 perl_x86 tcl_x86 ruby_x86
+build packages_x64: phony upx nsis winpty gettext_x86 gettext_x64 lua_x64 perl_x64 tcl_x64 ruby_x64
 build packages: phony packages_x86 packages_x64
 
 build gvim-${vim_version}-x86.zip gvim-${vim_version}-x86.exe: build_vim_x86 | packages_x86

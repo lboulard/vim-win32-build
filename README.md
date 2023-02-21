@@ -96,7 +96,6 @@ List and version of GVim/Vim dependencies used for build and packages:
 - [dmake](https://cpan.metacpan.org/authors/id/S/SH/SHAY/) 4.12.2.2
 - [Perl](http://www.perl.org) 5.32.1
 - [Tcl](http://www.tcl.tk) 8.6.11
-- [Racket](https://download.racket-lang.org/) 7.8
 - [Ruby](https://www.ruby-lang.org/en/downloads/) 2.7.3
 - [ninja](https://ninja-build.org) 1.10.2
 - [NSIS](http://nsis.sourceforge.net) 3.04
@@ -117,7 +116,6 @@ It is possible to only prepare a specific package:
  - _Lua_: `ninja lua_x86 lua_x64` to extract Lua archive.
  - _Perl_: `ninja perl_x86 perl_x64` to extract and compile Perl.
  - _Tcl_: `ninja tcl_x86 tcl_x64` to extract and compile Tcl.
- - _Racket_: `ninja racket_x86 racket_x64` to extract Racket archive
  - _Ruby_: `ninja ruby_x86 ruby_x64` to extract and compile Ruby.
 
 Not that Ruby needs to be compiled using VisualStudio before being able to
