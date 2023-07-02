@@ -67,7 +67,7 @@ deploy:
       * [Tcl](http://www.tcl.tk) 8.6.11
       * [Ruby](https://www.ruby-lang.org/en/downloads/) 2.7.3
       * [Python](https://www.python.org/downloads/) 2.7
-      * [Python3](https://www.python.org/downloads/) 3.10
+      * [Python3](https://www.python.org/downloads/) 3.11
       * [Libsodium](https://doc.libsodium.org) 1.0.18
 
       SHA256 sums
