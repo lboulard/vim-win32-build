@@ -1,3 +1,11 @@
+# Project on hold
+
+After [passing of Bram Moolenaar](https://groups.google.com/g/vim_announce/c/tWahca9zkt4)
+this project is on hold starting 5 August 2023.
+
+Thank you Bram for all you did in this world!
+«Que la terre vous soit légère» (“May the earth rest lightly on you”).
+
 [![Build status](https://ci.appveyor.com/api/projects/status/2arjuao3028n44p1?svg=true)](https://ci.appveyor.com/project/lboulard/vim-win32-build)
 
 # GVim/Vim Win32 builder
