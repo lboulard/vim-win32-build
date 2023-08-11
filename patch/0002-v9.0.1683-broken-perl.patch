@@ -1,0 +1,116 @@
+From 2dd34d2de3e72ac16e7e8d97c6014343dde3b54e Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Thu, 10 Aug 2023 14:49:56 +0900
+Subject: [PATCH 1/2] Fix compilation error with Perl 5.32
+
+https://github.com/vim/vim/pull/12575 caused compilation error with Perl 5.32.
+
+Strawberry Perl is still 5.32. Windows users may stuck with this version.
+---
+ src/if_perl.xs | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/if_perl.xs b/src/if_perl.xs
+index 6c1003c4113a..dbc17cdef826 100644
+--- a/src/if_perl.xs
++++ b/src/if_perl.xs
+@@ -40,7 +40,7 @@
+ /* Work around for perl-5.18.
+  * Don't include "perl\lib\CORE\inline.h" for now,
+  * include it after Perl_sv_free2 is defined. */
+-#if (PERL_REVISION == 5) && (PERL_VERSION >= 18)
++#ifdef DYNAMIC_PERL
+ # define PERL_NO_INLINE_FUNCTIONS
+ #endif
+ 
+@@ -334,6 +334,7 @@ typedef int perl_key;
+ # if (PERL_REVISION == 5) && (PERL_VERSION >= 24)
+ #  define Perl_savetmps dll_Perl_savetmps
+ # endif
++# define Perl_gimme_V dll_Perl_gimme_V
+ 
+ /*
+  * Declare HANDLE for perl.dll and function pointers.
+@@ -502,6 +503,7 @@ static void (*PerlIO_define_layer)(pTHX_ PerlIO_funcs *);
+ # if (PERL_REVISION == 5) && (PERL_VERSION >= 24)
+ static void (*Perl_savetmps)(pTHX);
+ # endif
++static U8 (*Perl_gimme_V)(pTHX);
+ 
+ /*
+  * Table of name to function pointer of perl.
+@@ -655,6 +657,7 @@ static struct {
+ # if (PERL_REVISION == 5) && (PERL_VERSION >= 24)
+     {"Perl_savetmps", (PERL_PROC*)&Perl_savetmps},
+ # endif
++    {"Perl_gimme_V", (PERL_PROC*)&Perl_gimme_V},
+     {"", NULL},
+ };
+ 
+
+From 4b116823fcd0e769eaf393deaf845f13ab19b4a3 Mon Sep 17 00:00:00 2001
+From: "K.Takata" <kentkt@csc.jp>
+Date: Thu, 10 Aug 2023 18:23:47 +0900
+Subject: [PATCH 2/2] Fix load error
+
+Perl_gimme_V is not exported from the DLL.
+---
+ src/if_perl.xs | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/src/if_perl.xs b/src/if_perl.xs
+index dbc17cdef826..4d435746974f 100644
+--- a/src/if_perl.xs
++++ b/src/if_perl.xs
+@@ -334,7 +334,6 @@ typedef int perl_key;
+ # if (PERL_REVISION == 5) && (PERL_VERSION >= 24)
+ #  define Perl_savetmps dll_Perl_savetmps
+ # endif
+-# define Perl_gimme_V dll_Perl_gimme_V
+ 
+ /*
+  * Declare HANDLE for perl.dll and function pointers.
+@@ -503,7 +502,6 @@ static void (*PerlIO_define_layer)(pTHX_ PerlIO_funcs *);
+ # if (PERL_REVISION == 5) && (PERL_VERSION >= 24)
+ static void (*Perl_savetmps)(pTHX);
+ # endif
+-static U8 (*Perl_gimme_V)(pTHX);
+ 
+ /*
+  * Table of name to function pointer of perl.
+@@ -657,7 +655,6 @@ static struct {
+ # if (PERL_REVISION == 5) && (PERL_VERSION >= 24)
+     {"Perl_savetmps", (PERL_PROC*)&Perl_savetmps},
+ # endif
+-    {"Perl_gimme_V", (PERL_PROC*)&Perl_gimme_V},
+     {"", NULL},
+ };
+ 
+@@ -750,6 +747,27 @@ Perl_SvTRUE(pTHX_ SV *sv) {
+ }
+ # endif
+ 
++# if (PERL_REVISION == 5) && (PERL_VERSION >= 32)
++PERL_STATIC_INLINE U8
++Perl_gimme_V(pTHX)
++{
++    I32 cxix;
++    U8  gimme = (PL_op->op_flags & OPf_WANT);
++
++    if (gimme)
++        return gimme;
++    cxix = PL_curstackinfo->si_cxsubix;
++    if (cxix < 0)
++	return
++#  if (PERL_REVISION == 5) && (PERL_VERSION >= 34)
++	    PL_curstackinfo->si_type == PERLSI_SORT ? G_SCALAR:
++#  endif
++	    G_VOID;
++    assert(cxstack[cxix].blk_gimme & G_WANT);
++    return (cxstack[cxix].blk_gimme & G_WANT);
++}
++# endif
++
+ /*
+  * Make all runtime-links of perl.
+  *
