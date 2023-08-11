@@ -1,5 +1,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/2arjuao3028n44p1?svg=true)](https://ci.appveyor.com/project/lboulard/vim-win32-build)
 
+> WARNING: as of 2023-08-11, project Vim is unstable and daily automatic build are stopped
+
 # GVim/Vim Win32 builder
 
 Generate installers and archives for x86 and AMD64 CPU architecture using
