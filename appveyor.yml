@@ -65,7 +65,7 @@ deploy:
       * [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.1.4
       * [Perl](http://perl.org) 5.32.1
       * [Tcl](http://www.tcl.tk) 8.6.11
-      * [Ruby](https://www.ruby-lang.org/en/downloads/) 2.7.3
+      * [Ruby](https://www.ruby-lang.org/en/downloads/) 3.2.2
       * [Python](https://www.python.org/downloads/) 2.7
       * [Python3](https://www.python.org/downloads/) 3.11
       * [Libsodium](https://doc.libsodium.org) 1.0.18
