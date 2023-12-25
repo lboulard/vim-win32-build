@@ -60,7 +60,7 @@ Download: https://download.libsodium.org/libsodium/releases/
 Binary:
   all libsodium.zip ${Download}/libsodium-1.0.18-stable-msvc.zip
 Checksum:
- libsodium.zip sha256 8a2f3eb2935ce02a6406157b3b639e9c18f72a136561036efcc8478f259f33d1
+ libsodium.zip sha256 f5e18d72b068209164e7d34e965a05d43422ad73dda61c9f56cb1da9b119d673
 Install:
  all libsodium-${Version}
 
