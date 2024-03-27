@@ -11,7 +11,7 @@ diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
 index 17e3e7238..ed5d5c86f 100644
 --- a/nsis/gvim.nsi
 +++ b/nsis/gvim.nsi
-@@ -607,6 +607,14 @@ Section "$(str_section_nls)" id_section_nls
+@@ -664,6 +664,14 @@ Section "$(str_section_nls)" id_section_nls
  SectionEnd
  !endif
  
