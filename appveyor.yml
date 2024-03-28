@@ -14,6 +14,7 @@ install:
 
 before_build:
   - PATH C:\Python310-x64;C:\Python310-x64\Scripts;%PATH%
+  - SET "APPVEYOR_CACHE_ENTRY_ZIP_ARGS=-t7z -m0=lzma -mx=9"
   - SET
   - DIR C:\
   - pip install -r requirements.txt
@@ -83,5 +84,7 @@ deploy:
 
 cache:
   - downloads -> appveyor.yml, packages.txt
+  - pkgs -> appveyor.yml, packages.txt, scripts\build_*.bat
+  - builds -> appveyor.yml, packages.txt, scripts\build_*.bat
 
 # vim : ts=2 ws=2 et
