@@ -1,18 +1,18 @@
 Package: upx
-Version: 3.96
+Version: 4.2.3
 Download: https://github.com/upx/upx/releases/download
 Binary:
  all upx-win64.zip ${Download}/v${Version}/upx-${Version}-win64.zip
 Checksum:
- upx-win64.zip sha256 a2655c66a547e2274474e54d7a373f1c28e96ded162c51b34651873691022184
+ upx-win64.zip sha256 5f0458eb44ef2a9f8a3d02946e2d1382b1dac3e4a95d4dacf662ede567abfc59
 Install: all upx-${Version}-win64
 
 Package: nsis
-Version: 3.04
+Version: 3.09
 Binary:
  all nsis_bin.zip https://prdownloads.sourceforge.net/nsis/nsis-${Version}.zip
 Checksum:
- nsis_bin.zip sha256 22f3349fea453a45551745635c13e5efb7849ecbdce709daa2b2fa8e2ac55fc4
+ nsis_bin.zip sha256 f5dc52eef1f3884230520199bac6f36b82d643d86b003ce51bd24b05c6ba7c91
 Install: all nsis-${Version}
 
 Package: nsis_shellexec
@@ -115,8 +115,8 @@ Install:
  x64 ruby_${Version}_x64
 
 Package: ninja
-Version: 1.10.2
+Version: 1.11.1
 Binary:
   all ninja-win.zip https://github.com/ninja-build/ninja/releases/download/v${Version}/ninja-win.zip
 Checksum:
- ninja-win.zip sha256 bbde850d247d2737c5764c927d1071cbb1f1957dcabda4a130fa8547c12c695f
+ ninja-win.zip sha256 524b344a1a9a55005eaf868d991e090ab8ce07fa109f1820d40e74642e289abc
