@@ -98,7 +98,7 @@ It can take a long depending of network connection speed.
 
 List and version of GVim/Vim dependencies used for build and packages:
 
-- [UPX](http://upx.sourceforge.net/) 3.91
+- [UPX](http://upx.sourceforge.net/) 4.2.3
 - [GetText](https://github.com/mlocati/gettext-iconv-windows) 0.21 and iconv 1.16
 - [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.1.4
 - [WinPTY](https://github.com/rprichard/winpty) 0.4.3
@@ -107,8 +107,8 @@ List and version of GVim/Vim dependencies used for build and packages:
 - [Perl](http://www.perl.org) 5.32.1
 - [Tcl](http://www.tcl.tk) 8.6.11
 - [Ruby](https://www.ruby-lang.org/en/downloads/) 3.2.2
-- [ninja](https://ninja-build.org) 1.10.2
-- [NSIS](http://nsis.sourceforge.net) 3.04
+- [ninja](https://ninja-build.org) 1.11.1
+- [NSIS](http://nsis.sourceforge.net) 3.09
 
 > Racket 7.9 does not compile due to a missing include header in distribution.
 
