@@ -123,7 +123,6 @@ ninja packages
 It is possible to only prepare a specific package:
  - _UPX_: `ninja upx` to unzip UPX for NSI package creation phase.
  - _GetText_: `ninja winpty` to extract GetText archive.
- - _Libsodium_: `ninja sodium` to extract Libsodium archive.
  - _Lua_: `ninja lua_x86 lua_x64` to extract Lua archive.
  - _Perl_: `ninja perl_x86 perl_x64` to extract and compile Perl.
  - _Tcl_: `ninja tcl_x86 tcl_x64` to extract and compile Tcl.
