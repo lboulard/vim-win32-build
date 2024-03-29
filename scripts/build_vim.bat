@@ -152,7 +152,7 @@ PUSHD ..\nsis
 7z x icons.zip -y
 IF %ARCH% == x64 SET "NSIS_ARGS=/DWIN64=1"
 "%NSIS_DIR%\makensis.exe" /DVIMRT=..\runtime /DGETTEXT=%VIMSRC_BUILD%.. ^
-  /DHAVE_UPX=1 %NSIS_ARGS% gvim.nsi ^
+  /DHAVE_UPX=1 /DHAVE_MULTI_LANG=0 %NSIS_ARGS% gvim.nsi ^
   "/XOutFile %ROOT%\gvim-%VIMVER:v=%-%VIM_ARCH%.exe"
 POPD
 @ECHO OFF
