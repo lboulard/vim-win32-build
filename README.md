@@ -138,7 +138,7 @@ Ruby preparation is the longest of all tasks.
 ninja gvim
 ```
 
-You shall now have files `gvim-8.2.xxx-ARCH.exe` and `gvim-8.2.xxx-ARCH.zip` in
+You shall now have files `gvim-9.1.xxx-ARCH.exe` and `gvim-9.1.xxx-ARCH.zip` in
 root folder.
 
 ## Patches
