@@ -13,7 +13,7 @@ install:
   - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-http-proxy.ps1'))
 
 before_build:
-  - PATH C:\Python310-x64;C:\Python310-x64\Scripts;%PATH%
+  - PATH C:\Python312-x64;C:\Python312-x64\Scripts;%PATH%
   - SET
   - DIR C:\
   - pip install -r requirements.txt
@@ -67,7 +67,7 @@ deploy:
       * [Tcl](http://www.tcl.tk) 8.6.11
       * [Ruby](https://www.ruby-lang.org/en/downloads/) 3.2.2
       * [Python](https://www.python.org/downloads/) 2.7
-      * [Python3](https://www.python.org/downloads/) 3.11
+      * [Python3](https://www.python.org/downloads/) 3.12
       * [Libsodium](https://doc.libsodium.org) 1.0.19
 
       SHA256 sums

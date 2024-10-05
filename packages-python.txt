@@ -6,8 +6,8 @@ Install:
  x64 C:\Python27
 
 Package: python3
-Version: 3.11
-Vim-Version: 311
+Version: 3.12
+Vim-Version: 312
 Install:
- x86 C:\Program Files\Python311
- x64 C:\Program Files\Python311
+ x86 C:\Program Files\Python312
+ x64 C:\Program Files\Python312
