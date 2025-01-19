@@ -57,7 +57,7 @@ nmake -nologo -f Make_mvc.mak ^
 @ECHO OFF
 
 PUSHD po
-nmake -f Make_mvc.mak ^
+nmake -nologo -f Make_mvc.mak ^
  GETTEXT_PATH=%GETTEXT_DIR_x64%\bin VIMRUNTIME=%VIMSRC_BUILD%\runtime ^
  install-all > NUL || EXIT /B 1
 POPD
@@ -91,9 +91,6 @@ CD %VIMSRC_BUILD%src || EXIT /B 1
 CALL :FindBinary 7z.exe "C:\Program Files\7-Zip" || EXIT /B
 
 PATH %UPX_DIR%;%PATH%
-
-C:\msys64\usr\bin\bash -lc ^
- "cd $(cygpath '%VIMSRC_BUILD%')/runtime/doc && touch ../../src/auto/config.mk && make uganda.nsis.txt"
 
 ECHO ON
 COPY /Y ..\README.txt ..\runtime\
@@ -149,13 +146,16 @@ COPY /Y xxd\xxd.exe xxdw32.exe
 COPY /Y tee\tee.exe teew32.exe
 COPY /Y install.exe installw32.exe
 COPY /Y uninstall.exe uninstallw32.exe
+
 PUSHD ..\nsis
-7z x icons.zip -y
-IF %ARCH% == x64 SET "NSIS_ARGS=/DWIN64=1"
-"%NSIS_DIR%\makensis.exe" /DVIMRT=..\runtime /DGETTEXT=%VIMSRC_BUILD%.. ^
-  /DHAVE_UPX=1 /DHAVE_MULTI_LANG=0 %NSIS_ARGS% gvim.nsi ^
-  "/XOutFile %ROOT%\gvim-%VIMVER:v=%-%VIM_ARCH%.exe"
+IF %ARCH% == x64 (SET WIN64=1) ELSE (SET WIN64=0)
+nmake -nologo -f Make_mvc.mak "MKNSIS=%NSIS_DIR%" ^
+  "X=OutFile %ROOT%\gvim-%VIMVER:v=%-%VIM_ARCH%.exe" ^
+  "HAVE_UPX=1" "HAVE_MULTI_LANG=0" ^
+  "WIN64=%WIN64%" "VIMRT=..\runtime" "GETTEXT=%VIMSRC_BUILD%.." ^
+  "VIMSRC=%VIMSRC_BUILD%src"
 POPD
+
 @ECHO OFF
 GOTO :EOF
 
