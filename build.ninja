@@ -30,59 +30,59 @@ rule build_vim_x86
 rule build_vim_x64
   command = cmd.exe /D /E:ON /V:ON /C "scripts\run.bat x64 scripts\build_vim.bat "x64" "${vim_version}" vim dist\x64"
 
-build ${upx_bin}:         extract_to_parent ${upx_archive}
-build ${nsis_bin}:        extract_to_parent ${nsis_archive}
-build ${dmake_bin}:       extract_to_parent ${dmake_archive}
-build ${winpty_bin}:      extract ${winpty_archive}
-build ${gettext_bin_x86}: extract ${gettext_archive_x86}
-build ${gettext_bin_x64}: extract ${gettext_archive_x64}
-build ${lua_bin_x86}:     extract ${lua_archive_x86}
-build ${lua_bin_x64}:     extract ${lua_archive_x64}
+build ${upx_bin}\.timestamp:         extract_to_parent ${upx_archive}
+build ${nsis_bin}\.timestamp:        extract_to_parent ${nsis_archive}
+build ${dmake_bin}\.timestamp:       extract_to_parent ${dmake_archive}
+build ${winpty_bin}\.timestamp:      extract ${winpty_archive}
+build ${gettext_bin_x86}\.timestamp: extract ${gettext_archive_x86}
+build ${gettext_bin_x64}\.timestamp: extract ${gettext_archive_x64}
+build ${lua_bin_x86}\.timestamp:     extract ${lua_archive_x86}
+build ${lua_bin_x64}\.timestamp:     extract ${lua_archive_x64}
 
 # Build equired this NSIS Plugin
-build ${nsis_shellexec_bin}: extract ${nsis_shellexec_archive}
-build ${nsis_shellexec_bin}\unicode\ShellExecAsUser.dll: phony ${nsis_shellexec_bin}
-build ${nsis_bin}\Plugins\x86-unicode\ShellExecAsUser.dll: copy_file ${nsis_shellexec_bin}\unicode\ShellExecAsUser.dll | ${nsis_bin}
+build ${nsis_shellexec_bin}\.timestamp: extract ${nsis_shellexec_archive}
+build ${nsis_shellexec_bin}\unicode\ShellExecAsUser.dll: phony ${nsis_shellexec_bin}\.timestamp
+build ${nsis_bin}\Plugins\x86-unicode\ShellExecAsUser.dll: copy_file ${nsis_shellexec_bin}\unicode\ShellExecAsUser.dll | ${nsis_bin}\.timestamp
 build nsis_plugins: phony $
   ${nsis_bin}\Plugins\x86-unicode\ShellExecAsUser.dll
 
-build ${perl_build_x86}: extract_to_parent ${perl_archive}
-build ${perl_build_x64}: extract_to_parent ${perl_archive}
-build ${tcl_build_x86}:  extract_to_parent ${tcl_archive}
-build ${tcl_build_x64}:  extract_to_parent ${tcl_archive}
-build ${ruby_build_x86}: extract_to_parent ${ruby_archive}
-build ${ruby_build_x64}: extract_to_parent ${ruby_archive}
+build ${perl_build_x86}\.timestamp: extract_to_parent ${perl_archive}
+build ${perl_build_x64}\.timestamp: extract_to_parent ${perl_archive}
+build ${tcl_build_x86}\.timestamp:  extract_to_parent ${tcl_archive}
+build ${tcl_build_x64}\.timestamp:  extract_to_parent ${tcl_archive}
+build ${ruby_build_x86}\.timestamp: extract_to_parent ${ruby_archive}
+build ${ruby_build_x64}\.timestamp: extract_to_parent ${ruby_archive}
 
-build ${perl_bin_x86}: build_perl_x86 ${perl_build_x86} | ${dmake_bin}
-build ${perl_bin_x64}: build_perl_x64 ${perl_build_x64} | ${dmake_bin}
-build ${tcl_bin_x86}:  build_tcl_x86  ${tcl_build_x86}
-build ${tcl_bin_x64}:  build_tcl_x64  ${tcl_build_x64}
-build ${ruby_bin_x86}: build_ruby_x86 ${ruby_build_x86}
-build ${ruby_bin_x64}: build_ruby_x64 ${ruby_build_x64}
+build ${perl_bin_x86}\.timestamp: build_perl_x86 ${perl_build_x86}\.timestamp | ${dmake_bin}\.timestamp
+build ${perl_bin_x64}\.timestamp: build_perl_x64 ${perl_build_x64}\.timestamp | ${dmake_bin}\.timestamp
+build ${tcl_bin_x86}\.timestamp:  build_tcl_x86  ${tcl_build_x86}\.timestamp
+build ${tcl_bin_x64}\.timestamp:  build_tcl_x64  ${tcl_build_x64}\.timestamp
+build ${ruby_bin_x86}\.timestamp: build_ruby_x86 ${ruby_build_x86}\.timestamp
+build ${ruby_bin_x64}\.timestamp: build_ruby_x64 ${ruby_build_x64}\.timestamp
 
-build perl_build_x86: phony ${perl_build_x86}
-build perl_build_x64: phony ${perl_build_x64}
-build tcl_build_x86:  phony ${tcl_build_x86}
-build tcl_build_x64:  phony ${tcl_build_x64}
-build ruby_build_x86: phony ${ruby_build_x86}
-build ruby_build_x64: phony ${ruby_build_x64}
+build perl_build_x86: phony ${perl_build_x86}\.timestamp
+build perl_build_x64: phony ${perl_build_x64}\.timestamp
+build tcl_build_x86:  phony ${tcl_build_x86}\.timestamp
+build tcl_build_x64:  phony ${tcl_build_x64}\.timestamp
+build ruby_build_x86: phony ${ruby_build_x86}\.timestamp
+build ruby_build_x64: phony ${ruby_build_x64}\.timestamp
 
-build upx:       phony ${upx_bin}
-build nsis:      phony ${nsis_bin} nsis_plugins
-build winpty:    phony ${winpty_bin}
-build dmake:     phony ${dmake_bin}
+build upx:       phony ${upx_bin}\.timestamp
+build nsis:      phony ${nsis_bin}\.timestamp nsis_plugins
+build winpty:    phony ${winpty_bin}\.timestamp
+build dmake:     phony ${dmake_bin}\.timestamp
 
-build gettext_x86: phony ${gettext_bin_x86}
-build lua_x86:     phony ${lua_bin_x86}
-build perl_x86:    phony ${perl_bin_x86}
-build tcl_x86:     phony ${tcl_bin_x86}
-build ruby_x86:    phony ${ruby_bin_x86}
+build gettext_x86: phony ${gettext_bin_x86}\.timestamp
+build lua_x86:     phony ${lua_bin_x86}\.timestamp
+build perl_x86:    phony ${perl_bin_x86}\.timestamp
+build tcl_x86:     phony ${tcl_bin_x86}\.timestamp
+build ruby_x86:    phony ${ruby_bin_x86}\.timestamp
 
-build gettext_x64: phony ${gettext_bin_x64}
-build lua_x64:     phony ${lua_bin_x64}
-build perl_x64:    phony ${perl_bin_x64}
-build tcl_x64:     phony ${tcl_bin_x64}
-build ruby_x64:    phony ${ruby_bin_x64}
+build gettext_x64: phony ${gettext_bin_x64}\.timestamp
+build lua_x64:     phony ${lua_bin_x64}\.timestamp
+build perl_x64:    phony ${perl_bin_x64}\.timestamp
+build tcl_x64:     phony ${tcl_bin_x64}\.timestamp
+build ruby_x64:    phony ${ruby_bin_x64}\.timestamp
 
 build extract_bin_x86: phony upx nsis winpty gettext_x86 lua_x86
 build extract_bin_x64: phony upx nsis winpty gettext_x64 lua_x64

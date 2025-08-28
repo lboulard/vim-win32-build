@@ -108,18 +108,21 @@ def main():
     parser = argparse.ArgumentParser(description='Download external packages.')
     parser.add_argument('archive',
                         help='Archive to extract')
-    parser.add_argument('path', help='Output directory')
+    parser.add_argument('timestamp', help='timestamp in output directory')
     parser.add_argument('-p', '--parent', dest='in_parent', action='store_true',
                         help='Extract to parent of target directory.' +
                         ' Last path component must match archive root.')
     args = parser.parse_args()
-    archive, path, out = args.archive, args.path, None
-    path = os.path.normpath(path)
+    archive, timestamp, out = args.archive, args.timestamp, None
+    timestamp = os.path.normpath(timestamp)
+    path = os.path.dirname(timestamp)
     if args.in_parent:
         path, out = os.path.dirname(path), path
     if not extract(archive, path, out=out):
         print('** ERROR failed to extract {}'.format(archive), file=sys.stderr)
         sys.exit(1)
+    with open(timestamp, "w+"):
+        pass
     sys.exit(0)
 
 

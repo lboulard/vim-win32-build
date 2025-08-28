@@ -2,8 +2,13 @@
 @CALL config.bat
 @PATH %DMAKE_DIR%;%PATH%
 @SET ARCH=%~1
-@SET PERL_BUILD_DIR="%~f2"
-@SET PERL_DIR="%~f3"
+SET "PERL_BUILD_DIR=%~dp2"
+:: remove final backslash
+SET "PERL_BUILD_DIR=%PERL_BUILD_DIR:~0,-1%"
+SET "TIMESTAMP=%~3"
+SET "PERL_DIR=%~dp3"
+SET "PERL_DIR=%PERL_DIR:~0,-1%"
+
 @IF EXIST "%PERL_DIR%" RD /Q /S "%PERL_DIR%"
 @PUSHD %PERL_BUILD_DIR%\win32
 @IF ERRORLEVEL 1 EXIT /B 1
@@ -14,4 +19,5 @@ IF "%ARCH%" == "x86" (
 )
 dmake -P%NUMBER_OF_PROCESSORS% -f makefile.mk %ARGS% all installbare || EXIT /B 1
 @ECHO OFF
+@TYPE NUL>"%TIMESTAMP%"
 @POPD
