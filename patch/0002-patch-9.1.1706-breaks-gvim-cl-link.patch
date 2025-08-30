@@ -1,0 +1,40 @@
+diff --git c/src/proto/time.pro i/src/proto/time.pro
+index 9d6d9e962..d9739b418 100644
+--- c/src/proto/time.pro
++++ i/src/proto/time.pro
+@@ -20,7 +20,7 @@ void f_timer_pause(typval_T *argvars, typval_T *rettv);
+ void f_timer_start(typval_T *argvars, typval_T *rettv);
+ void f_timer_stop(typval_T *argvars, typval_T *rettv);
+ void f_timer_stopall(typval_T *argvars, typval_T *rettv);
+-#if (defined(MSWIN) || defined(__MINGW32__)) && !defined(FEAT_RUBY)
++#if defined(MSWIN) || defined(__MINGW32__)
+ int gettimeofday(struct timeval *tv, char *dummy);
+ #endif
+ void time_push(void *tv_rel, void *tv_start);
+diff --git c/src/time.c i/src/time.c
+index 830a94cd6..d45179948 100644
+--- c/src/time.c
++++ i/src/time.c
+@@ -127,8 +127,7 @@ get_ctime(time_t thetime, int add_newline)
+     return buf;
+ }
+ 
+-// Ruby has its own version of gettimeofday
+-#if (defined(MSWIN) || defined(__MINGW32__)) && !defined(FEAT_RUBY)
++#if defined(MSWIN) || defined(__MINGW32__)
+ /*
+  * Windows doesn't have gettimeofday(), although it does have struct timeval.
+  */
+diff --git c/src/version.c i/src/version.c
+index 4a04a97b8..171804f16 100644
+--- c/src/version.c
++++ i/src/version.c
+@@ -738,8 +738,6 @@ static int included_patches[] =
+     1708,
+ /**/
+     1707,
+-/**/
+-    1706,
+ /**/
+     1705,
+ /**/
