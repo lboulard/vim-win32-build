@@ -11,8 +11,8 @@ diff --git a/nsis/gvim.nsi b/nsis/gvim.nsi
 index 17e3e7238..ed5d5c86f 100644
 --- a/nsis/gvim.nsi
 +++ b/nsis/gvim.nsi
-@@ -664,6 +664,14 @@ Section "$(str_section_nls)" id_section_nls
- SectionEnd
+@@ -651,6 +651,14 @@ Section "$(str_section_nls)" id_section_nls
+   SectionEnd
  !endif
  
 +##########################################################
@@ -25,7 +25,7 @@ index 17e3e7238..ed5d5c86f 100644
 +
  ##########################################################
  Section -call_install_exe
- 	SetOutPath $0
+   SetOutPath $0
 -- 
 2.20.1.windows.1
 
