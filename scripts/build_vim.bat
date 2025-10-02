@@ -151,7 +151,7 @@ PUSHD ..\nsis
 IF %ARCH% == x64 (SET WIN64=1) ELSE (SET WIN64=0)
 nmake -nologo -f Make_mvc.mak "MKNSIS=%NSIS_DIR%\makensis.exe" ^
   "X=OutFile %ROOT%\gvim-%VIMVER:v=%-%VIM_ARCH%.exe" ^
-  "HAVE_UPX=1" "HAVE_MULTI_LANG=0" ^
+  "HAVE_UPX=0" "HAVE_MULTI_LANG=0" ^
   "WIN64=%WIN64%" "VIMRT=..\runtime" "GETTEXT=%VIMSRC_BUILD%.." ^
   "VIMSRC=%VIMSRC_BUILD%src"
 POPD
