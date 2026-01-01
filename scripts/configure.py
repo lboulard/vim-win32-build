@@ -1,18 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import sys
 import os.path
 import argparse
 import types
-from jinja2 import Template, StrictUndefined, Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader
 try:
     import colorama
     colorama.init()
 except ImportError:
     pass
 
-from lib.package import Arch, Package, PackageException
+from lib.package import Package
 
 class ConfigDir:
     def __init__(self, builds, packages, downloads):
@@ -57,7 +56,9 @@ class ConfigPackage:
                 elif os.path.exists(path) and not hasattr(installs, arch):
                     setattr(installs, arch, path)
             return installs
-        raise ConfigException('install not defined for package {}'.format(pkg.name))
+        raise ConfigException(
+            "install not defined for package {}".format(self.package.name)
+        )
 
     @property
     def vim_version(self):
@@ -71,7 +72,7 @@ class ConfigPackage:
             else:
                 raise ConfigException('Incorrect Vim-Version in package {}'
                                       .format(pkg.name))
-        raise ConfigExceptin('Vim-Version not defined for package {}'.format(pkg.name))
+        raise ConfigException('Vim-Version not defined for package {}'.format(pkg.name))
 
     @property
     def source_dir(self):
