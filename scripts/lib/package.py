@@ -3,6 +3,7 @@
 
 """Package parsing."""
 
+import os
 import string
 from .rfc822 import RFC822
 
@@ -191,7 +192,7 @@ class Package:
             def __missing__(self, key):
                 key = self[key.lower().replace('-', '_')]
                 return key
-        return tmpl.safe_substitute(IDict(self._values))
+        return tmpl.safe_substitute(IDict(os.environ | self._values))
 
     def set(self, name, value):
         """Set attribute `name` to `value`.
