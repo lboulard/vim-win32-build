@@ -102,7 +102,7 @@ List and version of GVim/Vim dependencies used for build and packages:
 - [GetText](https://github.com/mlocati/gettext-iconv-windows) 0.21 and iconv 1.16
 - [LuaBinaries](http://luabinaries.sourceforge.net/download.html) 5.1.4
 - [WinPTY](https://github.com/rprichard/winpty) 0.4.3
-- [Libsodium](https://doc.libsodium.org) 1.0.19
+- [Libsodium](https://doc.libsodium.org) 1.0.20
 - [dmake](https://cpan.metacpan.org/authors/id/S/SH/SHAY/) 4.12.2.2
 - [Perl](http://www.perl.org) 5.32.1
 - [Tcl](http://www.tcl.tk) 8.6.11
