@@ -9,5 +9,5 @@ Package: python3
 Version: 3.12
 Vim-Version: 312
 Install:
- x86 C:\Program Files\Python312
- x64 C:\Program Files\Python312
+ x86 $LOCALAPPDATA\Python\pythoncore-${version}-64
+ x64 $LOCALAPPDATA\Python\pythoncore-${version}-64
